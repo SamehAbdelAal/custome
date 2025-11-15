@@ -11,7 +11,8 @@ Bridge module for mail and factory
 
 Display a preview of the last 
 """,
-    'auto_install': True,
+    'auto_install': False,
+    'installable': True,
     'license': 'OEEL-1',
     'assets': {
         'web.assets_backend': [
