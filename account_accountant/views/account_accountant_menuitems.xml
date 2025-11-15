@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <menuitem id="menu_account_reconcile" name="Reconcile" parent="account.menu_finance_entries_actions" action="action_move_line_posted_unreconciled" sequence="25" />
+    <menuitem id="account_tag_menu" parent="account.account_account_menu" action="account_tag_action" />
+    <menuitem id="menu_account_group" parent="account.account_account_menu" action="action_account_group_tree" />
+    <menuitem id="menu_account_fiscal_year" parent="account.account_account_menu" action="actions_account_fiscal_year" />
+</odoo>
+
