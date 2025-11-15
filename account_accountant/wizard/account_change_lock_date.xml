@@ -13,8 +13,6 @@
                                 <div class="text-muted mb-3" colspan="2">
                                     <i>Lock specific journal entries</i>
                                 </div>
-                                <field name="period_lock_date" placeholder="Pick a date to lock"
-                                       options="{'warn_future': true}" />
                                 <field name="tax_lock_date" placeholder="Pick a date to lock"
                                        options="{'warn_future': true}" />
                             </group>

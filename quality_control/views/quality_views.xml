@@ -341,7 +341,7 @@
         <field name="name">quality.check.view.tree</field>
         <field name="model">quality.check</field>
         <field name="arch" type="xml">
-            <tree default_order="id desc" sample="1" decoration-info="quality_state == 'none'">
+            <list default_order="id desc" sample="1" decoration-info="quality_state == 'none'">
                 <field name="name" decoration-bf="1"/>
                 <field name="measure_on" optional="hide"/>
                 <field name='product_id' optional="show"/>
@@ -354,7 +354,7 @@
                 <field name="team_id" optional="hide"/>
                 <field name="company_id" groups="base.group_multi_company"/>
                 <field name="quality_state" optional="show" widget='badge' decoration-success="quality_state == 'pass'" decoration-info="quality_state == 'none'" decoration-danger="quality_state == 'fail'"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -623,11 +623,11 @@
         <field name="name">quality.alert.team.view.tree</field>
         <field name="model">quality.alert.team</field>
         <field name="arch" type="xml">
-            <tree string="Teams">
+            <list string="Teams">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="company_id" groups="base.group_multi_company"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -689,9 +689,9 @@
         <field name="name">quality.tag.view.tree</field>
         <field name="model">quality.tag</field>
         <field name="arch" type="xml">
-            <tree string="Tags" editable="bottom">
+            <list string="Tags" editable="bottom">
                 <field name="name"/>
-            </tree>
+            </list>
         </field>
     </record>
     <record id="quality_tag_action" model="ir.actions.act_window">
@@ -710,13 +710,13 @@
         <field name="name">quality.alert.stage.tree</field>
         <field name="model">quality.alert.stage</field>
         <field name="arch" type="xml">
-            <tree editable="bottom">
+            <list editable="bottom">
                 <field name="sequence" widget="handle"/>
                 <field name="name" string="Stage Name"/>
                 <field name="folded"/>
                 <field name="done"/>
                 <field name="team_ids" widget="many2many_tags"/>
-            </tree>
+            </list>
         </field>
     </record>
 

@@ -193,7 +193,7 @@
             <field name="name">account.bank.statement.line.tree.bank_rec_widget</field>
             <field name="model">account.bank.statement.line</field>
             <field name="arch" type="xml">
-                <tree editable="top"
+                <list editable="top"
                       multi_edit="1"
                       js_class="bank_rec_list"
                       decoration-muted="state == 'draft'"
@@ -254,7 +254,7 @@
                     <field name="id"
                            widget="bank_rec_list_view_switcher"
                            invisible="not id"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -368,7 +368,7 @@
             <field name="model">account.move.line</field>
             <field name="priority">999</field>
             <field name="arch" type="xml">
-                <tree string="Suggestions"
+                <list string="Suggestions"
                       create="false"
                       edit="false"
                       limit="40"
@@ -410,7 +410,7 @@
                             type="object"
                             string="View"
                             class="btn btn-sm btn-secondary"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -420,9 +420,9 @@
             <field name="model">account.bank.statement</field>
             <field name="inherit_id" ref="account.view_bank_statement_tree"/>
             <field name="arch" type="xml">
-                <tree position="attributes">
+                <list position="attributes">
                     <attribute name="editable">top</attribute>
-                </tree>
+                </list>
                 <field name="name" position="attributes">
                     <attribute name="widget">bank_rec_widget_open</attribute>
                 </field>

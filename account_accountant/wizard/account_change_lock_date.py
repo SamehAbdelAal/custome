@@ -11,10 +11,6 @@ class AccountChangeLockDate(models.TransientModel):
     _name = 'account.change.lock.date'
     _description = 'Change Lock Date'
 
-    period_lock_date = fields.Date(
-        string='Journal Entries Lock Date',
-        default=lambda self: self.env.company.period_lock_date,
-        help='Prevents Journal entries creation up to the defined date inclusive. Except for Accountant users.')
     fiscalyear_lock_date = fields.Date(
         string='All Users Lock Date',
         default=lambda self: self.env.company.fiscalyear_lock_date,
@@ -28,7 +24,6 @@ class AccountChangeLockDate(models.TransientModel):
 
     def _prepare_lock_date_values(self):
         return {
-            'period_lock_date': self.period_lock_date,
             'fiscalyear_lock_date': self.fiscalyear_lock_date,
             'tax_lock_date': self.tax_lock_date,
         }

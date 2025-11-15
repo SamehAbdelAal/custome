@@ -49,7 +49,7 @@
         <field name="name">account.move.line.tree.reconcile</field>
         <field name="model">account.move.line</field>
         <field name="arch" type="xml">
-            <tree string="Journal Items" js_class="account_move_line_reconcile_list" create="false" edit="true" expand="context.get('expand', False)" multi_edit="1" sample="1">
+            <list string="Journal Items" js_class="account_move_line_reconcile_list" create="false" edit="true" expand="context.get('expand', False)" multi_edit="1" sample="1">
                 <header>
                     <button name="action_reconcile" type="object" string="Reconcile" groups="account.group_account_user"/>
                 </header>
@@ -91,7 +91,7 @@
                 <field name="is_same_currency" column_invisible="True"/>
                 <field name="is_account_reconcile" column_invisible="True"/>
                 <field name="sequence" column_invisible="True"/>
-            </tree>
+            </list>
         </field>
     </record>
 

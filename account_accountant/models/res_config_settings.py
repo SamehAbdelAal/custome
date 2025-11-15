@@ -12,8 +12,6 @@ class ResConfigSettings(models.TransientModel):
 
     fiscalyear_last_day = fields.Integer(related='company_id.fiscalyear_last_day', required=True, readonly=False)
     fiscalyear_last_month = fields.Selection(related='company_id.fiscalyear_last_month', required=True, readonly=False)
-    period_lock_date = fields.Date(string='Lock Date for Non-Advisers',
-                                   related='company_id.period_lock_date', readonly=False)
     fiscalyear_lock_date = fields.Date(string='Lock Date for All Users',
                                        related='company_id.fiscalyear_lock_date', readonly=False)
     tax_lock_date = fields.Date("Tax Lock Date", related='company_id.tax_lock_date', readonly=False)
