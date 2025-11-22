@@ -3,20 +3,20 @@
 # 	* quality
 # 
 # Translators:
-# Pernille Kristensen <pernillekristensen1994@gmail.com>, 2023
-# Ejner Sønniksen <ejner@vkdata.dk>, 2023
-# lhmflexerp <lhm@flexerp.dk>, 2023
-# Martin Trigaux, 2023
-# Mads Søndergaard, 2023
-# Mads Søndergaard, 2023
+# Ejner Sønniksen <ejner@vkdata.dk>, 2024
+# Pernille Kristensen <pernillekristensen1994@gmail.com>, 2024
+# Mads Søndergaard, 2024
+# Mads Søndergaard, 2024
+# lhmflexerp <lhm@flexerp.dk>, 2024
+# Martin Trigaux, 2024
 # Sanne Kristensen <sanne@vkdata.dk>, 2024
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 17.0+e\n"
+"Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-13 10:41+0000\n"
-"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"POT-Creation-Date: 2024-09-25 09:25+0000\n"
+"PO-Revision-Date: 2024-09-25 09:44+0000\n"
 "Last-Translator: Sanne Kristensen <sanne@vkdata.dk>, 2024\n"
 "Language-Team: Danish (https://app.transifex.com/odoo/teams/41243/da/)\n"
 "MIME-Version: 1.0\n"
@@ -194,7 +194,6 @@ msgstr "Antal tjek"
 #. module: quality
 #. odoo-javascript
 #: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
-#, python-format
 msgid "Close"
 msgstr "Luk"
 
@@ -460,6 +459,7 @@ msgid "In Progress"
 msgstr "I gang"
 
 #. module: quality
+#: model:quality.point.test_type,name:quality.test_type_instructions
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Instructions"
 msgstr "Instruktioner"
@@ -560,15 +560,7 @@ msgstr "Navn"
 #. module: quality
 #. odoo-python
 #: code:addons/quality/models/quality.py:0
-#: code:addons/quality/models/quality.py:0
-#: code:addons/quality/models/quality.py:0
-#: code:addons/quality/models/quality.py:0
-#: code:addons/quality/models/quality.py:0
-#: code:addons/quality/models/quality.py:0
-#: code:addons/quality/models/quality.py:0
-#: code:addons/quality/models/quality.py:0
 #: model:quality.alert.stage,name:quality.quality_alert_stage_0
-#, python-format
 msgid "New"
 msgstr "Ny"
 
@@ -599,7 +591,6 @@ msgstr "Næste aktivitetstype"
 #. module: quality
 #. odoo-python
 #: code:addons/quality/models/quality.py:0
-#, python-format
 msgid ""
 "No quality team found for this company.\n"
 "Please go to configuration and create one first."
@@ -747,6 +738,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_alert__action_preventive
 msgid "Preventive Action"
 msgstr "Forebyggende Handling"
+
+#. module: quality
+#. odoo-javascript
+#: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
+msgid "Preview"
+msgstr "Eksempel"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__priority
@@ -935,7 +932,7 @@ msgstr "Tags"
 #. module: quality
 #. odoo-javascript
 #: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
-#, python-format
+#: model:quality.point.test_type,name:quality.test_type_picture
 msgid "Take a Picture"
 msgstr "Tag et billede"
 
@@ -1045,7 +1042,6 @@ msgstr "Meget høj"
 #. module: quality
 #. odoo-javascript
 #: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
-#, python-format
 msgid "Viewer"
 msgstr "Viser"
 

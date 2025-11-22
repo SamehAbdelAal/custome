@@ -3,38 +3,39 @@
 # 	* quality_control
 # 
 # Translators:
-# Halil, 2023
-# Metin Akın <aknmetin@gmail.com>, 2023
-# İmat Yahya Çataklı <yahya.catakli@soluto.com.tr>, 2023
-# Saban Yildiz <sabany@projetgrup.com>, 2023
-# Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2023
-# Yedigen, 2023
-# Levent Karakaş <levent@mektup.at>, 2023
-# İlknur Püskül <ilknurpuskull@gmail.com>, 2023
-# Ediz Duman <neps1192@gmail.com>, 2023
-# checkyoursix <batuhan.akpinar@gmail.com>, 2023
-# abc Def <hdogan1974@gmail.com>, 2023
-# Buket Şeker <buket_skr@hotmail.com>, 2023
-# Tugay Hatıl <tugayh@projetgrup.com>, 2023
-# Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2023
-# Martin Trigaux, 2023
-# Nadir Gazioglu <nadirgazioglu@gmail.com>, 2023
-# Umur Akın <umura@projetgrup.com>, 2023
-# UNIBRAVO SOFTWARE <unibravo@gmail.com>, 2023
-# Güven YILMAZ <guvenyilmaz@outlook.com.tr>, 2023
-# Murat Kaplan <muratk@projetgrup.com>, 2023
-# Sinem Cil, 2024
+# emre oktem, 2024
+# Tiffany Chang, 2024
 # Ayhan Kızıltan, 2024
-# Mehmet YAYLA, 2024
+# İmat Yahya Çataklı <yahya.catakli@soluto.com.tr>, 2024
+# Metin Akın <aknmetin@gmail.com>, 2024
+# Saban Yildiz <sabany@projetgrup.com>, 2024
+# abc Def <hdogan1974@gmail.com>, 2024
+# Yedigen, 2024
+# Ahmet Altinisik <aaltinisik@altinkaya.com.tr>, 2024
+# Ediz Duman <neps1192@gmail.com>, 2024
+# checkyoursix <batuhan.akpinar@gmail.com>, 2024
+# Sinem Cil, 2024
+# Tugay Hatıl <tugayh@projetgrup.com>, 2024
+# Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2024
+# Umur Akın <umura@projetgrup.com>, 2024
+# Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2024
+# Güven YILMAZ <guvenyilmaz@outlook.com.tr>, 2024
+# UNIBRAVO SOFTWARE <unibravo@gmail.com>, 2024
+# Emre Akayoğlu <emre.akayoglu@mechsoft.com.tr>, 2024
+# Martin Trigaux, 2024
+# Levent Karakaş <levent@mektup.at>, 2024
+# Murat Kaplan <muratk@projetgrup.com>, 2025
 # Melih Melik Sonmez, 2025
+# Hakan Türkün, 2025
+# Wil Odoo, 2025
 # Deniz Guvener_Odoo <degu@odoo.com>, 2025
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 17.0+e\n"
+"Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-07 20:42+0000\n"
-"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"POT-Creation-Date: 2025-05-07 20:45+0000\n"
+"PO-Revision-Date: 2024-09-25 09:44+0000\n"
 "Last-Translator: Deniz Guvener_Odoo <degu@odoo.com>, 2025\n"
 "Language-Team: Turkish (https://app.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -167,18 +168,8 @@ msgid "<strong>Notes: </strong>"
 msgstr ""
 
 #. module: quality_control
-#: model_terms:ir.ui.view,arch_db:quality_control.view_quality_point_kanban
-msgid "<strong>Operations:</strong>"
-msgstr ""
-
-#. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
 msgid "<strong>Product: </strong>"
-msgstr ""
-
-#. module: quality_control
-#: model_terms:ir.ui.view,arch_db:quality_control.view_quality_point_kanban
-msgid "<strong>Products:</strong>"
 msgstr ""
 
 #. module: quality_control
@@ -248,6 +239,16 @@ msgid "All parameters passed."
 msgstr ""
 
 #. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_on_demand__allowed_product_ids
+msgid "Allowed Product"
+msgstr ""
+
+#. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_on_demand__allowed_quality_point_ids
+msgid "Allowed Quality Point"
+msgstr ""
+
+#. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Archived"
 msgstr "Arşivlendi"
@@ -265,7 +266,7 @@ msgstr "Geri"
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__check_ids
 msgid "Check"
-msgstr "Kontrol"
+msgstr "Kontrol Et"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_stock_move_line__check_state
@@ -295,12 +296,19 @@ msgid "Checks In Progress"
 msgstr "Kontrolü Devam Edenler"
 
 #. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_spreadsheet__company_id
+#: model:ir.model.fields,field_description:quality_control.field_quality_spreadsheet_template__company_id
+msgid "Company"
+msgstr "Firma"
+
+#. module: quality_control
 #: model:ir.ui.menu,name:quality_control.menu_quality_configuration
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
 msgid "Configuration"
-msgstr "Yapılandırma"
+msgstr "Ayarlar"
 
 #. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_check_on_demand_view_form
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_wizard_form_failure
 msgid "Confirm"
 msgstr "Onayla"
@@ -334,9 +342,15 @@ msgstr "Kontrol Noktaları"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__measure_on
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_on_demand__measure_on
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__measure_on
 #: model:ir.model.fields,field_description:quality_control.field_quality_point__measure_on
 msgid "Control per"
+msgstr ""
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.view_quality_point_kanban
+msgid "Control per:"
 msgstr ""
 
 #. module: quality_control
@@ -365,19 +379,36 @@ msgid "Create a new quality alert stage"
 msgstr "Yeni bir kalite uyarı aşaması oluştur"
 
 #. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_on_demand__create_uid
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_spreadsheet__create_uid
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__create_uid
+#: model:ir.model.fields,field_description:quality_control.field_quality_spreadsheet_template__create_uid
 msgid "Created by"
-msgstr "Oluşturan"
+msgstr "Tarafından oluşturuldu"
 
 #. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_on_demand__create_date
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_spreadsheet__create_date
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__create_date
+#: model:ir.model.fields,field_description:quality_control.field_quality_spreadsheet_template__create_date
 msgid "Created on"
-msgstr "Oluşturulma"
+msgstr "Oluşturuldu"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__current_check_id
 msgid "Current Check"
 msgstr ""
+
+#. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_spreadsheet__current_revision_uuid
+#: model:ir.model.fields,field_description:quality_control.field_quality_spreadsheet_template__current_revision_uuid
+msgid "Current Revision Uuid"
+msgstr "Geçerli Revizyon UUID’si"
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_spreadsheet_template_view_list
+msgid "Data"
+msgstr "Veri"
 
 #. module: quality_control
 #: model:ir.model.fields.selection,name:quality_control.selection__quality_point__measure_frequency_unit__day
@@ -435,12 +466,26 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.view_quality_check_wizard
 msgid "Discard"
-msgstr "Vazgeç"
+msgstr "Sil"
 
 #. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_on_demand__display_name
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_spreadsheet__display_name
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__display_name
+#: model:ir.model.fields,field_description:quality_control.field_quality_spreadsheet_template__display_name
 msgid "Display Name"
-msgstr "Görünüm Adı"
+msgstr "İsim Göster"
+
+#. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_spreadsheet__display_thumbnail
+#: model:ir.model.fields,field_description:quality_control.field_quality_spreadsheet_template__display_thumbnail
+msgid "Display Thumbnail"
+msgstr "Küçük Resmi Göster"
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_spreadsheet_template_view_list
+msgid "Edit"
+msgstr "Düzenle"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_view_form
@@ -458,7 +503,7 @@ msgstr "Deponuzda stoklanabilir bir ürünün izlenebilirliğini sağlayın."
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
 #: model_terms:ir.ui.view,arch_db:quality_control.view_quality_check_wizard
 msgid "Fail"
-msgstr "Başarısız"
+msgstr "Hata"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
@@ -501,12 +546,20 @@ msgstr "Sıklık Birim Değeri"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
+msgid "Future Activities"
+msgstr "Sonraki Aktiviteler"
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Group By"
 msgstr "Grupla"
 
 #. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_on_demand__id
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_spreadsheet__id
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__id
+#: model:ir.model.fields,field_description:quality_control.field_quality_spreadsheet_template__id
 msgid "ID"
 msgstr "ID"
 
@@ -519,14 +572,19 @@ msgid ""
 msgstr ""
 
 #. module: quality_control
-#: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
-msgid "In #{kanban_getcolorname(record.color.raw_value)}"
-msgstr "#{kanban_getcolorname(record.color.raw_value)}"
+#: model:ir.model.fields,help:quality_control.field_quality_check_on_demand__lot_id
+msgid ""
+"If you want to specify a lot/serial number before the transfer validation,"
+"                                create a new lot here from this field with "
+"the same exact lot name of the move line you want to add a check for."
+"                                If you want to create a check for all move "
+"lines, leave this field empty."
+msgstr ""
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
 msgid "In Progress"
-msgstr "Devam Eden"
+msgstr "İşlemde"
 
 #. module: quality_control
 #: model:ir.model.fields,help:quality_control.field_quality_check__move_line_id
@@ -534,13 +592,13 @@ msgid ""
 "In case of Quality Check by Quantity, Move Line on which the Quality Check "
 "applies"
 msgstr ""
-"Miktara Göre Kalite Kontrolü durumunda, Kalite Kontrolün uygulandığı Satırı "
-"Taşı"
+"Miktara Göre Kalite Kontrolü durumunda, Kalite Kontrolünün uygulandığı "
+"Satırı Taşı"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
 msgid "Instructions"
-msgstr "Talimatlar"
+msgstr "Açıklamalar"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__is_last_check
@@ -563,14 +621,25 @@ msgid "Laptop XYZ"
 msgstr ""
 
 #. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_on_demand__write_uid
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_spreadsheet__write_uid
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__write_uid
+#: model:ir.model.fields,field_description:quality_control.field_quality_spreadsheet_template__write_uid
 msgid "Last Updated by"
 msgstr "Son Güncelleyen"
 
 #. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_on_demand__write_date
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_spreadsheet__write_date
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__write_date
+#: model:ir.model.fields,field_description:quality_control.field_quality_spreadsheet_template__write_date
 msgid "Last Updated on"
 msgstr "Son Güncelleme"
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
+msgid "Late Activities"
+msgstr "Geciken Aktiviteler"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__lot_line_id
@@ -596,6 +665,11 @@ msgid "Lot/Serial"
 msgstr "Lot/Seri"
 
 #. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_on_demand__lot_id
+msgid "Lot/Serial Number"
+msgstr "Lot/Seri Numarası"
+
+#. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__lot_name
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__lot_name
 msgid "Lot/Serial Number Name"
@@ -615,6 +689,7 @@ msgstr "Maks. Tolerans"
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__measure
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__measure
+#: model:quality.point.test_type,name:quality_control.test_type_measure
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
 msgid "Measure"
 msgstr "Ölçüm"
@@ -651,6 +726,12 @@ msgid "Months"
 msgstr "Aylar"
 
 #. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_spreadsheet__name
+#: model:ir.model.fields,field_description:quality_control.field_quality_spreadsheet_template__name
+msgid "Name"
+msgstr "Adı"
+
+#. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__nb_checks
 msgid "Nb Checks"
 msgstr "Nb Kontrolleri"
@@ -658,9 +739,14 @@ msgstr "Nb Kontrolleri"
 #. module: quality_control
 #. odoo-python
 #: code:addons/quality_control/models/quality.py:0
-#, python-format
 msgid "New"
 msgstr "Yeni"
+
+#. module: quality_control
+#. odoo-javascript
+#: code:addons/quality_control/static/src/spreadsheet_bundle/quality_spreadsheet_template_action/quality_spreadsheet_template_action.js:0
+msgid "New quality spreadsheet template created"
+msgstr ""
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.view_quality_check_wizard
@@ -731,6 +817,23 @@ msgid "OK"
 msgstr "Tamam"
 
 #. module: quality_control
+#. odoo-python
+#: code:addons/quality_control/models/stock_picking.py:0
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_check_on_demand_view_form
+msgid "On-Demand Quality Check"
+msgstr ""
+
+#. module: quality_control
+#: model:ir.model.fields.selection,name:quality_control.selection__quality_point__measure_frequency_type__on_demand
+msgid "On-demand"
+msgstr ""
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.view_quality_check_wizard
+msgid "Open spreadsheet"
+msgstr ""
+
+#. module: quality_control
 #: model:ir.model.fields.selection,name:quality_control.selection__quality_check__measure_on__operation
 #: model:ir.model.fields.selection,name:quality_control.selection__quality_point__measure_on__operation
 msgid "Operation"
@@ -738,6 +841,7 @@ msgstr "Operasyon"
 
 #. module: quality_control
 #: model:ir.model.fields,help:quality_control.field_quality_check__measure_on
+#: model:ir.model.fields,help:quality_control.field_quality_check_on_demand__measure_on
 #: model:ir.model.fields,help:quality_control.field_quality_check_wizard__measure_on
 #: model:ir.model.fields,help:quality_control.field_quality_point__measure_on
 msgid ""
@@ -745,6 +849,12 @@ msgid ""
 "                  Product = A quality check is requested per product.\n"
 "                 Quantity = A quality check is requested for each new product quantity registered, with partial quantity checks also possible."
 msgstr ""
+
+#. module: quality_control
+#. odoo-python
+#: code:addons/quality_control/models/stock_picking.py:0
+msgid "Operation not supported"
+msgstr "Operasyon desteklenmiyor"
 
 #. module: quality_control
 #: model:ir.ui.menu,name:quality_control.menu_quality_dashboard
@@ -769,6 +879,11 @@ msgid "Pass"
 msgstr "Başarılı"
 
 #. module: quality_control
+#: model:quality.point.test_type,name:quality_control.test_type_passfail
+msgid "Pass - Fail"
+msgstr ""
+
+#. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
 #: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
 msgid "Passed"
@@ -790,6 +905,11 @@ msgid "Periodically"
 msgstr "Belirli Aralıklarla"
 
 #. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_on_demand__picking_id
+msgid "Picking"
+msgstr "Toplama"
+
+#. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__picture
 msgid "Picture"
 msgstr "Resim"
@@ -797,7 +917,6 @@ msgstr "Resim"
 #. module: quality_control
 #. odoo-python
 #: code:addons/quality_control/models/quality.py:0
-#, python-format
 msgid "Picture Uploaded"
 msgstr "Resim Yüklendi"
 
@@ -818,6 +937,7 @@ msgstr "Önceki"
 
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_product_template
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_on_demand__product_id
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__product_id
 #: model:ir.model.fields.selection,name:quality_control.selection__quality_check__measure_on__product
 #: model:ir.model.fields.selection,name:quality_control.selection__quality_point__measure_on__product
@@ -828,7 +948,7 @@ msgstr "Ürün"
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_stock_move_line
 msgid "Product Moves (Stock Move Line)"
-msgstr "Ürün Hareketleri (Stok Hareket Satırları)"
+msgstr "Ürün Harketleri (Stok Hareket Satırları)"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__uom_id
@@ -870,15 +990,13 @@ msgstr "Kalite"
 #. module: quality_control
 #. odoo-python
 #: code:addons/quality_control/models/quality.py:0
-#: code:addons/quality_control/models/quality.py:0
-#: model:ir.actions.server,name:quality_control.action_qualtity_alert
+#: model:ir.actions.server,name:quality_control.stock_picking_action_quality_alert
 #: model:ir.model,name:quality_control.model_quality_alert
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_calendar
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search_inherit_quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.stock_picking_view_form_inherit_quality
-#, python-format
 msgid "Quality Alert"
-msgstr "Kalite Uyarısı"
+msgstr "Kalite Alarmı"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_graph
@@ -889,7 +1007,7 @@ msgstr "Kalite Uyarıları Analizi"
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_stock_picking__quality_alert_count
 msgid "Quality Alert Count"
-msgstr "Kalite Uyarı Sayısı"
+msgstr "Kalite Alarmı Sayısı"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_stock_lot__quality_alert_qty
@@ -925,9 +1043,9 @@ msgstr "Kalite Uyarıları"
 #. odoo-python
 #: code:addons/quality_control/models/quality.py:0
 #: model:ir.actions.act_window,name:quality_control.action_quality_check_wizard
+#: model:ir.actions.server,name:quality_control.stock_picking_action_quality_check_on_demand
 #: model:ir.model,name:quality_control.model_quality_check
 #: model_terms:ir.ui.view,arch_db:quality_control.view_stock_move_line_detailed_operation_tree_inherit_quality
-#, python-format
 msgid "Quality Check"
 msgstr "Kalite Kontrol"
 
@@ -940,7 +1058,7 @@ msgstr "Kalite Kontrol Analizi"
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_stock_picking__quality_check_fail
 msgid "Quality Check Fail"
-msgstr "Kalite Kontrol Hatası"
+msgstr "Başarısız Kalite Kontrol"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_wizard_form_failure
@@ -950,13 +1068,17 @@ msgstr "Kalite Kontrol Başarısız"
 #. module: quality_control
 #. odoo-python
 #: code:addons/quality_control/wizard/quality_check_wizard.py:0
-#, python-format
 msgid "Quality Check Failed for %(product_name)s"
 msgstr ""
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
 msgid "Quality Check Picture"
+msgstr ""
+
+#. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_on_demand__quality_point_id
+msgid "Quality Check Point"
 msgstr ""
 
 #. module: quality_control
@@ -979,10 +1101,11 @@ msgstr ""
 #: model:ir.ui.menu,name:quality_control.menu_quality_checks
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.stock_picking_view_form_inherit_quality
+#: model_terms:ir.ui.view,arch_db:quality_control.stock_picking_view_search_inherit_quality
 #: model_terms:ir.ui.view,arch_db:quality_control.stock_production_lot_form_quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.view_quality_check_wizard
 msgid "Quality Checks"
-msgstr "Nitelik Denetimleri"
+msgstr "Kalite Kontrolleri"
 
 #. module: quality_control
 #: model:ir.actions.act_window,name:quality_control.quality_check_action_spc
@@ -1034,6 +1157,12 @@ msgid "Quality Points"
 msgstr "Kalite Noktaları"
 
 #. module: quality_control
+#: model:ir.actions.act_window,name:quality_control.quality_spreadsheet_template_action_config
+#: model:ir.ui.menu,name:quality_control.menu_config_quality_spreadsheet_template
+msgid "Quality Spreadsheet Templates"
+msgstr ""
+
+#. module: quality_control
 #: model:ir.actions.act_window,name:quality_control.quality_tag_action
 #: model:ir.ui.menu,name:quality_control.menu_config_quality_tags
 msgid "Quality Tags"
@@ -1065,6 +1194,16 @@ msgid "Quality Worksheet Report"
 msgstr ""
 
 #. module: quality_control
+#: model:ir.model,name:quality_control.model_quality_check_spreadsheet
+msgid "Quality check spreadsheet"
+msgstr ""
+
+#. module: quality_control
+#: model:ir.model,name:quality_control.model_quality_spreadsheet_template
+msgid "Quality check template spreadsheet"
+msgstr ""
+
+#. module: quality_control
 #: model_terms:ir.actions.act_window,help:quality_control.quality_point_action
 msgid ""
 "Quality control points define the quality checks which should be\n"
@@ -1080,8 +1219,14 @@ msgid "Quantity"
 msgstr "Miktar"
 
 #. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_quality_check__qty_failed
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_wizard_form_failure
 msgid "Quantity Failed"
+msgstr ""
+
+#. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_quality_check__qty_passed
+msgid "Quantity Passed"
 msgstr ""
 
 #. module: quality_control
@@ -1094,6 +1239,16 @@ msgstr ""
 #: model:ir.model.fields,help:quality_control.field_quality_check__qty_tested
 #: model:ir.model.fields,help:quality_control.field_quality_check_wizard__qty_tested
 msgid "Quantity of product tested within the lot"
+msgstr ""
+
+#. module: quality_control
+#: model:ir.model.fields,help:quality_control.field_quality_check__qty_failed
+msgid "Quantity of product that failed the quality check"
+msgstr ""
+
+#. module: quality_control
+#: model:ir.model.fields,help:quality_control.field_quality_check__qty_passed
+msgid "Quantity of product that passed the quality check"
 msgstr ""
 
 #. module: quality_control
@@ -1129,6 +1284,17 @@ msgid "Responsible"
 msgstr "Sorumlu"
 
 #. module: quality_control
+#. odoo-javascript
+#: code:addons/quality_control/static/src/spreadsheet_bundle/quality_check_spreadsheet_action/quality_check_spreadsheet_action.xml:0
+msgid "Save in"
+msgstr ""
+
+#. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_on_demand__show_lot_number
+msgid "Show Lot Number"
+msgstr ""
+
+#. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__show_lot_text
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__show_lot_text
 msgid "Show Lot Text"
@@ -1143,6 +1309,48 @@ msgstr ""
 #: model:ir.model.fields.selection,name:quality_control.selection__stock_move_line__check_state__in_progress
 msgid "Some checks to be done"
 msgstr ""
+
+#. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_quality_check__spreadsheet_id
+#: model:quality.point.test_type,name:quality_control.test_type_spreadsheet
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
+msgid "Spreadsheet"
+msgstr "E-tablo"
+
+#. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_spreadsheet__spreadsheet_data
+#: model:ir.model.fields,field_description:quality_control.field_quality_spreadsheet_template__spreadsheet_data
+msgid "Spreadsheet Data"
+msgstr "E-tablo Verisi"
+
+#. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_spreadsheet__spreadsheet_file_name
+#: model:ir.model.fields,field_description:quality_control.field_quality_spreadsheet_template__spreadsheet_file_name
+msgid "Spreadsheet File Name"
+msgstr "E-tablo Dosya Adı"
+
+#. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_spreadsheet__spreadsheet_revision_ids
+#: model:ir.model.fields,field_description:quality_control.field_quality_spreadsheet_template__spreadsheet_revision_ids
+msgid "Spreadsheet Revision"
+msgstr "E-tablo Revizyonu"
+
+#. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_spreadsheet__spreadsheet_snapshot
+#: model:ir.model.fields,field_description:quality_control.field_quality_spreadsheet_template__spreadsheet_snapshot
+msgid "Spreadsheet Snapshot"
+msgstr "E-tablo Anlık Görüntüsü"
+
+#. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_quality_point__spreadsheet_template_id
+msgid "Spreadsheet Template"
+msgstr "E-tablo Şablonu"
+
+#. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_spreadsheet__spreadsheet_binary_data
+#: model:ir.model.fields,field_description:quality_control.field_quality_spreadsheet_template__spreadsheet_binary_data
+msgid "Spreadsheet file"
+msgstr "E-tablo Dosyası"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_stage_view_tree
@@ -1171,6 +1379,14 @@ msgid "Stock Move Line"
 msgstr "Stok Hareket Satırı"
 
 #. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_quality_check__spreadsheet_check_cell
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_spreadsheet__check_cell
+#: model:ir.model.fields,field_description:quality_control.field_quality_point__spreadsheet_check_cell
+#: model:ir.model.fields,field_description:quality_control.field_quality_spreadsheet_template__check_cell
+msgid "Success cell"
+msgstr ""
+
+#. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_tag_view_search
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_tag_view_tree
 msgid "Tags"
@@ -1188,6 +1404,11 @@ msgid "Team Name"
 msgstr "Ekip Adı"
 
 #. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.view_quality_point_kanban
+msgid "Team:"
+msgstr ""
+
+#. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_view_tree
 msgid "Teams"
 msgstr "Ekipler"
@@ -1195,7 +1416,7 @@ msgstr "Ekipler"
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__test_type
 msgid "Technical name"
-msgstr "Teknik adı:"
+msgstr "Teknik adı"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
@@ -1215,15 +1436,43 @@ msgid "Testing Percentage Within Lot"
 msgstr ""
 
 #. module: quality_control
+#: model:ir.model.fields,help:quality_control.field_quality_check__spreadsheet_check_cell
+#: model:ir.model.fields,help:quality_control.field_quality_check_spreadsheet__check_cell
+#: model:ir.model.fields,help:quality_control.field_quality_point__spreadsheet_check_cell
+#: model:ir.model.fields,help:quality_control.field_quality_spreadsheet_template__check_cell
+msgid ""
+"The check is successful if the success cell value is TRUE. If there are "
+"several sheets, specify which one you want to use (e.g. Sheet2!C4). If not "
+"specified, the first sheet is selected by default."
+msgstr ""
+
+#. module: quality_control
 #: model:ir.model.fields,help:quality_control.field_quality_point__measure_frequency_value
 msgid "The probability of each quality check being generated"
 msgstr ""
+
+#. module: quality_control
+#. odoo-python
+#: code:addons/quality_control/wizard/on_demand_quality_check_wizard.py:0
+msgid "The selected lot/serial number does not exist in the picking."
+msgstr ""
+
+#. module: quality_control
+#: model:ir.model.fields,field_description:quality_control.field_quality_check_spreadsheet__thumbnail
+#: model:ir.model.fields,field_description:quality_control.field_quality_spreadsheet_template__thumbnail
+msgid "Thumbnail"
+msgstr "Küçük Resim"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_alert__title
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__title
 msgid "Title"
 msgstr "Başlık"
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
+msgid "Today Activities"
+msgstr "Bugünkü Aktiviteler"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
@@ -1250,7 +1499,12 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
 msgid "Type"
-msgstr "Tür"
+msgstr "Tip"
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.view_quality_point_kanban
+msgid "Type:"
+msgstr "Türü:"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
@@ -1290,6 +1544,11 @@ msgid "Wizard for Quality Check Pop Up"
 msgstr ""
 
 #. module: quality_control
+#: model:ir.model,name:quality_control.model_quality_check_on_demand
+msgid "Wizard to select on-demand quality check points"
+msgstr ""
+
+#. module: quality_control
 #: model:ir.actions.report,name:quality_control.quality_check_report
 msgid "Worksheet Report - External (PDF)"
 msgstr ""
@@ -1306,24 +1565,38 @@ msgstr ""
 
 #. module: quality_control
 #. odoo-python
+#: code:addons/quality_control/models/stock_picking.py:0
+#: code:addons/quality_control/wizard/on_demand_quality_check_wizard.py:0
+msgid ""
+"You can not create quality check for a draft, done or cancelled transfer."
+msgstr ""
+
+#. module: quality_control
+#. odoo-python
 #: code:addons/quality_control/models/quality.py:0
-#, python-format
-msgid "You measured %.2f %s and it should be between %.2f and %.2f %s."
-msgstr "%.2f %s ölçüler%.2f ve %.2f arasında olmalıdır %s."
+msgid ""
+"You measured %(measure).2f %(unit)s and it should be between "
+"%(tolerance_min).2f and %(tolerance_max).2f %(unit)s."
+msgstr ""
+"%(measure).2f %(unit)s ölçüler%(tolerance_min).2f ve %(tolerance_max).2f "
+"arasında olmalıdır %(unit)s."
 
 #. module: quality_control
 #. odoo-python
 #: code:addons/quality_control/wizard/quality_check_wizard.py:0
-#, python-format
 msgid "You must provide a picture before validating"
 msgstr ""
 
 #. module: quality_control
 #. odoo-python
 #: code:addons/quality_control/models/stock_picking.py:0
-#, python-format
 msgid "You still need to do the quality checks!"
 msgstr "Hala kalite kontrollerini yapmanız gerekiyor!"
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_view_form
+msgid "alias"
+msgstr "rumuz"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_view_form
@@ -1332,5 +1605,5 @@ msgstr ""
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_view_form
-msgid "e.g. domain.com"
-msgstr "e.g. alanadı.com"
+msgid "e.g. mycompany.com"
+msgstr "örn. sirketim.com"

@@ -15,7 +15,7 @@ class StockMove(models.Model):
         return moves
 
     def _post_process_created_moves(self):
-        # Quality checks per product and operations are expected to be created during 
+        # Quality checks per product and operations are expected to be created during
         # the action confirm of the related stock move. However, a move can be created
         # in a non draft state and might never be confirmed in before being done
         super()._post_process_created_moves()
@@ -25,7 +25,7 @@ class StockMove(models.Model):
         # Groupby move by picking. Use it in order to generate missing quality checks.
         pick_moves = defaultdict(lambda: self.env['stock.move'])
         for move in self:
-            if move.picking_id and not move.scrapped and not move._context.get('extra_move_mode', False):
+            if move.picking_id and not move.scrapped:
                 pick_moves[move.picking_id] |= move
         check_vals_list = self._create_operation_quality_checks(pick_moves)
         for picking, moves in pick_moves.items():

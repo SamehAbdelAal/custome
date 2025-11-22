@@ -3,15 +3,14 @@
 # 	* quality
 # 
 # Translators:
-# Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2024
 # Wil Odoo, 2024
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 17.0+e\n"
+"Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-13 10:41+0000\n"
-"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"POT-Creation-Date: 2024-09-25 09:25+0000\n"
+"PO-Revision-Date: 2024-09-25 09:44+0000\n"
 "Last-Translator: Wil Odoo, 2024\n"
 "Language-Team: Ukrainian (https://app.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -74,7 +73,7 @@ msgstr "Оформлення виключення дії"
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_state
 #: model:ir.model.fields,field_description:quality.field_quality_check__activity_state
 msgid "Activity State"
-msgstr "Стан дії"
+msgstr "Статус дії"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_type_icon
@@ -189,7 +188,6 @@ msgstr "Перевірити підрахунок"
 #. module: quality
 #. odoo-javascript
 #: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
-#, python-format
 msgid "Close"
 msgstr "Закрити"
 
@@ -405,7 +403,7 @@ msgid ""
 "ID of the parent record holding the alias (example: project holding the task"
 " creation alias)"
 msgstr ""
-"ID батьківського запису, що містить псевдонім (наприклад: проект, що містить"
+"ID батьківського запису, що містить псевдонім (наприклад: проєкт, що містить"
 " завдання створити псевдонім)."
 
 #. module: quality
@@ -455,6 +453,7 @@ msgid "In Progress"
 msgstr "В процесі"
 
 #. module: quality
+#: model:quality.point.test_type,name:quality.test_type_instructions
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Instructions"
 msgstr "Інструкції"
@@ -550,20 +549,12 @@ msgstr "Мої сповіщення"
 #: model:ir.model.fields,field_description:quality.field_quality_point_test_type__name
 #: model:ir.model.fields,field_description:quality.field_quality_reason__name
 msgid "Name"
-msgstr "Ім'я"
+msgstr "Назва"
 
 #. module: quality
 #. odoo-python
 #: code:addons/quality/models/quality.py:0
-#: code:addons/quality/models/quality.py:0
-#: code:addons/quality/models/quality.py:0
-#: code:addons/quality/models/quality.py:0
-#: code:addons/quality/models/quality.py:0
-#: code:addons/quality/models/quality.py:0
-#: code:addons/quality/models/quality.py:0
-#: code:addons/quality/models/quality.py:0
 #: model:quality.alert.stage,name:quality.quality_alert_stage_0
-#, python-format
 msgid "New"
 msgstr "Новий"
 
@@ -594,7 +585,6 @@ msgstr "Тип наступної дії"
 #. module: quality
 #. odoo-python
 #: code:addons/quality/models/quality.py:0
-#, python-format
 msgid ""
 "No quality team found for this company.\n"
 "Please go to configuration and create one first."
@@ -742,6 +732,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_alert__action_preventive
 msgid "Preventive Action"
 msgstr "Профілактика"
+
+#. module: quality
+#. odoo-javascript
+#: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
+msgid "Preview"
+msgstr "Попередній перегляд"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__priority
@@ -898,7 +894,7 @@ msgstr "Вирішено"
 #: model:ir.model.fields,field_description:quality.field_quality_alert__stage_id
 #: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "Stage"
-msgstr "Стадія"
+msgstr "Етап"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__quality_state
@@ -932,7 +928,7 @@ msgstr "Мітки"
 #. module: quality
 #. odoo-javascript
 #: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
-#, python-format
+#: model:quality.point.test_type,name:quality.test_type_picture
 msgid "Take a Picture"
 msgstr "Зробити зображення"
 
@@ -1042,7 +1038,6 @@ msgstr "Дуже високий"
 #. module: quality
 #. odoo-javascript
 #: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
-#, python-format
 msgid "Viewer"
 msgstr "Глядач"
 

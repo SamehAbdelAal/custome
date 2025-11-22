@@ -3,23 +3,24 @@
 # 	* quality
 # 
 # Translators:
-# Stefanos Nikou <stefanos.nikou@gmail.com>, 2024
-# Martin Trigaux, 2024
-# Kostas Goutoudis <goutoudis@gmail.com>, 2024
 # George Tarasidis <george_tarasidis@yahoo.com>, 2024
+# Martin Trigaux, 2024
+# Stefanos Nikou <stefanos.nikou@gmail.com>, 2024
+# Kostas Goutoudis <goutoudis@gmail.com>, 2024
 # Maria Chalepiadou, 2025
 # Gerasimos Kanelatos, 2025
 # Georgios Geitonas <g.geitonas@dileanity.com>, 2025
 # Anastasia Mimou, 2025
 # Agapi Psyllou, 2025
+# Larissa Manderfeld, 2025
 # Iasonas Polydoros <j.polydoros@dileanity.com>, 2025
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 17.0+e\n"
+"Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-13 10:41+0000\n"
-"PO-Revision-Date: 2023-10-26 23:10+0000\n"
+"POT-Creation-Date: 2024-09-25 09:25+0000\n"
+"PO-Revision-Date: 2024-09-25 09:44+0000\n"
 "Last-Translator: Iasonas Polydoros <j.polydoros@dileanity.com>, 2025\n"
 "Language-Team: Greek (https://app.transifex.com/odoo/teams/41243/el/)\n"
 "MIME-Version: 1.0\n"
@@ -37,7 +38,7 @@ msgstr "# Ειδοποιήσεις ποιότητας"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__check_count
 msgid "# Quality Checks"
-msgstr "# Έλεχγοι Ποιότητας"
+msgstr "# Έλεγχοι Ποιότητας"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_defaults
@@ -76,7 +77,7 @@ msgstr "Δραστηριότητες"
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_exception_decoration
 #: model:ir.model.fields,field_description:quality.field_quality_check__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr "Δραστηριότητα Εξαίρεσης Διακόσμησης"
+msgstr "Επισήμανση Εξαίρεσης Δραστηριότητας"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_state
@@ -188,7 +189,7 @@ msgstr "Αιτία"
 #: model:ir.model.fields,field_description:quality.field_quality_alert__check_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__check_ids
 msgid "Check"
-msgstr "Επιταγή"
+msgstr "Έλεγχος"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__check_count
@@ -198,7 +199,6 @@ msgstr "Αριθμός Ελέγχων"
 #. module: quality
 #. odoo-javascript
 #: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
-#, python-format
 msgid "Close"
 msgstr "Κλείσιμο"
 
@@ -282,12 +282,12 @@ msgstr "Ημερομηνία Ανάθεσης"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__date_close
 msgid "Date Closed"
-msgstr "Ημερομηνία Κλεισίματος"
+msgstr "Ημερομηνία Ολοκλήρωσης"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_defaults
 msgid "Default Values"
-msgstr "Προεπιλεγμένες τιμές"
+msgstr "Προεπιλεγμένες Τιμές"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_point__test_type_id
@@ -465,6 +465,7 @@ msgid "In Progress"
 msgstr "Σε εξέλιξη"
 
 #. module: quality
+#: model:quality.point.test_type,name:quality.test_type_instructions
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Instructions"
 msgstr "Οδηγίες"
@@ -560,22 +561,14 @@ msgstr "Οι Ειδοποιήσεις μου"
 #: model:ir.model.fields,field_description:quality.field_quality_point_test_type__name
 #: model:ir.model.fields,field_description:quality.field_quality_reason__name
 msgid "Name"
-msgstr "Περιγραφή"
+msgstr "Όνομα"
 
 #. module: quality
 #. odoo-python
 #: code:addons/quality/models/quality.py:0
-#: code:addons/quality/models/quality.py:0
-#: code:addons/quality/models/quality.py:0
-#: code:addons/quality/models/quality.py:0
-#: code:addons/quality/models/quality.py:0
-#: code:addons/quality/models/quality.py:0
-#: code:addons/quality/models/quality.py:0
-#: code:addons/quality/models/quality.py:0
 #: model:quality.alert.stage,name:quality.quality_alert_stage_0
-#, python-format
 msgid "New"
-msgstr "Νέα"
+msgstr "Νέο"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_calendar_event_id
@@ -604,12 +597,11 @@ msgstr "Επόμενος Τύπος Δραστηριότητας"
 #. module: quality
 #. odoo-python
 #: code:addons/quality/models/quality.py:0
-#, python-format
 msgid ""
 "No quality team found for this company.\n"
 "Please go to configuration and create one first."
 msgstr ""
-"Δεν βρέθηκε ομάδα ποιότητας για αυτή την εταιρεία.\n"
+"Δε βρέθηκε ομάδα ποιότητας για αυτή την εταιρεία.\n"
 "Παρακαλώ μεταβείτε στις ρυθμίσεις και δημιουργήστε μία πρώτα."
 
 #. module: quality
@@ -670,7 +662,7 @@ msgstr "Τύποι Λειτουργίας"
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_tree
 msgid "Operations"
-msgstr "Λειτουργίες"
+msgstr "Ενέργειες"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_force_thread_id
@@ -691,7 +683,7 @@ msgstr "Άλλοι"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_parent_model_id
 msgid "Parent Model"
-msgstr "Μοντέλο Γονέα"
+msgstr "Γονικό Μοντέλο"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_parent_thread_id
@@ -712,7 +704,7 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__partner_id
 msgid "Partner"
-msgstr "Συναλλασόμενος"
+msgstr "Επαφή"
 
 #. module: quality
 #: model:quality.reason,name:quality.reason_parts
@@ -754,6 +746,12 @@ msgid "Preventive Action"
 msgstr "Προληπτική Δράση"
 
 #. module: quality
+#. odoo-javascript
+#: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
+msgid "Preview"
+msgstr "Προεπισκόπηση"
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__priority
 msgid "Priority"
 msgstr "Προτεραιότητα"
@@ -773,7 +771,7 @@ msgstr "Κατηγορίες Είδους"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__product_id
 msgid "Product Variant"
-msgstr "Μεταβλητή Είδους"
+msgstr "Παραλλαγή Είδους"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__product_ids
@@ -944,7 +942,7 @@ msgstr "Ετικέτες"
 #. module: quality
 #. odoo-javascript
 #: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
-#, python-format
+#: model:quality.point.test_type,name:quality.test_type_picture
 msgid "Take a Picture"
 msgstr "Λήψη Φωτογραφίας"
 
@@ -1013,7 +1011,7 @@ msgstr "Τίτλος"
 #. module: quality
 #: model:ir.model.fields.selection,name:quality.selection__quality_check__quality_state__none
 msgid "To do"
-msgstr "Να κάνω"
+msgstr "Προς υλοποίηση"
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
@@ -1055,7 +1053,6 @@ msgstr "Πολύ υψηλή"
 #. module: quality
 #. odoo-javascript
 #: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
-#, python-format
 msgid "Viewer"
 msgstr "Προβολή"
 

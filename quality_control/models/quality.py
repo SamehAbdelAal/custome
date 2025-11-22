@@ -6,8 +6,8 @@ from datetime import datetime
 
 import random
 
-from odoo import api, models, fields, _
-from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, float_round
+from odoo import api, Command, models, fields, _
+from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, float_round, SQL
 from odoo.osv.expression import OR
 
 
@@ -27,7 +27,8 @@ class QualityPoint(models.Model):
     measure_frequency_type = fields.Selection([
         ('all', 'All'),
         ('random', 'Randomly'),
-        ('periodical', 'Periodically')], string="Control Frequency",
+        ('periodical', 'Periodically'),
+        ('on_demand', 'On-demand')], string="Control Frequency",
         default='all', required=True)
     measure_frequency_value = fields.Float('Percentage', help="The probability of each quality check being generated")  # TDE RENAME ?
     measure_frequency_unit_value = fields.Integer('Frequency Unit Value')  # TDE RENAME ?
@@ -44,6 +45,23 @@ class QualityPoint(models.Model):
     norm_unit = fields.Char('Norm Unit', default=lambda self: 'mm')  # TDE RENAME ?
     average = fields.Float(compute="_compute_standard_deviation_and_average")
     standard_deviation = fields.Float(compute="_compute_standard_deviation_and_average")
+    spreadsheet_template_id = fields.Many2one(
+        'quality.spreadsheet.template',
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
+    )
+    spreadsheet_check_cell = fields.Char(
+        related="spreadsheet_template_id.check_cell",
+        readonly=False,
+    )
+
+    @api.depends('name', 'title')
+    @api.depends_context('on_demand_wizard')
+    def _compute_display_name(self):
+        if 'on_demand_wizard' in self.env.context:
+            for record in self:
+                record.display_name = f'{record.name} - {record.title}' if record.title else record.name
+        else:
+            super()._compute_display_name()
 
     @api.depends('testing_percentage_within_lot')
     def _compute_is_lot_tested_fractionally(self):
@@ -98,10 +116,10 @@ class QualityPoint(models.Model):
             elif self.measure_frequency_unit == 'month':
                 delta = relativedelta(months=self.measure_frequency_unit_value)
             date_previous = datetime.today() - delta
-            checks = self.env['quality.check'].search([
+            has_checks = bool(self.env['quality.check'].search_count([
                 ('point_id', '=', self.id),
-                ('create_date', '>=', date_previous.strftime(DEFAULT_SERVER_DATETIME_FORMAT))], limit=1)
-            return not(bool(checks))
+                ('create_date', '>=', date_previous.strftime(DEFAULT_SERVER_DATETIME_FORMAT))], limit=1))
+            return not has_checks
         return super(QualityPoint, self).check_execute_now()
 
     def _get_type_default_domain(self):
@@ -166,7 +184,7 @@ class QualityPoint(models.Model):
         return point_values
 
     @api.model
-    def _get_domain(self, product_ids, picking_type_id, measure_on='product'):
+    def _get_domain(self, product_ids, picking_type_id, measure_on=False, on_demand=False):
         """ Helper that returns a domain for quality.point based on the products and picking type
         pass as arguments. It will search for quality point having:
         - No product_ids and no product_category_id
@@ -184,7 +202,9 @@ class QualityPoint(models.Model):
         domain_in_products_or_categs = ['|', ('product_ids', 'in', product_ids.ids), ('product_category_ids', 'parent_of', product_ids.categ_id.ids)]
         domain_no_products_and_categs = [('product_ids', '=', False), ('product_category_ids', '=', False)]
         domain += OR([domain_in_products_or_categs, domain_no_products_and_categs])
-        domain += [('measure_on', '=', measure_on)]
+        if measure_on:
+            domain += [('measure_on', '=', measure_on)]
+        domain += [('measure_frequency_type', '=' if on_demand else '!=', 'on_demand')]
 
         return domain
 
@@ -223,19 +243,29 @@ class QualityCheck(models.Model):
     lot_name = fields.Char('Lot/Serial Number Name', related='move_line_id.lot_name', store=True)
     lot_line_id = fields.Many2one('stock.lot', store=True, compute='_compute_lot_line_id')
     qty_line = fields.Float(compute='_compute_qty_line', string="Quantity")
+    qty_passed = fields.Float('Quantity Passed', help="Quantity of product that passed the quality check", compute='_compute_qty_passed', store=True)
+    qty_failed = fields.Float('Quantity Failed', help="Quantity of product that failed the quality check", compute='_compute_qty_failed', store=True)
     uom_id = fields.Many2one(related='product_id.uom_id', string="Product Unit of Measure")
     show_lot_text = fields.Boolean(compute='_compute_show_lot_text')
     is_lot_tested_fractionally = fields.Boolean(related='point_id.is_lot_tested_fractionally')
     testing_percentage_within_lot = fields.Float(related="point_id.testing_percentage_within_lot")
     product_tracking = fields.Selection(related='product_id.tracking')
+    spreadsheet_id = fields.Many2one(
+        'quality.check.spreadsheet',
+        domain="[('company_id', 'in', company_ids)]",
+    )
+    spreadsheet_check_cell = fields.Char(
+        related="spreadsheet_id.check_cell",
+        readonly=False,
+    )
 
     @api.depends('measure_success')
     def _compute_warning_message(self):
         for rec in self:
             if rec.measure_success == 'fail':
-                rec.warning_message = _('You measured %.2f %s and it should be between %.2f and %.2f %s.',
-                    rec.measure, rec.norm_unit, rec.point_id.tolerance_min,
-                    rec.point_id.tolerance_max, rec.norm_unit
+                rec.warning_message = _('You measured %(measure).2f %(unit)s and it should be between %(tolerance_min).2f and %(tolerance_max).2f %(unit)s.',
+                    measure=rec.measure, unit=rec.norm_unit, tolerance_min=rec.point_id.tolerance_min,
+                    tolerance_max=rec.point_id.tolerance_max,
                 )
             else:
                 rec.warning_message = ''
@@ -244,6 +274,22 @@ class QualityCheck(models.Model):
     def _compute_qty_line(self):
         for qc in self:
             qc.qty_line = qc.move_line_id.quantity
+
+    @api.depends('qty_line', 'quality_state')
+    def _compute_qty_passed(self):
+        for qc in self:
+            if qc.quality_state == 'pass':
+                qc.qty_passed = qc.qty_line
+            else:
+                qc.qty_passed = 0
+
+    @api.depends('qty_line', 'quality_state')
+    def _compute_qty_failed(self):
+        for qc in self:
+            if qc.quality_state == 'fail':
+                qc.qty_failed = qc.qty_line
+            else:
+                qc.qty_failed = 0
 
     @api.depends('move_line_id.lot_id')
     def _compute_lot_line_id(self):
@@ -362,13 +408,37 @@ class QualityCheck(models.Model):
         })
         return action
 
+    def action_open_spreadsheet(self):
+        if not self.spreadsheet_id:
+            self.spreadsheet_id = self._create_spreadsheet_from_template()
+        action = self.spreadsheet_id.action_open_spreadsheet()
+        action['params']['check_id'] = self.id
+        return action
+
+    def _create_spreadsheet_from_template(self):
+        self.ensure_one()
+        spreadsheet_template = self.point_id.spreadsheet_template_id
+        spreadsheet = self.env['quality.check.spreadsheet'].create({
+            'name': spreadsheet_template.name,
+            'spreadsheet_data': spreadsheet_template.spreadsheet_data,
+            'check_cell': self.point_id.spreadsheet_check_cell,
+        })
+        spreadsheet.spreadsheet_snapshot = spreadsheet_template.spreadsheet_snapshot
+        spreadsheet_template._copy_revisions_to(spreadsheet)
+        return spreadsheet
+
+    def unlink(self):
+        if self.spreadsheet_id:
+            self.spreadsheet_id.unlink()
+        return super().unlink()
+
     def _can_move_line_to_failure_location(self):
         self.ensure_one()
         return self.quality_state == 'fail' and self.point_id.measure_on == 'move_line' and self.move_line_id and self.picking_id
 
     def _move_line_to_failure_location(self, failure_location_id, failed_qty=None):
         """ This function is used to fail move lines and can optionally:
-             - split it into failed and passed qties (i.e. 2 move lines w/1 check each)
+             - split it into failed and passed qties (i.e. 2 moves w/1 check each)
              - send the failed qty to a failure location
         :param failure_location_id: id of location to send failed qty to
         :param failed_qty: qty failed on check, defaults to None, if None all quantity of the move is failed
@@ -377,38 +447,76 @@ class QualityCheck(models.Model):
             if not check._can_move_line_to_failure_location():
                 continue
             failed_qty = failed_qty or check.move_line_id.quantity
-            old_move_line = check.move_line_id
-            dest_location = failure_location_id or old_move_line.location_dest_id.id
-            if failure_location_id:
-                check.failure_location_id = failure_location_id
+            move_line = check.move_line_id
+            move = move_line.move_id
+            dest_location = failure_location_id or move_line.location_dest_id.id
             # switch to mts if the failure location is not the same as the final destination location
-            if old_move_line.move_id.move_dest_ids.location_id.id != dest_location:
-                old_move_line.move_id.move_dest_ids._break_mto_link(old_move_line.move_id)
-            if failed_qty == check.move_line_id.quantity:
-                old_move_line.location_dest_id = dest_location
+            if move_line.move_id.move_dest_ids.location_id.id != dest_location:
+                move_line.move_id.move_dest_ids._break_mto_link(move_line.move_id)
+            if failed_qty == move_line.quantity:
+                move_line.location_dest_id = dest_location
+                if move_line.quantity == move.quantity:
+                    move.location_dest_id = dest_location
+                else:
+                    move.with_context(do_not_unreserve=True).product_uom_qty -= failed_qty
+                    move.copy({
+                        'location_dest_id': dest_location,
+                        'move_orig_ids': move.move_orig_ids,
+                        'product_uom_qty': failed_qty,
+                        'state': 'assigned',
+                        'move_line_ids': [Command.link(move_line.id)],
+                    })
+                check.failure_location_id = dest_location
                 return
-            old_move_line.quantity -= failed_qty
-            failed_move_line = old_move_line.with_context(default_check_ids=None, no_checks=True).copy({
+            move.with_context(do_not_unreserve=True).product_uom_qty -= min(failed_qty, move_line.quantity)
+            move_line.quantity -= min(failed_qty, move_line.quantity)
+            failed_move_line = move_line.with_context(default_check_ids=None, no_checks=True).copy({
                 'location_dest_id': dest_location,
                 'quantity': failed_qty,
+            })
+            move.copy({
+                'location_dest_id': dest_location,
+                'move_orig_ids': move.move_orig_ids,
+                'product_uom_qty': min(failed_qty, move_line.quantity),
+                'state': 'assigned',
+                'move_line_ids': [Command.link(failed_move_line.id)],
             })
             # switch the checks, check in self should always be the failed one,
             # new check linked to original move line will be passed check
             new_check = self.create(failed_move_line._get_check_values(check.point_id))
             check.move_line_id = failed_move_line
-            new_check.move_line_id = old_move_line
+            check.failure_location_id = dest_location
+            new_check.move_line_id = move_line
+            new_check.qty_tested = 0
             new_check.do_pass()
 
     def _get_check_action_name(self):
         self.ensure_one()
         action_name = self.title or "Quality Check"
         if self.product_id:
-            action_name += ' : %s' % self.product_id.name
+            action_name += ' : %s' % self.product_id.display_name
         if self.qty_line and self.uom_id:
             action_name += ' - %s %s' % (self.qty_line, self.uom_id.name)
         if self.lot_name or self.lot_line_id:
             action_name += ' - %s' % (self.lot_name or self.lot_line_id.name)
         return action_name
+
+    def _is_to_do(self, checkable_products, check_picked=False):
+        self.ensure_one()
+        if self.quality_state != 'none':
+            return False
+        if self.measure_on != 'operation':
+            if self.product_id not in checkable_products:
+                return False
+            if self.move_line_id:
+                if not self.move_line_id._is_checkable(check_picked):
+                    return False
+        # Only process qc related to tracked product if its lot is set
+        if self.move_line_id and self.product_id.tracking in ["serial", "lot"]:
+            if self.move_line_id.picking_type_use_create_lots or self.move_line_id.picking_type_use_existing_lots:
+                if not self.move_line_id.lot_id and not self.move_line_id.lot_name:
+                    return False
+        return True
 
 
 class QualityAlert(models.Model):
@@ -532,21 +640,19 @@ class ProductProduct(models.Model):
 
         query = self.env['quality.point']._where_calc([('company_id', '=', self.env.company.id)])
         self.env['quality.point']._apply_ir_rules(query, 'read')
-        _, where_clause, where_clause_args = query.get_sql()
-        additional_where_clause = self._additional_quality_point_where_clause()
-        where_clause += additional_where_clause
-        parent_category_ids = [int(parent_id) for parent_id in self.categ_id.parent_path.split('/')[:-1]] if self.categ_id else []
 
-        self.env.cr.execute("""
-            SELECT COUNT(*)
-                FROM quality_point
-                WHERE %s
-                AND (
+        additional_where_clause = self._additional_quality_point_where_clause()
+        if additional_where_clause:
+            query.add_where(additional_where_clause)
+
+        parent_category_ids = [int(parent_id) for parent_id in self.categ_id.parent_path.split('/')[:-1]] if self.categ_id else []
+        query.add_where(SQL(
+            """(
                     (
                         -- QP has at least one linked product and one is right
-                        EXISTS (SELECT 1 FROM product_product_quality_point_rel rel WHERE rel.quality_point_id = quality_point.id AND rel.product_product_id = ANY(%%s))
+                        EXISTS (SELECT 1 FROM product_product_quality_point_rel rel WHERE rel.quality_point_id = quality_point.id AND rel.product_product_id = ANY(%s))
                         -- Or QP has at least one linked product category and one is right
-                        OR EXISTS (SELECT 1 FROM product_category_quality_point_rel rel WHERE rel.quality_point_id = quality_point.id AND rel.product_category_id = ANY(%%s))
+                        OR EXISTS (SELECT 1 FROM product_category_quality_point_rel rel WHERE rel.quality_point_id = quality_point.id AND rel.product_category_id = ANY(%s))
                     )
                     OR (
                         -- QP has no linked products
@@ -555,9 +661,11 @@ class ProductProduct(models.Model):
                         AND NOT EXISTS (SELECT 1 FROM product_category_quality_point_rel rel WHERE rel.quality_point_id = quality_point.id)
                     )
                 )
-        """ % (where_clause,), where_clause_args + [self.ids, parent_category_ids]
-        )
-        return self.env.cr.fetchone()[0]
+            """,
+            self.ids, parent_category_ids,
+        ))
+        rows = self.env.execute_query(query.select("COUNT(*)"))
+        return rows[0][0]
 
     def action_see_quality_control_points(self):
         self.ensure_one()
@@ -582,5 +690,5 @@ class ProductProduct(models.Model):
         ]
         return action
 
-    def _additional_quality_point_where_clause(self):
-        return ""
+    def _additional_quality_point_where_clause(self) -> SQL:
+        return SQL()

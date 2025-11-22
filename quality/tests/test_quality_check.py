@@ -12,11 +12,9 @@ class TestQualityCheck(TransactionCase):
         """
         product_a = self.env['product.product'].create({
             'name': 'product a',
-            'type': 'product'
         })
         product_b = self.env['product.product'].create({
             'name': 'product b',
-            'type': 'product'
         })
         qp_product_a = self.env['quality.point'].create({
             'product_ids': [(4, product_a.id)],

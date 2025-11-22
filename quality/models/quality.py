@@ -5,7 +5,7 @@ import ast
 
 from datetime import datetime
 
-from odoo import api, fields, models, _, SUPERUSER_ID
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 from odoo.osv.expression import OR
 
@@ -15,7 +15,7 @@ class TestType(models.Model):
     _description = "Quality Control Test Type"
 
     # Used instead of selection field in order to hide a choice depending on the view.
-    name = fields.Char('Name', required=True)
+    name = fields.Char('Name', required=True, translate=True)
     technical_name = fields.Char('Technical name', required=True)
     active = fields.Boolean('active', default=True)
 
@@ -46,23 +46,25 @@ class QualityPoint(models.Model):
     product_ids = fields.Many2many(
         'product.product', string='Products',
         check_company=True,
-        domain="[('type', 'in', ('product', 'consu'))]",
+        domain="[('type', '=', 'consu')]",
         help="Quality Point will apply to every selected Products.")
     product_category_ids = fields.Many2many(
         'product.category', string='Product Categories',
         help="Quality Point will apply to every Products in the selected Product Categories.")
 
     picking_type_ids = fields.Many2many(
-        'stock.picking.type', string='Operation Types', required=True, check_company=True, domain="[('code', '!=', 'repair_operation')]")
+        'stock.picking.type', string='Operation Types', required=True, check_company=True)
     company_id = fields.Many2one(
         'res.company', string='Company', required=True, index=True,
         default=lambda self: self.env.company)
-    user_id = fields.Many2one('res.users', 'Responsible')
+    user_id = fields.Many2one('res.users', 'Responsible',
+        domain=lambda self: [('groups_id', 'in', self.env.ref("quality.group_quality_user").id), ('share', '=', False)],
+        check_company=True)
     active = fields.Boolean(default=True)
     check_count = fields.Integer(compute="_compute_check_count")
     check_ids = fields.One2many('quality.check', 'point_id')
     test_type_id = fields.Many2one('quality.point.test_type', 'Test Type', help="Defines the type of the quality control point.",
-                                   required=True, default=_get_default_test_type_id)
+                                   required=True, default=_get_default_test_type_id, tracking=True)
     test_type = fields.Char(related='test_type_id.technical_name', readonly=True)
     note = fields.Html('Note')
     reason = fields.Html('Cause')
@@ -181,7 +183,7 @@ class QualityCheck(models.Model):
     control_date = fields.Datetime('Control Date', tracking=True, copy=False)
     product_id = fields.Many2one(
         'product.product', 'Product', check_company=True,
-        domain="[('type', 'in', ['consu', 'product'])]")
+        domain="[('type', '=', 'consu')]")
     picking_id = fields.Many2one('stock.picking', 'Picking', check_company=True)
     partner_id = fields.Many2one(
         related='picking_id.partner_id', string='Partner')
@@ -305,7 +307,7 @@ class QualityAlert(models.Model):
     check_id = fields.Many2one('quality.check', 'Check', check_company=True)
     product_tmpl_id = fields.Many2one(
         'product.template', 'Product', check_company=True,
-        domain="[('type', 'in', ['consu', 'product'])]")
+        domain="[('type', '=', 'consu')]")
     product_id = fields.Many2one(
         'product.product', 'Product Variant',
         domain="[('product_tmpl_id', '=', product_tmpl_id)]")
@@ -342,7 +344,7 @@ class QualityAlert(models.Model):
             self.company_id = self.team_id.company_id or self.env.company
 
     @api.model
-    def _read_group_stage_ids(self, stages, domain, order):
+    def _read_group_stage_ids(self, stages, domain):
         """ Only shows the stage related to the current team.
         """
         team_id = self.env.context.get('default_team_id')
@@ -356,5 +358,5 @@ class QualityAlert(models.Model):
             # if enter here, means we won't get any team_id and stage_id to search
             # so search stage without team_ids instead
             domain = [('team_ids', '=', False)]
-        stage_ids = stages._search(domain, order=order, access_rights_uid=SUPERUSER_ID)
+        stage_ids = stages.sudo()._search(domain, order=stages._order)
         return stages.browse(stage_ids)

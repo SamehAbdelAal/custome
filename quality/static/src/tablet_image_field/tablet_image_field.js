@@ -6,11 +6,18 @@ import { useService } from "@web/core/utils/hooks";
 import { ImageField, imageField } from '@web/views/fields/image/image_field';
 import { Component } from "@odoo/owl";
 
-class ImagePreviewDialog extends Component {}
-ImagePreviewDialog.components = { Dialog };
-ImagePreviewDialog.template = "quality.ImagePreviewDialog";
+class ImagePreviewDialog extends Component {
+    static components = { Dialog };
+    static template = "quality.ImagePreviewDialog";
+    static props = {
+        src: String,
+        close: Function,
+    };
+}
 
 export class TabletImageField extends ImageField {
+    static template = "quality.TabletImageField";
+
     setup() {
         super.setup();
         this.dialog = useService("dialog");
@@ -22,8 +29,6 @@ export class TabletImageField extends ImageField {
         });
     }
 }
-
-TabletImageField.template = "quality.TabletImageField";
 
 export const tabletImageField = {
     ...imageField,
