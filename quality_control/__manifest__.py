@@ -36,7 +36,7 @@ Quality Control
         'data/quality_control_demo.xml',
     ],
     'application': True,
-    'license': 'OEEL-1',
+    'license': 'LGPL-3',
     'assets': {
         'web.assets_backend': [
             'quality_control/static/src/**/*',

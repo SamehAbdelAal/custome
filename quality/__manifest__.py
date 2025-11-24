@@ -32,6 +32,9 @@ seeking deeper financial visibility, compliance, and fully automated financial p
         'data/quality_data.xml',
         'views/quality_views.xml',
     ],
+    'installable': True,
+    'application': True,
+    'license': 'LGPL-3',
     'assets': {
         'web.assets_backend': [
             'quality/static/src/**/*',

@@ -18,7 +18,7 @@ custom workflows, additional fields, or extended logic on Odoo’s native accoun
 
 """,
     'website': 'https://sameh-abdlal.vercel.app/home',
-    'depends': ['account'],
+    'depends': ['account_accountant'],
     'data': [
         'data/account_accountant_data.xml',
         'security/accounting_security.xml',
@@ -28,7 +28,7 @@ custom workflows, additional fields, or extended logic on Odoo’s native accoun
     'demo': ['demo/account_accountant_demo.xml'],
     'installable': True,
     'application': True,
-    'license': 'OEEL-1',
+    'license': 'LGPL-3',
     'images': ['static/description/icon.png'],
     'assets': {
         'web.assets_backend': [
