@@ -228,7 +228,7 @@
                                                     <t t-if="valuelist[0]['debit']"
                                                        t-esc="total[partner]['currency_id']"/>
                                                     <t t-if="valuelist[0]['debit']"
-                                                       t-esc="valuelist[0]['debit_display']"/>
+                                                       t-esc="'{:,.2f}'.format(valuelist[0]['debit'])"/>
                                                 </span>
                                             </th>
                                             <th style="width:10%">
@@ -236,7 +236,7 @@
                                                     <t t-if="valuelist[0]['credit']"
                                                        t-esc="total[partner]['currency_id']"/>
                                                     <t t-if="valuelist[0]['credit']"
-                                                       t-esc="valuelist[0]['credit_display']"/>
+                                                       t-esc="'{:,.2f}'.format(valuelist[0]['credit'])"/>
                                                 </span>
                                             </th>
                                             <th style="width:10%">
@@ -244,7 +244,7 @@
                                                     <t t-if="valuelist[0]['amount_currency']"
                                                        t-esc="total[partner]['currency_id']"/>
                                                     <t t-if="valuelist[0]['amount_currency']"
-                                                       t-esc="valuelist[0]['amount_currency_display']"/>
+                                                       t-esc="'{:,.2f}'.format(valuelist[0]['amount_currency'])"/>
                                                 </span>
                                             </th>
                                             <th style="width:10%"/>
