@@ -182,40 +182,40 @@
                                                       title="Partners"
                                                       role="img"/>
                                                 Partner
+                                                <t t-if="state.selected_partner.length > 0">
+                                                    (<t t-esc="state.selected_partner.length"/>)
+                                                </t>
                                             </span>
                                         </div>
-                                        <t t-if="state.selected_partner.length > 0">:
-                                            <t t-foreach="state.selected_partner"
-                                               t-as="Partner_key"
-                                               t-key="Partner_key_index">
-                                                <t t-foreach="state.all_partners"
-                                                   t-as="Partner"
-                                                   t-key="Partner_index">
-                                                    <t t-if="Partner['id'] == Partner_key">
-                                                        <span>
-                                                            <t t-esc="Partner['name']"/>
-                                                        </span>
-                                                    </t>
-                                                </t>
-                                                <t t-if="Partner_key_index != state.selected_partner.length - 1">
-                                                    ,
-                                                </t>
-                                            </t>
-                                        </t>
                                     </a>
-                                    <div class="dropdown-menu" role="menu" style="max-height: 300px; overflow-y: auto;">
+                                    <div class="dropdown-menu" role="menu" style="min-width: 280px; max-height: 400px; overflow-y: auto;">
                                         <div class="list-group">
+                                            <!-- Select All / Clear All buttons -->
+                                            <div class="d-flex justify-content-between p-2 border-bottom">
+                                                <button class="btn btn-sm btn-primary"
+                                                        type="button"
+                                                        t-on-click="selectAllPartners">
+                                                    <i class="fa fa-check-square-o"/> Select All
+                                                </button>
+                                                <button class="btn btn-sm btn-secondary"
+                                                        type="button"
+                                                        t-on-click="clearAllPartners">
+                                                    <i class="fa fa-square-o"/> Clear All
+                                                </button>
+                                            </div>
+                                            <!-- Partner list -->
                                             <t t-if="state.all_partners">
                                                 <t t-foreach="state.all_partners"
                                                    t-as="partner"
                                                    t-key="partner.id">
-                                                    <button class="report-filter-button"
+                                                    <button class="report-filter-button d-flex align-items-center justify-content-between"
                                                             t-att-data-value="'partner'"
                                                             t-att-data-id="partner.id"
                                                             type="button"
                                                             data-bs-auto-close="outside"
                                                             t-on-click="applyFilter">
-                                                        <t t-esc="partner.name"/>
+                                                        <span><t t-esc="partner.name"/></span>
+                                                        <i t-att-class="state.selected_partner.includes(partner.id) ? 'fa fa-check text-success' : 'fa fa-plus text-muted'"/>
                                                     </button>
                                                 </t>
                                             </t>
@@ -223,6 +223,28 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- Selected Partners Display -->
+                            <t t-if="state.selected_partner.length > 0">
+                                <div class="px-2 d-flex flex-wrap align-items-center" style="max-width: 400px;">
+                                    <t t-foreach="state.selected_partner"
+                                       t-as="Partner_key"
+                                       t-key="Partner_key_index">
+                                        <t t-foreach="state.all_partners"
+                                           t-as="Partner"
+                                           t-key="'chip_' + Partner_index">
+                                            <t t-if="Partner['id'] == Partner_key">
+                                                <span class="badge bg-primary m-1 d-flex align-items-center" style="font-size: 11px; color: white;">
+                                                    <t t-esc="Partner['name']"/>
+                                                    <i class="fa fa-times ms-1"
+                                                       style="cursor: pointer; color: white;"
+                                                       t-att-data-id="Partner['id']"
+                                                       t-on-click="removePartner"/>
+                                                </span>
+                                            </t>
+                                        </t>
+                                    </t>
+                                </div>
+                            </t>
                             <!-- Options Dropdown -->
                             <div class="px-2">
                                 <div class="option" style="">

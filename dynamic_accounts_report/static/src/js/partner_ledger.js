@@ -300,6 +300,8 @@ class PartnerLedger extends Component {
             }
         }
         else {
+            // Guard: check if data-value attribute exists
+            const dataValue = val.target.attributes["data-value"] ? val.target.attributes["data-value"].value : null;
             if (val.target.name === 'start_date') {
                 this.state.date_range = {
                     ...this.state.date_range,
@@ -310,19 +312,22 @@ class PartnerLedger extends Component {
                     ...this.state.date_range,
                     end_date: val.target.value
                 };
-            } else if (val.target.attributes["data-value"].value == 'month') {
-                this.state.date_range = val.target.attributes["data-value"].value
-            } else if (val.target.attributes["data-value"].value == 'year') {
-                this.state.date_range = val.target.attributes["data-value"].value
-            } else if (val.target.attributes["data-value"].value == 'quarter') {
-                this.state.date_range = val.target.attributes["data-value"].value
-            } else if (val.target.attributes["data-value"].value == 'last-month') {
-                this.state.date_range = val.target.attributes["data-value"].value
-            } else if (val.target.attributes["data-value"].value == 'last-year') {
-                this.state.date_range = val.target.attributes["data-value"].value
-            } else if (val.target.attributes["data-value"].value == 'last-quarter') {
-                this.state.date_range = val.target.attributes["data-value"].value
-            } else if (val.target.attributes["data-value"].value === 'receivable') {
+            } else if (!dataValue) {
+                // No data-value attribute, skip processing
+                return;
+            } else if (dataValue == 'month') {
+                this.state.date_range = dataValue
+            } else if (dataValue == 'year') {
+                this.state.date_range = dataValue
+            } else if (dataValue == 'quarter') {
+                this.state.date_range = dataValue
+            } else if (dataValue == 'last-month') {
+                this.state.date_range = dataValue
+            } else if (dataValue == 'last-year') {
+                this.state.date_range = dataValue
+            } else if (dataValue == 'last-quarter') {
+                this.state.date_range = dataValue
+            } else if (dataValue === 'receivable') {
                 // Check if the target has 'selected-filter' class
                 if (val.target.classList.contains("selected-filter")) {
                     // Remove 'receivable' key from account
@@ -337,7 +342,7 @@ class PartnerLedger extends Component {
                     };
                     val.target.classList.add("selected-filter"); // Add class "selected-filter"
                 }
-            } else if (val.target.attributes["data-value"].value === 'payable') {
+            } else if (dataValue === 'payable') {
                 // Check if the target has 'selected-filter' class
                 if (val.target.classList.contains("selected-filter")) {
                     // Remove 'receivable' key from account
@@ -352,7 +357,7 @@ class PartnerLedger extends Component {
                     };
                     val.target.classList.add("selected-filter"); // Add class "selected-filter"
                 }
-            } else if (val.target.attributes["data-value"].value === 'draft') {
+            } else if (dataValue === 'draft') {
                 // Check if the target has 'selected-filter' class
                 if (val.target.classList.contains("selected-filter")) {
                     // Remove 'receivable' key from account
@@ -367,7 +372,7 @@ class PartnerLedger extends Component {
                     };
                     val.target.classList.add("selected-filter"); // Add class "selected-filter"
                 }
-            } else if (val.target.attributes["data-value"].value == 'partner') {
+            } else if (dataValue == 'partner') {
                 if (!val.target.classList.contains("selected-filter")) {
                     this.state.selected_partner.push(parseInt(val.target.attributes["data-id"].value, 10))
                     val.target.classList.add("selected-filter");
@@ -439,6 +444,85 @@ class PartnerLedger extends Component {
                   this.tbody.el.children[length].classList.remove('show')
             }
             ev.target.classList.remove("selected-filter");
+        }
+    }
+    async selectAllPartners() {
+        /**
+         * Selects all partners and applies the filter.
+         */
+        if (this.state.all_partners) {
+            this.state.selected_partner = this.state.all_partners.map(p => p.id);
+            await this._refreshPartnerData();
+        }
+    }
+    async clearAllPartners() {
+        /**
+         * Clears all selected partners and applies the filter.
+         */
+        this.state.selected_partner = [];
+        await this._refreshPartnerData();
+    }
+    async removePartner(ev) {
+        /**
+         * Removes a specific partner from selection.
+         *
+         * @param {Event} ev - The event object triggered by the action.
+         */
+        const partnerId = parseInt(ev.target.attributes["data-id"].value, 10);
+        this.state.selected_partner = this.state.selected_partner.filter(id => id !== partnerId);
+        await this._refreshPartnerData();
+    }
+    async _refreshPartnerData() {
+        /**
+         * Refreshes the partner data based on current selections.
+         */
+        let partner_list = [];
+        let partner_totals = '';
+        let totalDebitSum = 0;
+        let totalCreditSum = 0;
+        this.state.partners = null;
+        this.state.data = null;
+        this.state.total = null;
+        this.state.filter_applied = true;
+
+        let filtered_data = await this.orm.call("account.partner.ledger", "get_filter_values", [this.state.selected_partner, this.state.date_range, this.state.account, this.state.options,]);
+        for (let index in filtered_data) {
+            const value = filtered_data[index];
+            if (index !== 'partner_totals') {
+                partner_list.push(index);
+            } else {
+                partner_totals = value;
+                Object.values(partner_totals).forEach(partner_list => {
+                    totalDebitSum += partner_list.total_debit || 0;
+                    totalCreditSum += partner_list.total_credit || 0;
+                    partner_list.total_debit_display = this.formatNumberWithSeparators(partner_list.total_debit || 0);
+                    partner_list.total_credit_display = this.formatNumberWithSeparators(partner_list.total_credit || 0);
+                    partner_list.balance = this.formatNumberWithSeparators(partner_list.total_debit - partner_list.total_credit || 0);
+                });
+            }
+        }
+        for (const key of partner_list) {
+            for (const line of filtered_data[key]) {
+                if (line.debit !== undefined) {
+                    line.debit_display = this.formatNumberWithSeparators(line.debit || 0);
+                }
+                if (line.credit !== undefined) {
+                    line.credit_display = this.formatNumberWithSeparators(line.credit || 0);
+                }
+                if (line.balance !== undefined) {
+                    line.balance_display = this.formatNumberWithSeparators(line.balance || 0);
+                }
+            }
+        }
+        this.state.partners = partner_list;
+        this.state.data = filtered_data;
+        this.state.total = partner_totals;
+        this.state.total_debit = totalDebitSum;
+        this.state.total_debit_display = this.formatNumberWithSeparators(totalDebitSum);
+        this.state.total_credit = totalCreditSum;
+        this.state.total_credit_display = this.formatNumberWithSeparators(totalCreditSum);
+        if (this.unfoldButton.el && this.unfoldButton.el.classList.contains("selected-filter")) {
+            this.unfoldButton.el.classList.remove("selected-filter");
         }
     }
 }
