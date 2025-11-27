@@ -117,20 +117,20 @@
                                         <th style="width:10% border:0px solid transparent;">
                                             <strong>
                                                 <span>
-                                                    <t t-if="total[move_line]['total_debit']"
-                                                       t-esc="total[move_line]['currency_id']"/>
-                                                    <t t-if="total[move_line]['total_debit']"
-                                                       t-esc="total[move_line]['total_debit_display']"/>
+                                                    <t t-if="total[move_line].get('total_debit')"
+                                                       t-esc="total[move_line].get('currency_id', '')"/>
+                                                    <t t-if="total[move_line].get('total_debit')"
+                                                       t-esc="total[move_line].get('total_debit_display', total[move_line].get('total_debit', 0))"/>
                                                 </span>
                                             </strong>
                                         </th>
                                         <th style="width:10% border:0px solid transparent;">
                                             <strong>
                                                 <span>
-                                                    <t t-if="total[move_line]['total_credit']"
-                                                       t-esc="total[move_line]['currency_id']"/>
-                                                    <t t-if="total[move_line]['total_credit']"
-                                                       t-esc="total[move_line]['total_credit_display']"/>
+                                                    <t t-if="total[move_line].get('total_credit')"
+                                                       t-esc="total[move_line].get('currency_id', '')"/>
+                                                    <t t-if="total[move_line].get('total_credit')"
+                                                       t-esc="total[move_line].get('total_credit_display', total[move_line].get('total_credit', 0))"/>
                                                 </span>
                                             </strong>
                                         </th>
@@ -184,18 +184,18 @@
                                             </th>
                                             <th>
                                                 <span>
-                                                    <t t-if="valuelist['debit']"
-                                                       t-esc="total[move_line]['currency_id']"/>
-                                                    <t t-if="valuelist['debit']"
-                                                       t-esc="valuelist['debit_display']"/>
+                                                    <t t-if="valuelist.get('debit')"
+                                                       t-esc="total[move_line].get('currency_id', '')"/>
+                                                    <t t-if="valuelist.get('debit')"
+                                                       t-esc="valuelist.get('debit_display', valuelist.get('debit', 0))"/>
                                                 </span>
                                             </th>
                                             <th style="width:10%">
                                                 <span>
-                                                    <t t-if="valuelist['credit']"
-                                                       t-esc="total[move_line]['currency_id']"/>
-                                                    <t t-if="valuelist['credit']"
-                                                       t-esc="valuelist['credit_display']"/>
+                                                    <t t-if="valuelist.get('credit')"
+                                                       t-esc="total[move_line].get('currency_id', '')"/>
+                                                    <t t-if="valuelist.get('credit')"
+                                                       t-esc="valuelist.get('credit_display', valuelist.get('credit', 0))"/>
                                                 </span>
                                             </th>
                                             <th style="width:10%"/>
@@ -210,16 +210,16 @@
                             <tr>
                                 <th style="width:60%;">Total</th>
                                 <th style="width:10%">
-                                    <t t-out="grand_total['currency']"/>
-                                    <t t-out="grand_total['total_debit_display']"/>
+                                    <t t-out="grand_total.get('currency', '')"/>
+                                    <t t-out="grand_total.get('total_debit_display', grand_total.get('total_debit', 0))"/>
                                 </th>
                                 <th style="width:10%">
-                                    <t t-out="grand_total['currency']"/>
-                                    <t t-out="grand_total['total_credit_display']"/>
+                                    <t t-out="grand_total.get('currency', '')"/>
+                                    <t t-out="grand_total.get('total_credit_display', grand_total.get('total_credit', 0))"/>
                                 </th>
                                 <th style="width:10%">
-                                    <t t-out="grand_total['currency']"/>
-                                    <t t-out="float(grand_total['total_debit']) - float(grand_total['total_credit'])"/>
+                                    <t t-out="grand_total.get('currency', '')"/>
+                                    <t t-out="float(grand_total.get('total_debit', 0)) - float(grand_total.get('total_credit', 0))"/>
                                 </th>
                             </tr>
                         </tbody>

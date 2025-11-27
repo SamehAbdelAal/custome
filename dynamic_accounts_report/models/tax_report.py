@@ -621,7 +621,8 @@ class TaxReport(models.TransientModel):
         :param response: Response object to stream the generated report.
         :param str report_name: Name of the financial report.
         """
-        data = json.loads(data)
+        if isinstance(data, str):
+            data = json.loads(data)
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         sheet = workbook.add_worksheet()

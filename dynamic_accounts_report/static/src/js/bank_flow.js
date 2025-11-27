@@ -345,6 +345,22 @@ class BankBook extends Component {
                 for (const moveLine of Object.values(move_line_totals)) {
                     totalDebitSum += moveLine.total_debit || 0;
                     totalCreditSum += moveLine.total_credit || 0;
+                    moveLine.total_debit_display = this.formatNumberWithSeparators(moveLine.total_debit || 0);
+                    moveLine.total_credit_display = this.formatNumberWithSeparators(moveLine.total_credit || 0);
+                    moveLine.balance = this.formatNumberWithSeparators(moveLine.total_debit - moveLine.total_credit || 0);
+                }
+            }
+        }
+        for (const key of move_line_list) {
+            for (const line of filtered_data[key]) {
+                if (line.debit !== undefined) {
+                    line.debit_display = this.formatNumberWithSeparators(line.debit || 0);
+                }
+                if (line.credit !== undefined) {
+                    line.credit_display = this.formatNumberWithSeparators(line.credit || 0);
+                }
+                if (line.balance !== undefined) {
+                    line.balance_display = this.formatNumberWithSeparators(line.balance || 0);
                 }
             }
         }
@@ -352,7 +368,9 @@ class BankBook extends Component {
         this.state.data = filtered_data
         this.state.total = move_line_totals
         this.state.total_debit = totalDebitSum.toFixed(2)
+        this.state.total_debit_display = this.formatNumberWithSeparators(this.state.total_debit)
         this.state.total_credit = totalCreditSum.toFixed(2)
+        this.state.total_credit_display = this.formatNumberWithSeparators(this.state.total_credit)
         if (this.unfoldButton.el.classList.contains("selected-filter")) {
               this.unfoldButton.el.classList.remove("selected-filter");
         }

@@ -190,7 +190,8 @@ class BankBookReport(models.TransientModel):
         :type report_name: str
         :return: None
         """
-        data = json.loads(data)
+        if isinstance(data, str):
+            data = json.loads(data)
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         start_date = data['filters']['start_date'] if \

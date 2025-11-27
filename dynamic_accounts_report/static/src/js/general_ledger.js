@@ -312,14 +312,32 @@ class GeneralLedger extends Component {
                 Object.values(account_totals).forEach(account_list => {
                         totalDebitSum += account_list.total_debit || 0;
                         totalCreditSum += account_list.total_credit || 0;
+                        account_list.total_debit_display = this.formatNumberWithSeparators(account_list.total_debit || 0);
+                        account_list.total_credit_display = this.formatNumberWithSeparators(account_list.total_credit || 0);
+                        account_list.balance = this.formatNumberWithSeparators(account_list.total_debit - account_list.total_credit || 0);
                     });
+            }
+        }
+        for (const key of account_list) {
+            for (const line of filtered_data[key]) {
+                if (line.debit !== undefined) {
+                    line.debit_display = this.formatNumberWithSeparators(line.debit || 0);
+                }
+                if (line.credit !== undefined) {
+                    line.credit_display = this.formatNumberWithSeparators(line.credit || 0);
+                }
+                if (line.balance !== undefined) {
+                    line.balance_display = this.formatNumberWithSeparators(line.balance || 0);
+                }
             }
         }
         this.state.account = account_list
         this.state.account_data = filtered_data
         this.state.account_total = account_totals
         this.state.total_debit = totalDebitSum.toFixed(2)
+        this.state.total_debit_display = this.formatNumberWithSeparators(this.state.total_debit)
         this.state.total_credit = totalCreditSum.toFixed(2)
+        this.state.total_credit_display = this.formatNumberWithSeparators(this.state.total_credit)
         if (this.unfoldButton.el.classList.contains("selected-filter")) {
             this.unfoldButton.el.classList.remove("selected-filter");
         }

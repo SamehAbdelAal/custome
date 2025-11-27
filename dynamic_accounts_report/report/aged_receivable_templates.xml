@@ -242,32 +242,32 @@
                             <tr>
                                 <th style="width:60%;">Total</th>
                                 <th style="width:10%">
-                                    <t t-out="grand_total['currency']"/>
-                                    <t t-out="grand_total['diff0_sum_display']"/>
+                                    <t t-out="grand_total.get('currency', '')"/>
+                                    <t t-out="grand_total.get('diff0_sum_display', grand_total.get('diff0_sum', 0))"/>
                                 </th>
                                 <th style="width:10%">
-                                    <t t-out="grand_total['currency']"/>
-                                    <t t-out="grand_total['diff1_sum_display']"/>
+                                    <t t-out="grand_total.get('currency', '')"/>
+                                    <t t-out="grand_total.get('diff1_sum_display', grand_total.get('diff1_sum', 0))"/>
                                 </th>
                                 <th style="width:10%">
-                                    <t t-out="grand_total['currency']"/>
-                                    <t t-out="grand_total['diff2_sum_display']"/>
+                                    <t t-out="grand_total.get('currency', '')"/>
+                                    <t t-out="grand_total.get('diff2_sum_display', grand_total.get('diff2_sum', 0))"/>
                                 </th>
                                 <th style="width:10%">
-                                    <t t-out="grand_total['currency']"/>
-                                    <t t-out="grand_total['diff3_sum_display']"/>
+                                    <t t-out="grand_total.get('currency', '')"/>
+                                    <t t-out="grand_total.get('diff3_sum_display', grand_total.get('diff3_sum', 0))"/>
                                 </th>
                                 <th style="width:10%">
-                                    <t t-out="grand_total['currency']"/>
-                                    <t t-out="grand_total['diff4_sum_display']"/>
+                                    <t t-out="grand_total.get('currency', '')"/>
+                                    <t t-out="grand_total.get('diff4_sum_display', grand_total.get('diff4_sum', 0))"/>
                                 </th>
                                 <th style="width:10%">
-                                    <t t-out="grand_total['currency']"/>
-                                    <t t-out="grand_total['diff5_sum_display']"/>
+                                    <t t-out="grand_total.get('currency', '')"/>
+                                    <t t-out="grand_total.get('diff5_sum_display', grand_total.get('diff5_sum', 0))"/>
                                 </th>
                                 <th style="width:10%">
-                                    <t t-out="grand_total['currency']"/>
-                                    <t t-out="grand_total['total_debit_display']"/>
+                                    <t t-out="grand_total.get('currency', '')"/>
+                                    <t t-out="grand_total.get('total_debit_display', grand_total.get('total_debit', 0))"/>
                                 </th>
                             </tr>
                         </tbody>

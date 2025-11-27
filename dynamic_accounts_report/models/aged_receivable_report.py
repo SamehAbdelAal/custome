@@ -206,7 +206,8 @@ class AgeReceivableReport(models.TransientModel):
 
         :return: None
         """
-        data = json.loads(data)
+        if isinstance(data, str):
+            data = json.loads(data)
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         end_date = data['filters']['end_date'] if \

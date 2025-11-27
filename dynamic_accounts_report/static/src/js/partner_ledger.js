@@ -378,14 +378,32 @@ class PartnerLedger extends Component {
                 Object.values(partner_totals).forEach(partner_list => {
                         totalDebitSum += partner_list.total_debit || 0;
                         totalCreditSum += partner_list.total_credit || 0;
+                        partner_list.total_debit_display = this.formatNumberWithSeparators(partner_list.total_debit || 0);
+                        partner_list.total_credit_display = this.formatNumberWithSeparators(partner_list.total_credit || 0);
+                        partner_list.balance = this.formatNumberWithSeparators(partner_list.total_debit - partner_list.total_credit || 0);
                     });
+            }
+        }
+        for (const key of partner_list) {
+            for (const line of filtered_data[key]) {
+                if (line.debit !== undefined) {
+                    line.debit_display = this.formatNumberWithSeparators(line.debit || 0);
+                }
+                if (line.credit !== undefined) {
+                    line.credit_display = this.formatNumberWithSeparators(line.credit || 0);
+                }
+                if (line.balance !== undefined) {
+                    line.balance_display = this.formatNumberWithSeparators(line.balance || 0);
+                }
             }
         }
         this.state.partners = partner_list
         this.state.data = filtered_data
         this.state.total = partner_totals
         this.state.total_debit = totalDebitSum
+        this.state.total_debit_display = this.formatNumberWithSeparators(totalDebitSum)
         this.state.total_credit = totalCreditSum
+        this.state.total_credit_display = this.formatNumberWithSeparators(totalCreditSum)
         if (this.unfoldButton.el.classList.contains("selected-filter")) {
             this.unfoldButton.el.classList.remove("selected-filter");
         }

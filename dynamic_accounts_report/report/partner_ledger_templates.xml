@@ -259,18 +259,18 @@
                             <tr>
                                 <th style="width:60%;">Total</th>
                                 <th style="width:10%">
-                                    <t t-out="grand_total['currency']"/>
-                                    <t t-out="grand_total['total_debit_display']"/>
+                                    <t t-out="grand_total.get('currency', '')"/>
+                                    <t t-out="grand_total.get('total_debit_display', grand_total.get('total_debit', 0))"/>
                                 </th>
                                 <th style="width:10%">
-                                    <t t-out="grand_total['currency']"/>
-                                    <t t-out="grand_total['total_credit_display']"/>
+                                    <t t-out="grand_total.get('currency', '')"/>
+                                    <t t-out="grand_total.get('total_credit_display', grand_total.get('total_credit', 0))"/>
                                 </th>
                                 <th style="width:10%"/>
                                 <th style="width:10%">
-                                    <t t-out="grand_total['currency']"/>
-                                    <t t-if="grand_total['total_debit'] and grand_total['total_credit']">
-                                    <t t-out="grand_total['total_debit'] - grand_total['total_credit']"/>
+                                    <t t-out="grand_total.get('currency', '')"/>
+                                    <t t-if="grand_total.get('total_debit') and grand_total.get('total_credit')">
+                                    <t t-out="grand_total.get('total_debit', 0) - grand_total.get('total_credit', 0)"/>
                                     </t>
                                 </th>
                             </tr>

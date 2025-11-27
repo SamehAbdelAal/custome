@@ -212,7 +212,8 @@ class AccountGeneralLedger(models.TransientModel):
         :param report_name: The name of the report.
         :type report_name: str
         """
-        data = json.loads(data)
+        if isinstance(data, str):
+            data = json.loads(data)
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         start_date = data['filters']['start_date'] if \

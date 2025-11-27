@@ -338,7 +338,8 @@ class AccountTrialBalance(models.TransientModel):
         :param response: Response object to stream the generated report.
         :param str report_name: Name of the financial report.
         """
-        data = json.loads(data)
+        if isinstance(data, str):
+            data = json.loads(data)
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         start_date = data['filters']['start_date'] if \
