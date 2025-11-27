@@ -209,6 +209,56 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="partner" style="">
+                                <a type="button" class="dropdown-toggle"
+                                   data-bs-toggle="dropdown"
+                                   style="display:flex;flex-wrap: wrap;align-items: center;justify-content: flex-start;min-width: 105px;">
+                                    <div style="display:content;">
+                                        <span>
+                                            <span class="fa fa-user"
+                                                  title="Partners"
+                                                  role="img"/>
+                                            Partner
+                                        </span>
+                                    </div>
+                                    <t t-if="state.selected_partner_list">:
+                                        <t t-foreach="state.selected_partner_list"
+                                           t-as="Partner_key"
+                                           t-key="Partner_key_index">
+                                            <t t-foreach="state.partners"
+                                               t-as="Partner"
+                                               t-key="Partner_index">
+                                                <t t-if="Partner['id'] == Partner_key">
+                                                    <span>
+                                                        <t t-esc="Partner['name']"/>
+                                                    </span>
+                                                </t>
+                                            </t>
+                                            <t t-if="Partner_key_index != Object.keys(state.selected_partner_list).length - 1">
+                                                ,
+                                            </t>
+                                        </t>
+                                    </t>
+                                </a>
+                                <div class="dropdown-menu" role="menu" style="max-height: 300px; overflow-y: auto;">
+                                    <div class="list-group">
+                                        <t t-if="state.partners">
+                                            <t t-foreach="state.partners"
+                                               t-as="partner"
+                                               t-key="partner.id">
+                                                <button class="report-filter-button"
+                                                        t-att-data-value="'partner'"
+                                                        t-att-data-id="partner.id"
+                                                        type="button"
+                                                        data-bs-auto-close="outside"
+                                                        t-on-click="applyFilter">
+                                                    <t t-esc="partner.name"/>
+                                                </button>
+                                            </t>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="option" style="">
                                 <a type="button" class="dropdown-toggle"
                                    data-bs-toggle="dropdown">

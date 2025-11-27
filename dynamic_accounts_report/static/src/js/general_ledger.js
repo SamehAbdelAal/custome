@@ -26,6 +26,8 @@ class GeneralLedger extends Component {
             selected_journal_list: [],
             analytics: null,
             selected_analytic_list: [],
+            partners: null,
+            selected_partner_list: [],
             title: null,
             filter_applied: null,
             account_list: null,
@@ -58,19 +60,23 @@ class GeneralLedger extends Component {
         var action_title = self.props.action.display_name;
         try {
             var self = this;
-            let filtered_data = await this.orm.call("account.general.ledger", "get_filter_values", [self.state.selected_journal_list, self.state.date_range, self.state.options, self.state.selected_analytic_list,self.state.method]);
+            let filtered_data = await this.orm.call("account.general.ledger", "get_filter_values", [self.state.selected_journal_list, self.state.date_range, self.state.options, self.state.selected_analytic_list,self.state.method, self.state.selected_partner_list]);
             self.state.journals = filtered_data['journal_ids']
             self.state.analytics = filtered_data['analytic_ids']
+            self.state.partners = filtered_data['partner_ids']
             account_totals = filtered_data['account_totals']
             self.state.account_data = await self.orm.call("account.general.ledger", "view_report", [self.wizard_id, action_title,]);
             for (const [index, value] of Object.entries(self.state.account_data)){
-                if (index !== 'account_totals' && index !== 'journal_ids' && index !== 'analytic_ids') {
+                if (index !== 'account_totals' && index !== 'journal_ids' && index !== 'analytic_ids' && index !== 'partner_ids') {
                     account_list.push(index)
                 } else if (index == 'journal_ids') {
                     self.state.journals = value
                 }
                 else if (index == 'analytic_ids') {
                     self.state.analytics = value
+                }
+                else if (index == 'partner_ids') {
+                    self.state.partners = value
                 }
                 else {
                     account_totals = value
@@ -269,6 +275,16 @@ class GeneralLedger extends Component {
                     val.target.classList.remove("selected-filter");
                 }
             }
+            else if (val.target.attributes["data-value"].value == 'partner') {
+                if (!val.target.classList.contains("selected-filter")) {
+                    this.state.selected_partner_list.push(parseInt(val.target.attributes["data-id"].value, 10))
+                    val.target.classList.add("selected-filter");
+                } else {
+                    const updatedList = this.state.selected_partner_list.filter(item => item !== parseInt(val.target.attributes["data-id"].value, 10));
+                    this.state.selected_partner_list = updatedList
+                    val.target.classList.remove("selected-filter");
+                }
+            }
             else if (val.target.attributes["data-value"].value === 'draft') {
                 if (val.target.classList.contains("selected-filter")) {
                     const { draft, ...updatedAccount } = this.state.options;
@@ -301,10 +317,10 @@ class GeneralLedger extends Component {
                 }
             }
         }
-        let filtered_data = await this.orm.call("account.general.ledger", "get_filter_values", [this.state.selected_journal_list, this.state.date_range, this.state.options, this.state.selected_analytic_list,this.state.method]);
+        let filtered_data = await this.orm.call("account.general.ledger", "get_filter_values", [this.state.selected_journal_list, this.state.date_range, this.state.options, this.state.selected_analytic_list,this.state.method, this.state.selected_partner_list]);
         for (let index in filtered_data) {
              const value = filtered_data[index];
-            if (index !== 'account_totals' && index !== 'journal_ids' && index !== 'analytic_ids') {
+            if (index !== 'account_totals' && index !== 'journal_ids' && index !== 'analytic_ids' && index !== 'partner_ids') {
                 account_list.push(index)
             }
             else {
@@ -408,9 +424,15 @@ class GeneralLedger extends Component {
           const analytic = self.state.analytics.find((analytic) => analytic.id === analyticID);
           return analytic ? analytic.name : '';
         });
+        const selectedPartnerIDs = Object.values(self.state.selected_partner_list);
+        const selectedPartnerNames = selectedPartnerIDs.map((partnerID) => {
+          const partner = self.state.partners.find((partner) => partner.id === partnerID);
+          return partner ? partner.name : '';
+        });
         let filters = {
             'journal': selectedJournalNames,
             'analytic': selectedAnalyticNames,
+            'partner': selectedPartnerNames,
             'account': self.state.selected_analytic_account_rec,
             'options': self.state.options,
             'start_date': null,

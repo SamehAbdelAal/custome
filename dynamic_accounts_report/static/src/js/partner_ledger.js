@@ -22,6 +22,7 @@ class PartnerLedger extends Component {
             filter_applied: null,
             selected_partner: [],
             selected_partner_rec: [],
+            all_partners: null,
             total_debit: null,
             total_debit_display:null,
             total_credit: null,
@@ -59,6 +60,7 @@ class PartnerLedger extends Component {
         var action_title = self.props.action.display_name;
         try {
             var self = this;
+            self.state.all_partners = await self.orm.call("res.partner", "search_read", [[], ["id", "name"]]);
             self.state.data = await self.orm.call("account.partner.ledger", "view_report", [[this.wizard_id], action_title,]);
             const dataArray = self.state.data;
              Object.entries(dataArray).forEach(([key, value]) => {
@@ -364,6 +366,15 @@ class PartnerLedger extends Component {
                         'draft': true
                     };
                     val.target.classList.add("selected-filter"); // Add class "selected-filter"
+                }
+            } else if (val.target.attributes["data-value"].value == 'partner') {
+                if (!val.target.classList.contains("selected-filter")) {
+                    this.state.selected_partner.push(parseInt(val.target.attributes["data-id"].value, 10))
+                    val.target.classList.add("selected-filter");
+                } else {
+                    const updatedList = this.state.selected_partner.filter(item => item !== parseInt(val.target.attributes["data-id"].value, 10));
+                    this.state.selected_partner = updatedList
+                    val.target.classList.remove("selected-filter");
                 }
             }
         }

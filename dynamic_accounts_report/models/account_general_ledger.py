@@ -80,7 +80,7 @@ class AccountGeneralLedger(models.TransientModel):
 
     @api.model
     def get_filter_values(self, journal_id, date_range, options, analytic,
-                          method):
+                          method, partner_ids=None):
         """
         Retrieve filtered values for the partner ledger report.
 
@@ -98,6 +98,9 @@ class AccountGeneralLedger(models.TransientModel):
 
         :param analytic: The analytic IDs to filter the report data.
         :type analytic: list
+
+        :param partner_ids: The partner IDs to filter the report data.
+        :type partner_ids: list
 
         :return: A dictionary containing the filtered values for the partner
         ledger report.
@@ -118,6 +121,8 @@ class AccountGeneralLedger(models.TransientModel):
         domain = [('journal_id', 'in', journal_id),
                   ('parent_state', 'in', option_domain), ] if journal_id else [
             ('parent_state', 'in', option_domain), ]
+        if partner_ids:
+            domain += [('partner_id', 'in', partner_ids)]
         if method == {}:
             method = None
         if method is not None and 'cash' in method:
@@ -176,6 +181,8 @@ class AccountGeneralLedger(models.TransientModel):
             [], ['name'])
         account_dict['analytic_ids'] = self.env[
             'account.analytic.account'].search_read(
+            [], ['name'])
+        account_dict['partner_ids'] = self.env['res.partner'].search_read(
             [], ['name'])
         for account in account_ids:
             move_line_id = move_line_ids.filtered(
