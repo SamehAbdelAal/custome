@@ -1,16 +1,13 @@
 /** @odoo-module **/
-const { Component } = owl;
-const now = new Date();
+import { Component, useRef, useState } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
-import { useRef, useState } from "@odoo/owl";
-import { BlockUI } from "@web/core/ui/block_ui";
 import { download } from "@web/core/network/download";
+const now = new Date();
 const actionRegistry = registry.category("actions");
 
-class BalanceSheet extends owl.Component {
+class BalanceSheet extends Component {
     async setup() {
-        super.setup(...arguments);
         this.initial_render = true;
         this.orm = useService('orm');
         this.action = useService('action');
@@ -102,12 +99,10 @@ class BalanceSheet extends owl.Component {
                 'report_action': self.props.action.xml_id,
             },
         };
-        BlockUI;
         await download({
             url: '/xlsx_report',
             data: action.data,
-            complete: () => unblockUI,
-            error: (error) => self.call('crash_manager', 'rpc_error', error),
+            error: (error) => console.error('Download error:', error),
         });
     }
     async apply_journal(ev) {

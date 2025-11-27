@@ -70,8 +70,8 @@ export class BankRecRecord extends Record {
 }
 
 export class BankRecRelationalModel extends RelationalModel{
-    setup(params, { action, dialog, notification, rpc, user, view, company }) {
-        super.setup(...arguments);
+    setup(params, services) {
+        super.setup(params, services);
         this.lineIdsChangedField = null;
     }
 

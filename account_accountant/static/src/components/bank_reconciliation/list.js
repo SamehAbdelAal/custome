@@ -9,7 +9,7 @@ import { useChildSubEnv } from "@odoo/owl";
 export class BankRecListController extends ListController {
 
     setup() {
-        super.setup(...arguments);
+        super.setup();
 
         this.skipKanbanRestore = {};
 

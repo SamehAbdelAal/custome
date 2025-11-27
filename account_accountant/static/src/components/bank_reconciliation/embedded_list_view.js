@@ -10,8 +10,8 @@ export class BankRecEmbeddedListController extends ListController {
 
 
 export class BankRecWidgetFormEmbeddedListModel extends listView.Model {
-    setup(params, { action, dialog, notification, rpc, user, view, company }) {
-        super.setup(...arguments);
+    setup(params, services) {
+        super.setup(params, services);
         this.storedDomainString = null;
     }
 

@@ -2,10 +2,9 @@
 import { registry } from '@web/core/registry';
 import { useService } from "@web/core/utils/hooks";
 import { _t } from "@web/core/l10n/translation";
-const { Component, useState, useExternalListener } = owl;
+import { Component, useState } from "@odoo/owl";
 export class BankReconcileFormLinesWidget extends Component {
     setup(){
-        super.setup();
         this.state = useState({statementLineResult: null,
                                 MoveLineResult:null});
         this.action = useService("action")

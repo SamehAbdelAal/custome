@@ -1,15 +1,12 @@
 /** @odoo-module */
-const { Component } = owl;
+import { Component, useRef, useState } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
-import { useRef, useState } from "@odoo/owl";
-import { BlockUI } from "@web/core/ui/block_ui";
 import { download } from "@web/core/network/download";
 const actionRegistry = registry.category("actions");
 
-class BankBook extends owl.Component {
+class BankBook extends Component {
     async setup() {
-        super.setup(...arguments);
         this.initial_render = true;
         this.orm = useService('orm');
         this.action = useService('action');
@@ -256,12 +253,10 @@ class BankBook extends owl.Component {
                 'report_name': action_title,
             },
         };
-        BlockUI;
         await download({
             url: '/xlsx_report',
             data: action.data,
-            complete: () => unblockUI,
-            error: (error) => self.call('crash_manager', 'rpc_error', error),
+            error: (error) => console.error('Download error:', error),
         });
     }
     async applyFilter(val, ev, is_delete = false) {

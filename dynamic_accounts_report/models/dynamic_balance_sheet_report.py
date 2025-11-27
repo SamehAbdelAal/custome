@@ -457,7 +457,8 @@ class ProfitLossReport(models.TransientModel):
             :param report_name: Name of the report.
             :param response: The response object to write the generated report to.
             """
-        data = json.loads(data)
+        if isinstance(data, str):
+            data = json.loads(data)
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         sheet = workbook.add_worksheet()

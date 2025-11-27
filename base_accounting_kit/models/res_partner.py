@@ -343,7 +343,7 @@ class ResPartner(models.Model):
         else:
             raise ValidationError('There is no statement to print')
 
-    def get_xlsx_report(self, data, response):
+    def get_xlsx_report(self, data, response, report_name=None, report_action=None):
         """ Get xlsx report data """
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
