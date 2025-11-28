@@ -68,6 +68,13 @@ class ResPartner(models.Model):
     enable_credit_limit = fields.Boolean(string="Credit Limit Enabled",
                                          compute="_compute_enable_credit_limit")
 
+    # Partner Ledger filter
+    has_ledger_entries = fields.Boolean(
+        string="Has Ledger Entries",
+        compute='_compute_has_ledger_entries',
+        search='_search_has_ledger_entries',
+        help='Check if partner has any accounting ledger entries')
+
     # customer statement
 
     customer_report_ids = fields.Many2many(
@@ -169,6 +176,32 @@ class ResPartner(models.Model):
                                                  default=False)
         for rec in self:
             rec.enable_credit_limit = True if customer_credit_limit else False
+
+    def _compute_has_ledger_entries(self):
+        """ Check if partner has any ledger entries (account.move.line) """
+        for partner in self:
+            count = self.env['account.move.line'].sudo().search_count([
+                ('partner_id', '=', partner.id),
+                ('parent_state', '=', 'posted')
+            ], limit=1)
+            partner.has_ledger_entries = count > 0
+
+    def _search_has_ledger_entries(self, operator, value):
+        """ Search method to filter partners with/without ledger entries """
+        # Get all partner IDs that have ledger entries
+        self.env.cr.execute("""
+            SELECT DISTINCT partner_id
+            FROM account_move_line aml
+            JOIN account_move am ON aml.move_id = am.id
+            WHERE aml.partner_id IS NOT NULL
+            AND am.state = 'posted'
+        """)
+        partner_ids = [r[0] for r in self.env.cr.fetchall()]
+
+        if (operator == '=' and value) or (operator == '!=' and not value):
+            return [('id', 'in', partner_ids)]
+        else:
+            return [('id', 'not in', partner_ids)]
 
     @api.constrains('warning_stage', 'blocking_stage')
     def constrains_warning_stage(self):

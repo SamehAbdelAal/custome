@@ -34,6 +34,25 @@ class AccountPartnerLedger(models.TransientModel):
     _description = 'Partner Ledger Report'
 
     @api.model
+    def get_partners_with_ledger(self):
+        """
+        Get only partners that have ledger entries (posted journal items).
+        Returns partners with receivable/payable account entries.
+        """
+        self.env.cr.execute("""
+            SELECT DISTINCT p.id, p.name
+            FROM res_partner p
+            INNER JOIN account_move_line aml ON aml.partner_id = p.id
+            INNER JOIN account_move am ON am.id = aml.move_id
+            INNER JOIN account_account aa ON aa.id = aml.account_id
+            WHERE am.state = 'posted'
+            AND aa.account_type IN ('liability_payable', 'asset_receivable')
+            ORDER BY p.name
+        """)
+        result = self.env.cr.fetchall()
+        return [{'id': r[0], 'name': r[1]} for r in result]
+
+    @api.model
     def view_report(self, option, tag):
         """
         Retrieve partner-related data for generating a report.

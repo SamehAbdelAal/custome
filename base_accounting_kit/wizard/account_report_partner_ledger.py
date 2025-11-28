@@ -19,7 +19,7 @@
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 #############################################################################
-from odoo import fields, models
+from odoo import fields, models, api
 
 
 class AccountPartnerLedger(models.TransientModel):
@@ -42,11 +42,29 @@ class AccountPartnerLedger(models.TransientModel):
                                      help="It adds the currency column on report if the "
                                           "currency differs from the company currency.")
     reconciled = fields.Boolean('Reconciled Entries')
+    partner_ids = fields.Many2many('res.partner', string='Partners',
+                                   help="Select specific partners to filter the report. Leave empty for all partners.")
+
+    @api.model
+    def default_get(self, fields_list):
+        res = super().default_get(fields_list)
+        # Auto-populate partner_ids from context (from partner form button)
+        if self._context.get('active_model') == 'res.partner' and self._context.get('active_ids'):
+            res['partner_ids'] = [(6, 0, self._context.get('active_ids', []))]
+        # Also handle default_partner_ids from action context
+        elif self._context.get('default_partner_ids'):
+            partner_ids = self._context.get('default_partner_ids')
+            if isinstance(partner_ids, (list, tuple)):
+                res['partner_ids'] = [(6, 0, partner_ids)]
+        return res
 
     def _print_report(self, data):
         data = self.pre_print_report(data)
-        data['form'].update({'reconciled': self.reconciled,
-                             'amount_currency': self.amount_currency})
+        data['form'].update({
+            'reconciled': self.reconciled,
+            'amount_currency': self.amount_currency,
+            'partner_ids': self.partner_ids.ids if self.partner_ids else [],
+        })
         return self.env.ref(
             'base_accounting_kit.action_report_partnerledger').report_action(
             self, data=data)

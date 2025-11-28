@@ -60,7 +60,8 @@ class PartnerLedger extends Component {
         var action_title = self.props.action.display_name;
         try {
             var self = this;
-            self.state.all_partners = await self.orm.call("res.partner", "search_read", [[], ["id", "name"]]);
+            // Only get partners that have ledger entries
+            self.state.all_partners = await self.orm.call("account.partner.ledger", "get_partners_with_ledger", []);
             self.state.data = await self.orm.call("account.partner.ledger", "view_report", [[this.wizard_id], action_title,]);
             const dataArray = self.state.data;
              Object.entries(dataArray).forEach(([key, value]) => {
@@ -300,8 +301,10 @@ class PartnerLedger extends Component {
             }
         }
         else {
+            // Find the closest button element to handle clicks on child elements (span, i, etc.)
+            const targetElement = val.target.closest('button') || val.target;
             // Guard: check if data-value attribute exists
-            const dataValue = val.target.attributes["data-value"] ? val.target.attributes["data-value"].value : null;
+            const dataValue = targetElement.attributes["data-value"] ? targetElement.attributes["data-value"].value : null;
             if (val.target.name === 'start_date') {
                 this.state.date_range = {
                     ...this.state.date_range,
@@ -328,58 +331,44 @@ class PartnerLedger extends Component {
             } else if (dataValue == 'last-quarter') {
                 this.state.date_range = dataValue
             } else if (dataValue === 'receivable') {
-                // Check if the target has 'selected-filter' class
-                if (val.target.classList.contains("selected-filter")) {
-                    // Remove 'receivable' key from account
+                // Toggle receivable filter using state
+                if (this.state.account && this.state.account['Receivable']) {
                     const { Receivable, ...updatedAccount } = this.state.account;
-                    this.state.account = updatedAccount;
-                    val.target.classList.remove("selected-filter");
+                    this.state.account = Object.keys(updatedAccount).length ? updatedAccount : null;
                 } else {
-                    // Update receivable property in account
                     this.state.account = {
                         ...this.state.account,
                         'Receivable': true
                     };
-                    val.target.classList.add("selected-filter"); // Add class "selected-filter"
                 }
             } else if (dataValue === 'payable') {
-                // Check if the target has 'selected-filter' class
-                if (val.target.classList.contains("selected-filter")) {
-                    // Remove 'receivable' key from account
+                // Toggle payable filter using state
+                if (this.state.account && this.state.account['Payable']) {
                     const { Payable, ...updatedAccount } = this.state.account;
-                    this.state.account = updatedAccount;
-                    val.target.classList.remove("selected-filter");
+                    this.state.account = Object.keys(updatedAccount).length ? updatedAccount : null;
                 } else {
-                    // Update receivable property in account
                     this.state.account = {
                         ...this.state.account,
                         'Payable': true
                     };
-                    val.target.classList.add("selected-filter"); // Add class "selected-filter"
                 }
             } else if (dataValue === 'draft') {
-                // Check if the target has 'selected-filter' class
-                if (val.target.classList.contains("selected-filter")) {
-                    // Remove 'receivable' key from account
-                    const { draft, ...updatedAccount } = this.state.options;
-                    this.state.options = updatedAccount;
-                    val.target.classList.remove("selected-filter");
+                // Toggle draft filter using state
+                if (this.state.options && this.state.options['draft']) {
+                    const { draft, ...updatedOptions } = this.state.options;
+                    this.state.options = Object.keys(updatedOptions).length ? updatedOptions : null;
                 } else {
-                    // Update receivable property in account
                     this.state.options = {
                         ...this.state.options,
                         'draft': true
                     };
-                    val.target.classList.add("selected-filter"); // Add class "selected-filter"
                 }
             } else if (dataValue == 'partner') {
-                if (!val.target.classList.contains("selected-filter")) {
-                    this.state.selected_partner.push(parseInt(val.target.attributes["data-id"].value, 10))
-                    val.target.classList.add("selected-filter");
+                const partnerId = parseInt(targetElement.attributes["data-id"].value, 10);
+                if (!this.state.selected_partner.includes(partnerId)) {
+                    this.state.selected_partner.push(partnerId);
                 } else {
-                    const updatedList = this.state.selected_partner.filter(item => item !== parseInt(val.target.attributes["data-id"].value, 10));
-                    this.state.selected_partner = updatedList
-                    val.target.classList.remove("selected-filter");
+                    this.state.selected_partner = this.state.selected_partner.filter(item => item !== partnerId);
                 }
             }
         }

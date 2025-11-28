@@ -134,18 +134,27 @@ class ReportPartnerLedger(models.AbstractModel):
                   tuple(data['computed']['account_ids'])] + query_get_data[2]
         reconcile_clause = "" if data['form'][
             'reconciled'] else ' AND "account_move_line".full_reconcile_id IS NULL '
-        query = """
-            SELECT DISTINCT "account_move_line".partner_id
-            FROM """ + query_get_data[0] + """, account_account AS account, account_move AS am
-            WHERE "account_move_line".partner_id IS NOT NULL
-                AND "account_move_line".account_id = account.id
-                AND am.id = "account_move_line".move_id
-                AND am.state IN %s
-                AND "account_move_line".account_id IN %s
-                AND NOT account.deprecated
-                AND """ + query_get_data[1] + reconcile_clause
-        self.env.cr.execute(query, tuple(params))
-        partner_ids = [res['partner_id'] for res in self.env.cr.dictfetchall()]
+        # Check if specific partners are selected
+        selected_partner_ids = data['form'].get('partner_ids', [])
+
+        if selected_partner_ids:
+            # Use selected partners directly
+            partner_ids = selected_partner_ids
+        else:
+            # Get all partners with move lines
+            query = """
+                SELECT DISTINCT "account_move_line".partner_id
+                FROM """ + query_get_data[0] + """, account_account AS account, account_move AS am
+                WHERE "account_move_line".partner_id IS NOT NULL
+                    AND "account_move_line".account_id = account.id
+                    AND am.id = "account_move_line".move_id
+                    AND am.state IN %s
+                    AND "account_move_line".account_id IN %s
+                    AND NOT account.deprecated
+                    AND """ + query_get_data[1] + reconcile_clause
+            self.env.cr.execute(query, tuple(params))
+            partner_ids = [res['partner_id'] for res in self.env.cr.dictfetchall()]
+
         partners = obj_partner.browse(partner_ids)
         partners = sorted(partners, key=lambda x: (x.ref or '', x.name or ''))
         return {

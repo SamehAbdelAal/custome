@@ -12,6 +12,7 @@
                 <newline/>
                 <field name="reconciled"/>
                 <newline/>
+                <field name="partner_ids" widget="many2many_tags" options="{'no_create': True}"/>
             </xpath>
         </field>
     </record>
@@ -23,6 +24,16 @@
         <field name="view_mode">form</field>
         <field name="view_id" ref="account_report_partner_ledger_view"/>
         <field name="target">new</field>
+    </record>
+<!--Action Partner Ledger from Partner Form (with partner pre-selected)-->
+    <record id="action_partner_ledger_from_partner" model="ir.actions.act_window">
+        <field name="name">Partner Ledger</field>
+        <field name="res_model">account.report.partner.ledger</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="account_report_partner_ledger_view"/>
+        <field name="target">new</field>
+        <field name="context">{'default_partner_ids': active_ids}</field>
     </record>
 <!--Menu Partner Ledger-->
     <menuitem name="Partner Ledger"
