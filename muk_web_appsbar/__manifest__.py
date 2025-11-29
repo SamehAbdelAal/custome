@@ -17,10 +17,6 @@
     'depends': [
         'base_setup',
         'web',
-        'muk_web_chatter',
-        'muk_web_colors',
-        'muk_web_dialog',
-        'muk_web_theme',
     ],
     'data': [
         'templates/webclient.xml',
