@@ -14,17 +14,17 @@ class CashBook extends Component {
         this.tbody = useRef('tbody');
         this.unfoldButton = useRef('unfoldButton');
         this.state = useState({
-            move_line: null,
-            data: null,
-            total: null,
-            accounts: null,
+            move_line: [],
+            data: {},
+            total: {},
+            accounts: [],
             filter_applied: null,
             selected_partner: [],
             selected_partner_rec: [],
             date_range: null,
             selected_account_list: [],
-            total_debit: null,
-            total_credit: null,
+            total_debit: 0,
+            total_credit: 0,
             currency: null,
             options: null,
             message_list : [],
@@ -32,6 +32,18 @@ class CashBook extends Component {
         this.load_data(self.initial_render = true);
 
         }
+
+        formatNumberWithSeparators(number) {
+            const parsedNumber = parseFloat(number);
+            if (isNaN(parsedNumber)) {
+                return "0.00";
+            }
+            return parsedNumber.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+
         async load_data() {
         /**
          * Loads the data for the cash book report.

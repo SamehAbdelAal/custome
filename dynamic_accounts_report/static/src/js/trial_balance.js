@@ -19,14 +19,14 @@ class TrialBalance extends Component {
         this.period_year = useRef('period_year');
         this.unfoldButton = useRef('unfoldButton');
         this.state = useState({
-            move_line: null,
+            move_line: [],
             default_report: true,
-            data: null,
-            total: null,
-            journals: null,
-            accounts: null,
+            data: {},
+            total: {},
+            journals: [],
+            accounts: [],
             selected_analytic: [],
-            analytic_account: null,
+            analytic_account: [],
             selected_journal_list: [],
             selected_analytic_account_rec: [],
             date_range: 'month',

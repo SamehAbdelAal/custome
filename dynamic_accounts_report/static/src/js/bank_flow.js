@@ -14,20 +14,20 @@ class BankBook extends Component {
         this.tbody = useRef('tbody');
         this.unfoldButton = useRef('unfoldButton');
         this.state = useState({
-            move_line: null,
-            data: null,
-            total: null,
-            accounts: null,
+            move_line: [],
+            data: {},
+            total: {},
+            accounts: [],
             filter_applied: null,
             selected_partner: [],
             selected_partner_rec: [],
             date_range: null,
             options: null,
             selected_account_list: [],
-            total_debit: null,
-            total_debit_display: null,
-            total_credit: null,
-            total_credit_display: null,
+            total_debit: 0,
+            total_debit_display: '0.00',
+            total_credit: 0,
+            total_credit_display: '0.00',
             currency: null,
             message_list : [],
         });

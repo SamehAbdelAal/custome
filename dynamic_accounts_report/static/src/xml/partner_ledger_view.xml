@@ -139,7 +139,7 @@
                                               title="Accounts"
                                               role="img" aria-label="Dates"/>
                                         Account
-                                        <t t-if="state.account">:
+                                        <t t-if="state.account and state.account.length">:
                                             <t t-foreach="state.account"
                                                t-as="account_key"
                                                t-key="account_key_index">
@@ -224,7 +224,7 @@
                                 </div>
                             </div>
                             <!-- Selected Partners Display -->
-                            <t t-if="state.selected_partner.length > 0">
+                            <t t-if="state.selected_partner.length > 0 and state.all_partners and state.all_partners.length">
                                 <div class="px-2 d-flex flex-wrap align-items-center" style="max-width: 400px;">
                                     <t t-foreach="state.selected_partner"
                                        t-as="Partner_key"
@@ -422,6 +422,7 @@
                                                 </t>
                                             </t>
                                             <!-- Iterate over partner's value list -->
+                                            <t t-if="state.data and state.data[partner]">
                                             <t t-foreach="state.data[partner]"
                                                t-as="valuelist"
                                                t-key="valuelist_index">
@@ -507,6 +508,7 @@
                                                         </span>
                                                     </th>
                                                 </tr>
+                                            </t>
                                             </t>
                                         </t>
                                     </t>

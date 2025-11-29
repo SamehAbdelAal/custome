@@ -272,9 +272,7 @@
                                         <th colspan="6"/>
                                         <th/>
                                         <t t-if="state.apply_comparison == true">
-                                            <t t-set="number_of_periods"
-                                               t-value="comparison_number_range"/>
-                                            <t t-foreach="number_of_periods"
+                                            <t t-foreach="state.comparison_number_range"
                                                t-as="number" t-key="number">
                                                 <th>NET</th>
                                                 <th>TAX</th>
@@ -298,9 +296,7 @@
                                             <th/>
                                             <th/>
                                             <t t-if="state.apply_comparison == true">
-                                                <t t-set="number_of_periods"
-                                                   t-value="comparison_number_range"/>
-                                                <t t-foreach="number_of_periods"
+                                                <t t-foreach="state.comparison_number_range"
                                                    t-as="no" t-key="no">
                                                     <th/>
                                                     <th/>
@@ -366,9 +362,7 @@
                                                 <th/>
                                                 <t t-if="state.apply_comparison == true">
                                                     <t t-if="sale_tax_line['dynamic net']">
-                                                        <t t-set="number_of_periods"
-                                                           t-value="comparison_number_range"/>
-                                                        <t t-foreach="number_of_periods"
+                                                        <t t-foreach="state.comparison_number_range"
                                                            t-as="num"
                                                            t-key="num">
                                                             <th style="text-align:center;font-weight: 400;">
@@ -405,9 +399,7 @@
                                             <th/>
                                             <th/>
                                             <t t-if="state.apply_comparison == true">
-                                                <t t-set="number_of_periods"
-                                                   t-value="comparison_number_range"/>
-                                                <t t-foreach="number_of_periods"
+                                                <t t-foreach="state.comparison_number_range"
                                                    t-as="numb" t-key="numb">
                                                     <th/>
                                                     <th/>
@@ -467,9 +459,7 @@
                                                 <th/>
                                                 <t t-if="state.apply_comparison == true">
                                                     <t t-if="purchase_tax_line['dynamic net']">
-                                                        <t t-set="number_of_periods"
-                                                           t-value="comparison_number_range"/>
-                                                        <t t-foreach="number_of_periods"
+                                                        <t t-foreach="state.comparison_number_range"
                                                            t-as="period"
                                                            t-key="period">
                                                             <th style="text-align:center;font-weight: 400;">

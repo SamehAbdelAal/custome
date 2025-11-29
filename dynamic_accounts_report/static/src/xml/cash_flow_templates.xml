@@ -111,7 +111,7 @@
                                     <span class="fa fa-book" title="Accounts"
                                           role="img"/>
                                     Accounts
-                                    <t t-if="state.selected_account_list">:
+                                    <t t-if="state.selected_account_list and state.selected_account_list.length and state.accounts">:
                                         <t t-foreach="state.selected_account_list"
                                            t-as="account_key"
                                            t-key="account_key_index">
@@ -259,6 +259,7 @@
                                                     </th>
                                                 </tr>
                                                 <!-- Iterate over partner's value list -->
+                                                <t t-if="state.data and state.data[move_line]">
                                                 <t t-foreach="state.data[move_line]"
                                                    t-as="valuelist"
                                                    t-key="valuelist_index">
@@ -336,6 +337,7 @@
                                                         </th>
                                                         <th/>
                                                     </tr>
+                                                </t>
                                                 </t>
                                             </t>
                                         </t>

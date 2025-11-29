@@ -16,17 +16,17 @@ class AgedReceivable extends Component {
         this.date_range = useRef('date_to');
         this.unfoldButton = useRef('unfoldButton');
         this.state = useState({
-            move_line: null,
-            data: null,
-            total: null,
+            move_line: [],
+            data: {},
+            total: {},
             currency: null,
-            total_debit: null,
-            diff0_sum: null,
-            diff1_sum: null,
-            diff2_sum: null,
-            diff3_sum: null,
-            diff4_sum: null,
-            diff5_sum: null,
+            total_debit: 0,
+            diff0_sum: 0,
+            diff1_sum: 0,
+            diff2_sum: 0,
+            diff3_sum: 0,
+            diff4_sum: 0,
+            diff5_sum: 0,
             selected_partner: [],
             selected_partner_rec: [],
         });

@@ -17,8 +17,9 @@ class BalanceSheet extends Component {
         this.period_year = useRef('period_year');
         this.draft = useRef('draft');
         this.state = useState({
-            data: null,
-            filter_data: null,
+            data: {},
+            datas: [],
+            filter_data: { journal: [], account: [], analytic: [] },
             year : [now.getFullYear()],
             comparison: false,
             comparison_type: null,

@@ -22,14 +22,14 @@ class TaxReport extends Component {
         this.period_year = useRef('period_year');
         this.unfoldButton = useRef('unfoldButton');
         this.state = useState({
-            move_line: null,
-            data: null,
+            move_line: [],
+            data: { sale: [], purchase: [], dynamic_date_num: {} },
             sale_total: 0.0,
             purchase_total: 0.0,
-            total: null,
-            journals: null,
+            total: {},
+            journals: [],
             selected_analytic: [],
-            analytic_account: null,
+            analytic_account: [],
             selected_journal_list: [],
             selected_analytic_account_rec: [],
             date_range: 'month',
@@ -38,6 +38,7 @@ class TaxReport extends Component {
             comparison_type: null,
             date_viewed: [],
             comparison_number: null,
+            comparison_number_range: [],
             options: null,
             report_type: null,
             method: {
@@ -243,6 +244,8 @@ class TaxReport extends Component {
                 this.state.date_viewed = []
                 this.state.comparison_number = this.period.el.value
             }
+            // Update comparison_number_range in state
+            this.state.comparison_number_range = this.comparison_number_range;
         }
         this.state.data = await this.orm.call("tax.report", "get_filter_values", [this.start_date.el.value, this.end_date.el.value, this.state.comparison_number, this.state.comparison_type, this.state.options,this.state.report_type,]);
         var date_viewed = []
@@ -458,6 +461,7 @@ class TaxReport extends Component {
         this.state.apply_comparison = false
         this.state.comparison_type = null
         this.state.comparison_number = null
+        this.state.comparison_number_range = []
         const lastIndex = this.state.date_viewed.length - 1;
         this.state.date_viewed.splice(0, lastIndex);
         this.applyFilter(null, ev)
