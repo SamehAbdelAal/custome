@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Product Template Form View Inheritance -->
+    <record id="product_template_form_view_label_extension" model="ir.ui.view">
+        <field name="name">product.template.form.label.extension</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Label Specifications" name="label_specifications">
+                    <group>
+                        <group string="Product Identification">
+                            <field name="label_product_id"/>
+                            <field name="label_product_name"/>
+                            <field name="label_customer_id"/>
+                        </group>
+                        <group string="Material &amp; Colors">
+                            <field name="material_id"/>
+                            <field name="basic_colors"/>
+                            <field name="special_colors"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Size Specifications">
+                            <field name="size_width_mm"/>
+                            <field name="size_height_mm"/>
+                        </group>
+                        <group string="Finishing Options">
+                            <field name="mark_type"/>
+                            <field name="mark_type_other" invisible="mark_type != 'other'"/>
+                            <field name="lamination"/>
+                            <field name="varnish"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Roll Specifications">
+                            <field name="quantity_in_roll"/>
+                            <field name="core_size"/>
+                            <field name="winding_direction"/>
+                        </group>
+                        <group string="Layout Specifications">
+                            <field name="get_up"/>
+                            <field name="gap_across_mm"/>
+                            <field name="gap_around_mm"/>
+                            <field name="image_across"/>
+                            <field name="image_around"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Cylinder &amp; Additional">
+                            <field name="no_of_abs"/>
+                            <field name="cylinder_no"/>
+                        </group>
+                        <group string="Special Features">
+                            <field name="perforation"/>
+                            <field name="invisible_ink"/>
+                            <field name="back_side_print"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Product Template Tree View - Add key fields -->
+    <record id="product_template_tree_view_label_extension" model="ir.ui.view">
+        <field name="name">product.template.tree.label.extension</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="label_product_id" optional="show"/>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="label_customer_id" optional="hide"/>
+                <field name="material_id" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Search View - Add filters -->
+    <record id="product_template_search_view_label_extension" model="ir.ui.view">
+        <field name="name">product.template.search.label.extension</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[1]" position="before">
+                <field name="label_product_id"/>
+                <field name="label_customer_id"/>
+                <separator/>
+            </xpath>
+            <xpath expr="//group" position="inside">
+                <filter string="Customer" name="group_by_customer" context="{'group_by': 'label_customer_id'}"/>
+                <filter string="Material" name="group_by_material" context="{'group_by': 'material_id'}"/>
+                <filter string="Lamination" name="group_by_lamination" context="{'group_by': 'lamination'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
