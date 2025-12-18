@@ -13,7 +13,7 @@
         - Roll and printing specifications
         - Customer linking
     """,
-    'author': 'Custom',
+    'author': 'Sameh Abdel ael ',
     'website': '',
     'depends': ['product', 'sale'],
     'data': [

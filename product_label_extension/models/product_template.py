@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields, api
+import logging
+from email.policy import default
 
+from odoo import models, fields, api
+from odoo.exceptions import ValidationError
+
+_logger = logging.getLogger(__name__)
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
@@ -13,24 +18,62 @@ class ProductTemplate(models.Model):
         default='New',
         help='Unique product sequence ID'
     )
-
+    viewable = fields.Boolean(default=True)
+    selected_variant_id = fields.Many2one(
+        'product.product',
+        string='Matched Variant',
+        help='Variant selected based on calculated width'
+    )
     # 2. Product Name - Text
     label_product_name = fields.Char(
         string='Product Name',
         help='Product name for label'
     )
 
+
     # 3. Material - Selection (Subject)
-    material_id = fields.Selection([
-        ('paper', 'Paper'),
-        ('vinyl', 'Vinyl'),
-        ('polyester', 'Polyester'),
-        ('polypropylene', 'Polypropylene'),
-        ('pvc', 'PVC'),
-        ('pet', 'PET'),
-        ('bopp', 'BOPP'),
-        ('other', 'Other'),
-    ], string='Material', help='Material type for the product')
+    material_id = fields.Many2one('product.product', string='Material')
+    attribute_id = fields.Many2many(
+        'product.product',
+        string='Product Rules',
+        compute='_compute_attribute_id',
+        store=True,
+    )
+
+    @api.depends('no_of_abs', 'size_width_mm', 'gap_across_mm')
+    def _compute_calculated_width(self):
+        for record in self:
+            if record.no_of_abs and record.size_width_mm:
+                record.calculated_width = (
+                    record.no_of_abs * record.size_width_mm
+                    + ((record.no_of_abs - 1) * (record.gap_across_mm + 16)) / 10
+                )
+            else:
+                record.calculated_width = 0.0
+
+    @api.depends('calculated_width')
+    def _compute_attribute_id(self):
+        """Update attribute_id based on calculated width."""
+        for record in self:
+            if record.calculated_width:
+                matching_products = self.env['product.product']
+                products = self.env['product.product'].search([])
+                for p in products:
+                    for v in p.product_template_variant_value_ids:
+                        if v.name == str(int(record.calculated_width)):
+                            matching_products |= p
+                record.attribute_id = matching_products
+                record.viewable = bool(not matching_products)
+            else:
+                record.attribute_id = False
+                record.viewable = True
+    # Calculated Width - Computed field
+    calculated_width = fields.Integer(
+        string='Calculated Width',
+        compute='_compute_calculated_width',
+        store=True,
+        help='Calculated width based on: (no_of_abs * size_width_mm) + ((no_of_abs - 1) * gap_across_mm) + 1.6'
+    )
 
     # 4. Basic Colors
     basic_colors = fields.Char(
@@ -47,7 +90,8 @@ class ProductTemplate(models.Model):
     # 6. Size (Width mm)
     size_width_mm = fields.Float(
         string='Size (Width mm)',
-        help='Width of the product in millimeters'
+        help='Width of the product in millimeters',
+        default=0.0
     )
 
     # 7. Size (Height mm)
@@ -116,7 +160,8 @@ class ProductTemplate(models.Model):
     # 15. Gap Across (in millimeters)
     gap_across_mm = fields.Float(
         string='Gap Across (mm)',
-        help='Gap across in millimeters'
+        help='Gap across in millimeters',
+        default=0.0
     )
 
     # 16. Gap Around (in millimeters)
@@ -140,7 +185,8 @@ class ProductTemplate(models.Model):
     # 19. No Of Abs
     no_of_abs = fields.Integer(
         string='No Of Abs',
-        help='Number of absorptions'
+        help='Number of absorptions',
+        default=0
     )
 
     # 20. Cylinder No
@@ -190,6 +236,6 @@ class ProductTemplate(models.Model):
     def _check_get_up_range(self):
         for record in self:
             if record.get_up < 0 or record.get_up > 8:
-                raise models.ValidationError(
+                raise ValidationError(
                     'Get Up value must be between 0 and 8'
                 )

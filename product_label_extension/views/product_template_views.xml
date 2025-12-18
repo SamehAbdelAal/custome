@@ -4,9 +4,9 @@
     <record id="product_template_form_view_label_extension" model="ir.ui.view">
         <field name="name">product.template.form.label.extension</field>
         <field name="model">product.template</field>
-        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
         <field name="arch" type="xml">
-            <xpath expr="//notebook" position="inside">
+            <xpath expr="//page" position="before">
                 <page string="Label Specifications" name="label_specifications">
                     <group>
                         <group string="Product Identification">
@@ -16,6 +16,8 @@
                         </group>
                         <group string="Material &amp; Colors">
                             <field name="material_id"/>
+                            <field name="calculated_width"/>
+                            <field name="attribute_id" widget="many2many_tags" readonly="1" invisible="viewable"/>
                             <field name="basic_colors"/>
                             <field name="special_colors"/>
                         </group>
