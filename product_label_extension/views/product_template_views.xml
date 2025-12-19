@@ -17,7 +17,8 @@
                         <group string="Material &amp; Colors">
                             <field name="material_id"/>
                             <field name="calculated_width"/>
-                            <field name="attribute_id" widget="many2many_tags" readonly="1" invisible="viewable"/>
+                            <field name="length_quantity_in_meter"/>
+                            <field name="attribute_id"  readonly="1" invisible="viewable"/>
                             <field name="basic_colors"/>
                             <field name="special_colors"/>
                         </group>
