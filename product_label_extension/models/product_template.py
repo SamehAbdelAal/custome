@@ -34,7 +34,7 @@ class ProductTemplate(models.Model):
 
 
     # 3. Material - Selection (Subject)
-    material_id = fields.Many2one('product.product', string='Material')
+    material_id = fields.Many2one('product.product', string='Material',required=True)
     attribute_id = fields.Many2one(
         'product.product',
         string='Product Rules',
@@ -57,20 +57,21 @@ class ProductTemplate(models.Model):
     def _compute_attribute_id(self):
         """Update attribute_id based on calculated width."""
         # Find attribute values matching the calculated width
-        matching_values = self.attribute_line_ids.value_ids.filtered(
-            lambda x: x.name == str(self.calculated_width)
-        )
-        if matching_values:
-            # Find the product variant that has this attribute value
-            matching_variant = self.env['product.product'].search([
-                ('product_tmpl_id', '=', self._origin.id),
-                ('product_template_attribute_value_ids.name', '=', str(self.calculated_width))
-            ], limit=1)
-            self.attribute_id = matching_variant or False
-            self.viewable = False
-        else:
-            self.attribute_id = False
-            self.viewable = True
+        for rec in self:
+            matching_values = rec.attribute_line_ids.value_ids.filtered(
+                lambda x: x.name == str(rec.calculated_width)
+            )
+            if matching_values:
+                # Find the product variant that has this attribute value
+                matching_variant = self.env['product.product'].search([
+                    ('product_tmpl_id', '=', rec._origin.id),
+                    ('product_template_attribute_value_ids.name', '=', str(rec.calculated_width))
+                ], limit=1)
+                self.attribute_id = matching_variant or False
+                self.viewable = False
+            else:
+                self.attribute_id = False
+                self.viewable = True
     @api.onchange('attribute_id')
     def action_create_bom(self):
         if not self.attribute_id:
@@ -317,3 +318,9 @@ class ProductTemplate(models.Model):
                 raise ValidationError(
                     'Get Up value must be between 0 and 8'
                 )
+    @api.constrains('get_up')
+    def _check_get_up_range(self):
+       if not self.material_id:
+           raise ValidationError(
+               'please selected material'
+           )
