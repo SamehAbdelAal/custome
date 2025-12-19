@@ -15,7 +15,7 @@
     """,
     'author': 'Sameh Abdel ael ',
     'website': '',
-    'depends': ['product', 'sale'],
+    'depends': ['product', 'sale','sale_management','mrp'],
     'data': [
         'security/ir.model.access.csv',
         'data/sequence_data.xml',
