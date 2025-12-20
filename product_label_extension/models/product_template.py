@@ -53,7 +53,7 @@ class ProductTemplate(models.Model):
             else:
                 record.calculated_width = 0.0
 
-    @api.depends('calculated_width')
+    @api.depends('calculated_width','attribute_line_ids')
     def _compute_attribute_id(self):
         """Update attribute_id based on calculated width."""
         # Find attribute values matching the calculated width
@@ -72,28 +72,25 @@ class ProductTemplate(models.Model):
             else:
                 self.attribute_id = False
                 self.viewable = True
-    @api.onchange('attribute_id')
-    def action_create_bom(self):
-        if not self.attribute_id:
-            return
-        # Use _origin.id to get the saved record's ID in onchange
-        # Skip BOM creation for new/unsaved records
-        if not self._origin.id:
-            return
-        # Skip if no material selected
-        if not self.material_id:
-            return
-        self.env['mrp.bom'].sudo().create({
-            'product_tmpl_id': self._origin.id,
-            'product_qty': 1000,
-            'product_uom_id': self._origin.uom_id.id,
-            'bom_line_ids': [
-                Command.create({
-                    'product_id': self.material_id.id,
-                    'product_qty': self.length_quantity_in_meter or 1.0,
-                }),
-            ],
-        })
+
+    def _create_bom_for_product(self):
+        """Create BOM for the product if conditions are met."""
+        for record in self:
+            if not record.attribute_id:
+                continue
+            if not record.material_id:
+                continue
+            self.env['mrp.bom'].sudo().create({
+                'product_tmpl_id': record.id,
+                'product_qty': 1000,
+                'product_uom_id': record.uom_id.id,
+                'bom_line_ids': [
+                    Command.create({
+                        'product_id': record.material_id.id,
+                        'product_qty': record.length_quantity_in_meter or 1.0,
+                    }),
+                ],
+            })
     # Calculated Width - Computed field
     calculated_width = fields.Integer(
         string='Calculated Width',
@@ -137,7 +134,6 @@ class ProductTemplate(models.Model):
             if not record.no_of_abs or record.no_of_abs == 0:
                 record.length_quantity_in_meter = 0.0
                 return
-
             no_of_abs = record.no_of_abs
             gap_around = record.gap_around_mm or 0.0
             basic_colors = record.basic_colors or 0
@@ -309,7 +305,10 @@ class ProductTemplate(models.Model):
             if vals.get('label_product_id', 'New') == 'New':
                 vals['label_product_id'] = self.env['ir.sequence'].next_by_code(
                     'product.label.sequence') or 'New'
-        return super().create(vals_list)
+        records = super().create(vals_list)
+        # Create BOM only on initial creation, not on updates
+        records._create_bom_for_product()
+        return records
 
     @api.constrains('get_up')
     def _check_get_up_range(self):

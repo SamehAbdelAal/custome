@@ -21,6 +21,11 @@
         'data/sequence_data.xml',
         'views/product_template_views.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            "product_label_extension/js/reload.js"
+        ]
+    },
     'license': 'LGPL-3',
     'installable': True,
     'auto_install': False,
