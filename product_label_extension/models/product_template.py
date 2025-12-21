@@ -34,7 +34,7 @@ class ProductTemplate(models.Model):
 
 
     # 3. Material - Selection (Subject)
-    material_id = fields.Many2one('product.template', string='Material',ondelete='set null',required=False)
+    material_id = fields.Many2one('product.template', string='Material',required=False)
     attribute_id = fields.Many2one(
         'product.product',
         string='Product Rules',
@@ -54,32 +54,41 @@ class ProductTemplate(models.Model):
             else:
                 record.calculated_width = 0.0
 
-    @api.depends('calculated_width','attribute_line_ids')
+    @api.depends('calculated_width', 'material_id')
     def _compute_attribute_id(self):
-        """Update attribute_id based on calculated width."""
-        # Find attribute values matching the calculated width
+        """Update attribute_id based on calculated width from material_id."""
+        print('same')
         for rec in self:
-            matching_values = rec.attribute_line_ids.value_ids.filtered(
-                lambda x: x.name == str(rec.calculated_width)
-            )
-            if matching_values:
-                # Find the product variant that has this attribute value
-                matching_variant = self.env['product.product'].search([
-                    ('product_tmpl_id', '=', rec._origin.id),
-                    ('product_template_attribute_value_ids.name', '=', str(rec.calculated_width))
-                ], limit=1)
-                self.attribute_id = matching_variant or False
-                self.viewable = False
+            print('same')
+            if not rec.material_id:
+                rec.attribute_id = False
+                rec.viewable = True
+                continue
+            # Search for variant in material_id where product_template_attribute_value_ids.name == calculated_width
+            matching_variant = self.env['product.product'].search([
+                ('product_tmpl_id', '=', rec.material_id.id),
+                ('product_template_attribute_value_ids.name', '=', str(rec.calculated_width))
+            ], limit=1)
+            print(matching_variant)
+            if matching_variant:
+                rec.attribute_id = matching_variant
+                rec.viewable = False
             else:
-                self.attribute_id = False
-                self.viewable = True
+                rec.attribute_id = False
+                rec.viewable = True
+                raise  ValidationError('not data here ')
 
     def _create_bom_for_product(self):
-        """Create BOM for the product if conditions are met."""
+        """Create BOM for the product if conditions are met.
+        Note: This must NOT be called from @api.onchange because record.id
+        is a NewId (not a real DB id) until the record is saved.
+        """
         for record in self:
-            if not record.attribute_id:
-                continue
             if not record.material_id:
+                continue
+            # Get the first product variant from the material template
+            material_product = record.material_id.product_variant_id
+            if not material_product:
                 continue
             self.env['mrp.bom'].sudo().create({
                 'product_tmpl_id': record.id,
@@ -87,7 +96,7 @@ class ProductTemplate(models.Model):
                 'product_uom_id': record.uom_id.id,
                 'bom_line_ids': [
                     Command.create({
-                        'product_id': record.material_id.id,
+                        'product_id': material_product.id,
                         'product_qty': record.length_quantity_in_meter or 1.0,
                     }),
                 ],
@@ -317,6 +326,23 @@ class ProductTemplate(models.Model):
             if record.get_up < 0 or record.get_up > 8:
                 raise ValidationError(
                     'Get Up value must be between 0 and 8'
+                )
+
+    @api.constrains('material_id', 'calculated_width')
+    def _check_material_variant_exists(self):
+        """Validate that a matching variant exists in material_id for the calculated_width."""
+        for record in self:
+            if not record.material_id:
+                continue
+            # Check if a variant exists with matching attribute value
+            matching_variant = self.env['product.product'].search([
+                ('product_tmpl_id', '=', record.material_id.id),
+                ('product_template_attribute_value_ids.name', '=', str(record.calculated_width))
+            ], limit=1)
+            if not matching_variant:
+                raise ValidationError(
+                    f"No variant found in material '{record.material_id.name}' with width '{record.calculated_width}'. "
+                    "Please ensure the material has a variant with the matching calculated width attribute."
                 )
     @api.constrains('get_up')
     def _check_get_up_range(self):
