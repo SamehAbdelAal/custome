@@ -34,7 +34,7 @@ class ProductTemplate(models.Model):
 
 
     # 3. Material - Selection (Subject)
-    material_id = fields.Many2one('product.product', string='Material',required=True)
+    material_id = fields.Many2one('product.template', string='Material',ondelete='set null',required=False)
     attribute_id = fields.Many2one(
         'product.product',
         string='Product Rules',
@@ -47,9 +47,10 @@ class ProductTemplate(models.Model):
         for record in self:
             if record.no_of_abs and record.size_width_mm:
                 record.calculated_width = (
-                    record.no_of_abs * record.size_width_mm
-                    + ((record.no_of_abs - 1) * (record.gap_across_mm + 16)) / 10
-                )
+                  record.no_of_abs * record.size_width_mm
+                  + (record.no_of_abs - 1) * record.gap_across_mm
+                  + 16
+                ) / 10
             else:
                 record.calculated_width = 0.0
 
