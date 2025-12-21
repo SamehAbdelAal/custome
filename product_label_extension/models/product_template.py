@@ -76,7 +76,11 @@ class ProductTemplate(models.Model):
             else:
                 rec.attribute_id = False
                 rec.viewable = True
-                raise  ValidationError('not data here ')
+                raise ValidationError(
+                    f"No matching variant found in material '{rec.material_id.name}' "
+                    f"with calculated width '{rec.calculated_width}'. "
+                    "Please select a material that has a variant with this width attribute."
+                )
 
     def _create_bom_for_product(self):
         """Create BOM for the product if conditions are met.
