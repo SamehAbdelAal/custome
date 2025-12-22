@@ -26,11 +26,6 @@ class ProductTemplate(models.Model):
         string='Matched Variant',
         help='Variant selected based on calculated width'
     )
-    # 2. Product Name - Text
-    label_product_name = fields.Char(
-        string='Product Name',
-        help='Product name for label'
-    )
 
 
     # 3. Material - Selection (Subject)
@@ -42,24 +37,36 @@ class ProductTemplate(models.Model):
         store=True,
     )
 
-    @api.depends('no_of_abs', 'size_width_mm', 'gap_across_mm')
+    @api.depends('no_of_abs', 'size_width_mm', 'gap_across_mm', 'size_height_mm', 'winding_direction')
     def _compute_calculated_width(self):
         for record in self:
-            if record.no_of_abs and record.size_width_mm:
-                record.calculated_width = (
-                  record.no_of_abs * record.size_width_mm
-                  + (record.no_of_abs - 1) * record.gap_across_mm
-                  + 16
-                ) / 10
+            if record.winding_direction in ('0', '1', '2', '5', '6'):
+                # Calculate using size_width_mm
+                if record.no_of_abs and record.size_width_mm:
+                    record.calculated_width = math.ceil((
+                                    record.no_of_abs * record.size_width_mm
+                                    + (record.no_of_abs - 1) * (record.gap_across_mm or 0)
+                                    + 16
+                            ) / 10)
+                else:
+                    record.calculated_width = 0
+            elif record.winding_direction in ('3', '4', '7', '8'):
+                # Calculate using size_height_mm
+                if record.no_of_abs and record.size_height_mm:
+                    record.calculated_width = math.ceil((
+                                    record.no_of_abs * record.size_height_mm
+                                    + (record.no_of_abs - 1) * (record.gap_across_mm or 0)
+                                    + 16
+                            ) / 10)
+                else:
+                    record.calculated_width = 0
             else:
-                record.calculated_width = 0.0
+                record.calculated_width = 0
 
     @api.depends('calculated_width', 'material_id')
     def _compute_attribute_id(self):
         """Update attribute_id based on calculated width from material_id."""
-        print('same')
         for rec in self:
-            print('same')
             if not rec.material_id:
                 rec.attribute_id = False
                 rec.viewable = True
@@ -128,58 +135,58 @@ class ProductTemplate(models.Model):
     )
 
     # Length Quantity in meter - Computed field
-    length_quantity_in_meter = fields.Float(
+    length_quantity_in_meter = fields.Integer(
         string='Length Quantity (m)',
         compute='_compute_length_quantity_in_meter',
         store=True,
         help='Calculated length quantity in meters based on winding direction'
     )
 
-    @api.depends('winding_direction', 'size_height_mm', 'size_width_mm', 'no_of_abs', 'gap_around_mm', 'basic_colors', 'special_colors')
+    @api.depends(
+        'winding_direction',
+        'size_height_mm',
+        'size_width_mm',
+        'no_of_abs',
+        'gap_around_mm',
+        'basic_colors',
+        'special_colors'
+    )
     def _compute_length_quantity_in_meter(self):
-        """
-        Calculate Length Quantity in meter based on winding direction:
-        IF Winding Direction = 0 or 1 or 2 or 5 or 6:
-            Length = ((2000 * Height / NoOfAbs) + (ceil(2000 / NoOfAbs) - 1) * GapAround) / 1000 + (BasicColors + SpecialColors) * 150
-        ELSE IF Winding Direction = 3 or 4 or 7 or 8:
-            Length = ((2000 * Width / NoOfAbs) + (ceil(2000 / NoOfAbs) - 1) * GapAround) / 1000 + (BasicColors + SpecialColors) * 150
-        """
         for record in self:
-            if not record.no_of_abs or record.no_of_abs == 0:
-                record.length_quantity_in_meter = 0.0
-                return
+            if not record.no_of_abs:
+                record.length_quantity_in_meter = 0
+                continue
+
             no_of_abs = record.no_of_abs
             gap_around = record.gap_around_mm or 0.0
             basic_colors = record.basic_colors or 0
             special_colors = record.special_colors or 0
 
-            # Common part of the formula
             ceil_part = (math.ceil(2000 / no_of_abs) - 1) * gap_around
             color_part = (basic_colors + special_colors) * 150
 
-            # Check winding direction
             if record.winding_direction in ('0', '1', '2', '5', '6'):
-                # Use Height
-                height = record.size_height_mm or 0.0
-                length = ((2000 * height / no_of_abs) + ceil_part) / 1000 + color_part
+                base = (2000 * (record.size_height_mm or 0.0)) / no_of_abs
             elif record.winding_direction in ('3', '4', '7', '8'):
-                # Use Width
-                width = record.size_width_mm or 0.0
-                length = ((2000 * width / no_of_abs) + ceil_part) / 1000 + color_part
+                base = (2000 * (record.size_width_mm or 0.0)) / no_of_abs
             else:
-                length = 0.0
+                record.length_quantity_in_meter = 0
+                continue
 
-            record.length_quantity_in_meter = length
+            length = (base + ceil_part) / 1000 + color_part
+
+            # 👇 الضمان النهائي
+            record.length_quantity_in_meter = int(math.ceil(length))
 
     # 6. Size (Width mm)
-    size_width_mm = fields.Float(
+    size_width_mm = fields.Integer(
         string='Size (Width mm)',
         help='Width of the product in millimeters',
         default=0.0
     )
 
     # 7. Size (Height mm)
-    size_height_mm = fields.Float(
+    size_height_mm = fields.Integer(
         string='Size (Height mm)',
         help='Height of the product in millimeters'
     )
@@ -190,7 +197,7 @@ class ProductTemplate(models.Model):
         ('silver', 'Silver'),
         ('gold', 'Gold'),
         ('other', 'Other (Enter the required option)'),
-    ], string='Mark Type', default='no', help='Mark type for the product')
+    ], string='Mark', default='no', help='Mark type for the product')
 
     mark_type_other = fields.Char(
         string='Mark Type (Other)',
@@ -203,7 +210,19 @@ class ProductTemplate(models.Model):
         ('gloss', 'Gloss'),
         ('matte', 'Matte'),
     ], string='Lamination', default='no', help='Lamination type')
-
+    microns = fields.Selection([
+        ('microns 35', 'Microns 35'),
+        ('microns 15', 'Microns 15'),
+        ('microns 10', 'Microns 10'),
+    ], string='Microns', help='Microns')
+    open_microns =fields.Boolean(default=True)
+    @api.onchange('lamination')
+    def lamination_change(self):
+        for rec in self:
+            if rec.lamination == 'gloss' or  rec.lamination == 'matte':
+                rec.open_microns = False
+            else:
+                rec.open_microns = True
     # 10. Varnish - Selection
     varnish = fields.Selection([
         ('no', 'No'),
@@ -221,40 +240,35 @@ class ProductTemplate(models.Model):
     )
 
     # 12. Core Size
-    core_size = fields.Float(
+    core_size = fields.Integer(
         string='Core Size',
         help='Core size of the roll'
     )
 
     # 13. Winding Direction
     winding_direction = fields.Selection([
-        ('0', 'Direction 0'),
-        ('1', 'Direction 1 - Labels come off roll facing up'),
-        ('2', 'Direction 2 - Labels come off roll facing down'),
-        ('3', 'Direction 3 - Labels wind clockwise'),
-        ('4', 'Direction 4 - Labels wind counter-clockwise'),
-        ('5', 'Direction 5'),
-        ('6', 'Direction 6'),
-        ('7', 'Direction 7'),
-        ('8', 'Direction 8'),
+        ('0', '0'),
+        ('1', '1'),
+        ('2', '2'),
+        ('3', '3'),
+        ('4', '4'),
+        ('5', '5'),
+        ('6', '6'),
+        ('7', '7'),
+        ('8', '8'),
     ], string='Winding Direction', required=True,help='Direction of label winding on roll')
 
-    # 14. Get Up (0 to 8)
-    get_up = fields.Integer(
-        string='Get Up',
-        default=0,
-        help='Get up value from 0 to 8'
-    )
+
 
     # 15. Gap Across (in millimeters)
-    gap_across_mm = fields.Float(
+    gap_across_mm = fields.Integer(
         string='Gap Across (mm)',
         help='Gap across in millimeters',
         default=0.0
     )
 
     # 16. Gap Around (in millimeters)
-    gap_around_mm = fields.Float(
+    gap_around_mm = fields.Integer(
         string='Gap Around (mm)',
         help='Gap around in millimeters'
     )
@@ -324,13 +338,6 @@ class ProductTemplate(models.Model):
         records._create_bom_for_product()
         return records
 
-    @api.constrains('get_up')
-    def _check_get_up_range(self):
-        for record in self:
-            if record.get_up < 0 or record.get_up > 8:
-                raise ValidationError(
-                    'Get Up value must be between 0 and 8'
-                )
 
     @api.constrains('material_id', 'calculated_width')
     def _check_material_variant_exists(self):
@@ -348,9 +355,3 @@ class ProductTemplate(models.Model):
                     f"No variant found in material '{record.material_id.name}' with width '{record.calculated_width}'. "
                     "Please ensure the material has a variant with the matching calculated width attribute."
                 )
-    @api.constrains('get_up')
-    def _check_get_up_range(self):
-       if not self.material_id:
-           raise ValidationError(
-               'please selected material'
-           )
