@@ -39,7 +39,7 @@
                         </group>
                     </group>
                     <group>
-                        <group string="Cylinder &amp; Additional">
+                        <group string="Manufacturing Specs">
                             <field name="no_of_abs"/>
                             <field name="cylinder_no"/>
                         </group>
