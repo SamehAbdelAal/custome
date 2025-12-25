@@ -143,16 +143,15 @@ class ProductTemplate(models.Model):
     )
 
     # 4. Basic Colors
-    basic_colors = fields.Char(
-        string='Basic Colors',
-        help='Number of basic colors used in the product'
-    )
+    basic_colors = fields.Selection([
+        ('1', '1'),
+        ('2', '2'),
+        ('3', '3'),
+        ('4', '4'),
+    ], string='Basic Colors', help='Number of basic colors used in the product')
 
     # 5. Special Colors
-    special_colors = fields.Char(
-        string='Special Colors',
-        help='Number of special colors used in the product'
-    )
+    special_colors = fields.Char(string='Special Colors', help='Number of special colors used in the product')
 
     # Length Quantity in meter - Computed field
     length_quantity_in_meter = fields.Integer(

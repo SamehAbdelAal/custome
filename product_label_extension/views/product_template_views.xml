@@ -8,10 +8,17 @@
         <field name="arch" type="xml">
             <xpath expr="//page" position="before">
                 <page invisible="finsh_product" string="Label Specifications" name="label_specifications">
-                    <group string="Product Identification">
-                        <field name="label_product_id" />
-                        <field name="label_customer_id" />
+                    <group>
+                        <group string="Product Identification">
+                            <field name="label_product_id" />
+                            <field name="label_customer_id" />
+                        </group>
+                        <group string="colors">
+                            <field name="basic_colors" />
+                            <field name="special_colors" />
+                        </group>
                     </group>
+
                     <group>
                         <group string="Size Specifications">
                             <field name="size_width_mm" />
@@ -55,8 +62,7 @@
                             <field name="calculated_width" />
                             <field name="length_quantity_in_meter" />
                             <field name="attribute_id" readonly="1" invisible="viewable" />
-                            <field name="basic_colors" />
-                            <field name="special_colors" />
+
                         </group>
                     </group>
                 </page>
