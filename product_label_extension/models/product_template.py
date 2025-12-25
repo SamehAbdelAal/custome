@@ -357,17 +357,29 @@ class ProductTemplate(models.Model):
 
     @api.constrains('material_id', 'calculated_width')
     def _check_material_variant_exists(self):
-        """Validate that a matching variant exists in material_id for the calculated_width."""
+        """Validate that a matching variant exists in material_id with attribute value >= calculated_width."""
         for record in self:
-            if not record.material_id:
+            if not record.material_id or not record.calculated_width:
                 continue
-            # Check if a variant exists with matching attribute value
-            matching_variant = self.env['product.product'].search([
+            # Search for all variants in material_id
+            all_variants = self.env['product.product'].search([
                 ('product_tmpl_id', '=', record.material_id.id),
-                ('product_template_attribute_value_ids.name', '=', str(record.calculated_width))
-            ], limit=1)
+            ])
+            # Check if any variant has attribute value >= calculated_width
+            matching_variant = False
+            for variant in all_variants:
+                for attr_value in variant.product_template_attribute_value_ids:
+                    try:
+                        attr_num = float(attr_value.name)
+                        if attr_num >= record.calculated_width:
+                            matching_variant = True
+                            break
+                    except (ValueError, TypeError):
+                        continue
+                if matching_variant:
+                    break
             if not matching_variant:
                 raise ValidationError(
-                    f"No variant found in material '{record.material_id.name}' with width '{record.calculated_width}'. "
-                    "Please ensure the material has a variant with the matching calculated width attribute."
+                    f"No variant found in material '{record.material_id.name}' with width >= '{record.calculated_width}'. "
+                    "Please ensure the material has a variant with a matching or larger width attribute."
                 )
