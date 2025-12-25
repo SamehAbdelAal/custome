@@ -9,6 +9,7 @@ from odoo.exceptions import ValidationError, UserError
 
 _logger = logging.getLogger(__name__)
 
+
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
@@ -20,6 +21,7 @@ class ProductTemplate(models.Model):
         default='New',
         help='Unique product sequence ID'
     )
+    finsh_product = fields.Boolean(string='Finsh Product', default=False)
     viewable = fields.Boolean(default=True)
     selected_variant_id = fields.Many2one(
         'product.product',
@@ -27,9 +29,8 @@ class ProductTemplate(models.Model):
         help='Variant selected based on calculated width'
     )
 
-
     # 3. Material - Selection (Subject)
-    material_id = fields.Many2one('product.template', string='Material',required=False)
+    material_id = fields.Many2one('product.template', string='Material', required=False)
     attribute_id = fields.Many2one(
         'product.product',
         string='Product Rules',
@@ -37,27 +38,41 @@ class ProductTemplate(models.Model):
         store=True,
     )
 
+    def _safe_int(self, value):
+        """Convert string value to int, return 0 if empty or invalid."""
+        if not value:
+            return 0
+        try:
+            return int(value)
+        except (ValueError, TypeError):
+            return 0
+
     @api.depends('no_of_abs', 'size_width_mm', 'gap_across_mm', 'size_height_mm', 'winding_direction')
     def _compute_calculated_width(self):
         for record in self:
+            no_of_abs = record._safe_int(record.no_of_abs)
+            size_width_mm = record._safe_int(record.size_width_mm)
+            size_height_mm = record._safe_int(record.size_height_mm)
+            gap_across_mm = record._safe_int(record.gap_across_mm)
+
             if record.winding_direction in ('0', '1', '2', '5', '6'):
                 # Calculate using size_width_mm
-                if record.no_of_abs and record.size_width_mm:
+                if no_of_abs and size_width_mm:
                     record.calculated_width = math.ceil((
-                                    record.no_of_abs * record.size_width_mm
-                                    + (record.no_of_abs - 1) * (record.gap_across_mm or 0)
-                                    + 16
-                            ) / 10)
+                                                                no_of_abs * size_width_mm
+                                                                + (no_of_abs - 1) * gap_across_mm
+                                                                + 16
+                                                        ) / 10)
                 else:
                     record.calculated_width = 0
             elif record.winding_direction in ('3', '4', '7', '8'):
                 # Calculate using size_height_mm
-                if record.no_of_abs and record.size_height_mm:
+                if no_of_abs and size_height_mm:
                     record.calculated_width = math.ceil((
-                                    record.no_of_abs * record.size_height_mm
-                                    + (record.no_of_abs - 1) * (record.gap_across_mm or 0)
-                                    + 16
-                            ) / 10)
+                                                                no_of_abs * size_height_mm
+                                                                + (no_of_abs - 1) * gap_across_mm
+                                                                + 16
+                                                        ) / 10)
                 else:
                     record.calculated_width = 0
             else:
@@ -67,27 +82,33 @@ class ProductTemplate(models.Model):
     def _compute_attribute_id(self):
         """Update attribute_id based on calculated width from material_id."""
         for rec in self:
-            if not rec.material_id:
+            if not rec.material_id or not rec.calculated_width:
                 rec.attribute_id = False
                 rec.viewable = True
                 continue
-            # Search for variant in material_id where product_template_attribute_value_ids.name == calculated_width
-            matching_variant = self.env['product.product'].search([
+            # Search for all variants in material_id
+            all_variants = self.env['product.product'].search([
                 ('product_tmpl_id', '=', rec.material_id.id),
-                ('product_template_attribute_value_ids.name', '=', str(rec.calculated_width))
-            ], limit=1)
-            print(matching_variant)
+            ])
+            # Filter variants where attribute value >= calculated_width (numeric comparison)
+            matching_variant = False
+            for variant in all_variants:
+                for attr_value in variant.product_template_attribute_value_ids:
+                    try:
+                        attr_num = float(attr_value.name)
+                        if attr_num >= rec.calculated_width:
+                            matching_variant = variant
+                            break
+                    except (ValueError, TypeError):
+                        continue
+                if matching_variant:
+                    break
             if matching_variant:
                 rec.attribute_id = matching_variant
                 rec.viewable = False
             else:
                 rec.attribute_id = False
                 rec.viewable = True
-                raise ValidationError(
-                    f"No matching variant found in material '{rec.material_id.name}' "
-                    f"with calculated width '{rec.calculated_width}'. "
-                    "Please select a material that has a variant with this width attribute."
-                )
 
     def _create_bom_for_product(self):
         """Create BOM for the product if conditions are met.
@@ -112,6 +133,7 @@ class ProductTemplate(models.Model):
                     }),
                 ],
             })
+
     # Calculated Width - Computed field
     calculated_width = fields.Integer(
         string='Calculated Width',
@@ -121,16 +143,14 @@ class ProductTemplate(models.Model):
     )
 
     # 4. Basic Colors
-    basic_colors = fields.Integer(
+    basic_colors = fields.Char(
         string='Basic Colors',
-        default=0,
         help='Number of basic colors used in the product'
     )
 
     # 5. Special Colors
-    special_colors = fields.Integer(
+    special_colors = fields.Char(
         string='Special Colors',
-        default=0,
         help='Number of special colors used in the product'
     )
 
@@ -153,40 +173,40 @@ class ProductTemplate(models.Model):
     )
     def _compute_length_quantity_in_meter(self):
         for record in self:
-            if not record.no_of_abs:
+            no_of_abs = record._safe_int(record.no_of_abs)
+            if not no_of_abs:
                 record.length_quantity_in_meter = 0
                 continue
 
-            no_of_abs = record.no_of_abs
-            gap_around = record.gap_around_mm or 0.0
-            basic_colors = record.basic_colors or 0
-            special_colors = record.special_colors or 0
+            gap_around = record._safe_int(record.gap_around_mm)
+            basic_colors = record._safe_int(record.basic_colors)
+            special_colors = record._safe_int(record.special_colors)
+            size_height_mm = record._safe_int(record.size_height_mm)
+            size_width_mm = record._safe_int(record.size_width_mm)
 
             ceil_part = (math.ceil(2000 / no_of_abs) - 1) * gap_around
             color_part = (basic_colors + special_colors) * 150
 
             if record.winding_direction in ('0', '1', '2', '5', '6'):
-                base = (2000 * (record.size_height_mm or 0.0)) / no_of_abs
+                base = (2000 * size_height_mm) / no_of_abs
             elif record.winding_direction in ('3', '4', '7', '8'):
-                base = (2000 * (record.size_width_mm or 0.0)) / no_of_abs
+                base = (2000 * size_width_mm) / no_of_abs
             else:
                 record.length_quantity_in_meter = 0
                 continue
 
             length = (base + ceil_part) / 1000 + color_part
 
-            # 👇 الضمان النهائي
             record.length_quantity_in_meter = int(math.ceil(length))
 
     # 6. Size (Width mm)
-    size_width_mm = fields.Integer(
+    size_width_mm = fields.Char(
         string='Size (Width mm)',
-        help='Width of the product in millimeters',
-        default=0.0
+        help='Width of the product in millimeters'
     )
 
     # 7. Size (Height mm)
-    size_height_mm = fields.Integer(
+    size_height_mm = fields.Char(
         string='Size (Height mm)',
         help='Height of the product in millimeters'
     )
@@ -215,14 +235,16 @@ class ProductTemplate(models.Model):
         ('microns 15', 'Microns 15'),
         ('microns 10', 'Microns 10'),
     ], string='Microns', help='Microns')
-    open_microns =fields.Boolean(default=True)
+    open_microns = fields.Boolean(default=True)
+
     @api.onchange('lamination')
     def lamination_change(self):
         for rec in self:
-            if rec.lamination == 'gloss' or  rec.lamination == 'matte':
+            if rec.lamination == 'gloss' or rec.lamination == 'matte':
                 rec.open_microns = False
             else:
                 rec.open_microns = True
+
     # 10. Varnish - Selection
     varnish = fields.Selection([
         ('no', 'No'),
@@ -232,15 +254,14 @@ class ProductTemplate(models.Model):
     ], string='Varnish', default='no', help='Varnish type')
 
     # 11. Quantity in Roll - Number (mandatory)
-    quantity_in_roll = fields.Integer(
+    quantity_in_roll = fields.Char(
         string='Quantity in Roll',
         required=True,
-        default=0,
         help='Quantity of labels in one roll'
     )
 
     # 12. Core Size
-    core_size = fields.Integer(
+    core_size = fields.Char(
         string='Core Size',
         help='Core size of the roll'
     )
@@ -256,40 +277,36 @@ class ProductTemplate(models.Model):
         ('6', '6'),
         ('7', '7'),
         ('8', '8'),
-    ], string='Winding Direction', required=True,help='Direction of label winding on roll')
-
-
+    ], string='Winding Direction', required=True, help='Direction of label winding on roll')
 
     # 15. Gap Across (in millimeters)
-    gap_across_mm = fields.Integer(
+    gap_across_mm = fields.Char(
         string='Gap Across (mm)',
-        help='Gap across in millimeters',
-        default=0.0
+        help='Gap across in millimeters'
     )
 
     # 16. Gap Around (in millimeters)
-    gap_around_mm = fields.Integer(
+    gap_around_mm = fields.Char(
         string='Gap Around (mm)',
         help='Gap around in millimeters'
     )
 
     # 17. Image Across
-    image_across = fields.Integer(
+    image_across = fields.Char(
         string='Image Across',
         help='Number of images across'
     )
 
     # 18. Image Around
-    image_around = fields.Integer(
+    image_around = fields.Char(
         string='Image Around',
         help='Number of images around'
     )
 
     # 19. No Of Abs
-    no_of_abs = fields.Integer(
+    no_of_abs = fields.Char(
         string='No Of Abs',
-        help='Number of absorptions',
-        default=0
+        help='Number of absorptions'
     )
 
     # 20. Cylinder No
@@ -337,7 +354,6 @@ class ProductTemplate(models.Model):
         # Create BOM only on initial creation, not on updates
         records._create_bom_for_product()
         return records
-
 
     @api.constrains('material_id', 'calculated_width')
     def _check_material_variant_exists(self):
