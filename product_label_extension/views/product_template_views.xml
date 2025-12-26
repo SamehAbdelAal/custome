@@ -34,15 +34,17 @@
                     </group>
                     <group>
                         <group string="Roll Specifications">
-                            <field name="quantity_in_roll" />
+                            <field name="quantity_in_roll"
+                                   required="not finsh_product" />
                             <field name="core_size" />
-                            <field name="winding_direction" required="finsh_product" />
+                            <field name="winding_direction"
+                                   required="not finsh_product" />
                         </group>
                         <group string="Layout Specifications">
                             <field name="gap_across_mm" />
                             <field name="gap_around_mm" />
-                            <field name="image_across" />
-                            <field name="image_around" />
+                            <field name="image_across" required="not finsh_product" />
+                            <field name="image_around" required="not finsh_product" />
                         </group>
                     </group>
                     <group>
@@ -58,11 +60,10 @@
                     </group>
                     <group>
                         <group string="Material &amp; Colors">
-                            <field name="material_id" required="finsh_product" domain="[('finsh_product' ,'=', False)]" />
+                            <field name="material_id" required="finsh_product == False" domain="[('finsh_product' ,'=', True)]" />
                             <field name="calculated_width" />
                             <field name="length_quantity_in_meter" />
                             <field name="attribute_id" readonly="1" invisible="viewable" />
-
                         </group>
                     </group>
                 </page>
@@ -77,7 +78,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='sale_ok']/.." position="before">
                 <group>
-                    <field name="finsh_product" />
+                    <field name="finsh_product" string="Raw Material" />
                 </group>
             </xpath>
         </field>

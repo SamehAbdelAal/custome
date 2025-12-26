@@ -21,7 +21,20 @@ class ProductTemplate(models.Model):
         default='New',
         help='Unique product sequence ID'
     )
-    finsh_product = fields.Boolean(string='Finsh Product', default=False)
+    finsh_product = fields.Boolean(string='Raw Material', default=False)
+    purchase_ok = fields.Boolean(default=False)
+    sale_ok = fields.Boolean(default=True)
+
+    @api.onchange('finsh_product')
+    def change_sale_and_purchase_ok(self):
+        for rec in self:
+            if rec.finsh_product == False:
+                rec.purchase_ok = False
+                rec.sale_ok = True
+            else:
+                rec.purchase_ok = True
+                rec.sale_ok = False
+
     viewable = fields.Boolean(default=True)
     selected_variant_id = fields.Many2one(
         'product.product',
@@ -30,7 +43,7 @@ class ProductTemplate(models.Model):
     )
 
     # 3. Material - Selection (Subject)
-    material_id = fields.Many2one('product.template', string='Material', required=False)
+    material_id = fields.Many2one('product.template', string='Material')
     attribute_id = fields.Many2one(
         'product.product',
         string='Product Rules',
@@ -255,7 +268,6 @@ class ProductTemplate(models.Model):
     # 11. Quantity in Roll - Number (mandatory)
     quantity_in_roll = fields.Char(
         string='Quantity in Roll',
-        required=True,
         help='Quantity of labels in one roll'
     )
 
@@ -276,7 +288,7 @@ class ProductTemplate(models.Model):
         ('6', '6'),
         ('7', '7'),
         ('8', '8'),
-    ], string='Winding Direction', required=True, help='Direction of label winding on roll')
+    ], string='Winding Direction', help='Direction of label winding on roll')
 
     # 15. Gap Across (in millimeters)
     gap_across_mm = fields.Char(
@@ -300,6 +312,7 @@ class ProductTemplate(models.Model):
     image_around = fields.Char(
         string='Image Around',
         help='Number of images around'
+
     )
 
     # 19. No Of Abs
