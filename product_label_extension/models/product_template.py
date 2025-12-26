@@ -60,6 +60,7 @@ class ProductTemplate(models.Model):
         except (ValueError, TypeError):
             return 0
 
+    # Width Calculation
     @api.depends('no_of_abs', 'size_width_mm', 'gap_across_mm', 'size_height_mm', 'winding_direction')
     def _compute_calculated_width(self):
         for record in self:
@@ -71,21 +72,21 @@ class ProductTemplate(models.Model):
             if record.winding_direction in ('0', '1', '2', '5', '6'):
                 # Calculate using size_width_mm
                 if no_of_abs and size_width_mm:
-                    record.calculated_width = math.ceil((
-                                                                no_of_abs * size_width_mm
-                                                                + (no_of_abs - 1) * gap_across_mm
-                                                                + 16
-                                                        ) / 10)
+                    record.calculated_width = math.ceil(
+                        no_of_abs * size_width_mm
+                        + (no_of_abs - 1) * gap_across_mm
+                        + 16
+                    )
                 else:
                     record.calculated_width = 0
             elif record.winding_direction in ('3', '4', '7', '8'):
                 # Calculate using size_height_mm
                 if no_of_abs and size_height_mm:
-                    record.calculated_width = math.ceil((
-                                                                no_of_abs * size_height_mm
-                                                                + (no_of_abs - 1) * gap_across_mm
-                                                                + 16
-                                                        ) / 10)
+                    record.calculated_width = math.ceil(
+                        no_of_abs * size_height_mm
+                        + (no_of_abs - 1) * gap_across_mm
+                        + 16
+                    )
                 else:
                     record.calculated_width = 0
             else:
@@ -196,18 +197,20 @@ class ProductTemplate(models.Model):
             size_height_mm = record._safe_int(record.size_height_mm)
             size_width_mm = record._safe_int(record.size_width_mm)
 
-            ceil_part = (math.ceil(2000 / no_of_abs) - 1) * gap_around
-            color_part = (basic_colors + special_colors) * 150
-
             if record.winding_direction in ('0', '1', '2', '5', '6'):
-                base = (2000 * size_height_mm) / no_of_abs
+                base_length = (1000 * size_height_mm) / no_of_abs
             elif record.winding_direction in ('3', '4', '7', '8'):
-                base = (2000 * size_width_mm) / no_of_abs
+                base_length = (1000 * size_width_mm) / no_of_abs
             else:
                 record.length_quantity_in_meter = 0
                 continue
 
-            length = (base + ceil_part) / 1000 + color_part
+            gaps_length = (math.ceil(1000 / no_of_abs) - 1) * gap_around
+            # Save Label length and Color length seperatly
+            labels_length = (base_length + gaps_length) / 1000
+            colors_length = (basic_colors + special_colors) * 25
+            # Calculate the length for 1000 labels
+            length = labels_length + colors_length
 
             record.length_quantity_in_meter = int(math.ceil(length))
 
