@@ -132,8 +132,8 @@ class ProductTemplate(models.Model):
         for record in self:
             if not record.material_id:
                 continue
-            # Get the first product variant from the material template
-            material_product = record.material_id.product_variant_id
+            # Use attribute_id (Product Rules) if available, otherwise fall back to first variant
+            material_product = record.attribute_id or record.material_id.product_variant_id
             if not material_product:
                 continue
             self.env['mrp.bom'].sudo().create({
@@ -226,17 +226,18 @@ class ProductTemplate(models.Model):
         help='Height of the product in millimeters'
     )
 
-    # 8. Mark Type - Multiple choice
-    mark_type = fields.Selection([
+    # 8. Foil Type - Multiple choice
+    foil_type = fields.Selection([
         ('no', 'No'),
         ('silver', 'Silver'),
         ('gold', 'Gold'),
         ('other', 'Other (Enter the required option)'),
-    ], string='Mark', default='no', help='Mark type for the product')
+    ], string='Foil', default='no', help='Foil type for the product', oldname='mark_type')
 
-    mark_type_other = fields.Char(
-        string='Mark Type (Other)',
-        help='Specify other mark type if selected'
+    foil_type_other = fields.Char(
+        string='Foil Type (Other)',
+        help='Specify other foil type if selected',
+        oldname='mark_type_other'
     )
 
     # 9. Lamination - Selection
@@ -245,11 +246,13 @@ class ProductTemplate(models.Model):
         ('gloss', 'Gloss'),
         ('matte', 'Matte'),
     ], string='Lamination', default='no', help='Lamination type')
-    microns = fields.Selection([
+    thickness = fields.Selection([
         ('microns 35', 'Microns 35'),
+        ('microns 20', 'Microns 20'),
+        ('microns 18', 'Microns 18'),
         ('microns 15', 'Microns 15'),
         ('microns 10', 'Microns 10'),
-    ], string='Microns', help='Microns')
+    ], string='Thickness', help='Thickness in microns')
     open_microns = fields.Boolean(default=True)
 
     @api.onchange('lamination')
@@ -266,6 +269,8 @@ class ProductTemplate(models.Model):
         ('gloss', 'Gloss'),
         ('matte', 'Matte'),
         ('raised', 'Raised'),
+        ('spot', 'Spot'),
+        ('sport', 'Sport'),
     ], string='Varnish', default='no', help='Varnish type')
 
     # 11. Quantity in Roll - Number (mandatory)

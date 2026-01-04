@@ -25,10 +25,10 @@
                             <field name="size_height_mm" />
                         </group>
                         <group string="Finishing Options">
-                            <field name="mark_type" />
-                            <field name="mark_type_other" invisible="mark_type != 'other'" />
+                            <field name="foil_type" />
+                            <field name="foil_type_other" invisible="foil_type != 'other'" />
                             <field name="lamination" />
-                            <field name="microns" invisible="open_microns" />
+                            <field name="thickness" invisible="open_microns" />
                             <field name="varnish" />
                         </group>
                     </group>
