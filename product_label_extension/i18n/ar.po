@@ -1,0 +1,508 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* product_label_extension
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0-20251114\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-01-07 22:36+0000\n"
+"PO-Revision-Date: 2026-01-07 22:36+0000\n"
+"Last-Translator: \n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__back_side_print
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__back_side_print
+msgid "Back Side Print"
+msgstr "طباعة الوجه الخلفي"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__basic_colors
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__basic_colors
+msgid "Basic Colors"
+msgstr "الألوان الأساسية"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__calculated_width
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__calculated_width
+msgid "Calculated Width"
+msgstr "العرض المحسوب"
+
+#. module: product_label_extension
+#: model:ir.model.fields,help:product_label_extension.field_product_product__length_quantity_in_meter
+#: model:ir.model.fields,help:product_label_extension.field_product_template__length_quantity_in_meter
+msgid "Calculated length quantity in meters based on winding direction"
+msgstr "كمية الطول المحسوبة بالأمتار بناءً على اتجاه اللف"
+
+#. module: product_label_extension
+#: model:ir.model.fields,help:product_label_extension.field_product_product__calculated_width
+#: model:ir.model.fields,help:product_label_extension.field_product_template__calculated_width
+msgid ""
+"Calculated width based on: (no_of_abs * size_width_mm) + ((no_of_abs - 1) * "
+"gap_across_mm) + 1.6"
+msgstr ""
+"العرض المحسوب بناءً على: (عدد_الأعمدة * عرض_الحجم_مم) + ((عدد_الأعمدة - 1) * "
+"الفجوة_العرضية_مم) + 1.6"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__core_size
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__core_size
+msgid "Core Size"
+msgstr "حجم الأسطوانة"
+
+#. module: product_label_extension
+#: model:ir.model.fields,help:product_label_extension.field_product_product__core_size
+#: model:ir.model.fields,help:product_label_extension.field_product_template__core_size
+msgid "Core size of the roll"
+msgstr "حجم أسطوانة الرول"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__label_customer_id
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__label_customer_id
+#: model_terms:ir.ui.view,arch_db:product_label_extension.product_template_search_view_label_extension
+msgid "Customer"
+msgstr "العميل"
+
+#. module: product_label_extension
+#: model:ir.model.fields,help:product_label_extension.field_product_product__label_customer_id
+#: model:ir.model.fields,help:product_label_extension.field_product_template__label_customer_id
+msgid "Customer associated with this product specification"
+msgstr "العميل المرتبط بمواصفات هذا المنتج"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__cylinder_no
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__cylinder_no
+msgid "Cylinder No"
+msgstr "رقم الأسطوانة"
+
+#. module: product_label_extension
+#: model:ir.model.fields,help:product_label_extension.field_product_product__cylinder_no
+#: model:ir.model.fields,help:product_label_extension.field_product_template__cylinder_no
+msgid "Cylinder number"
+msgstr "رقم الأسطوانة"
+
+#. module: product_label_extension
+#: model:ir.model.fields,help:product_label_extension.field_product_product__winding_direction
+#: model:ir.model.fields,help:product_label_extension.field_product_template__winding_direction
+msgid "Direction of label winding on roll"
+msgstr "اتجاه لف الملصق على الرول"
+
+#. module: product_label_extension
+#: model_terms:ir.ui.view,arch_db:product_label_extension.product_template_form_view_label_extension
+msgid "Finishing Options"
+msgstr "خيارات التشطيب"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__foil_type
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__foil_type
+msgid "Foil"
+msgstr "الفويل"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__foil_type_other
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__foil_type_other
+msgid "Foil Type (Other)"
+msgstr "نوع الفويل (أخرى)"
+
+#. module: product_label_extension
+#: model:ir.model.fields,help:product_label_extension.field_product_product__foil_type
+#: model:ir.model.fields,help:product_label_extension.field_product_template__foil_type
+msgid "Foil type for the product"
+msgstr "نوع الفويل للمنتج"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__gap_across_mm
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__gap_across_mm
+msgid "Gap Across (mm)"
+msgstr "الفجوة العرضية (مم)"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__gap_around_mm
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__gap_around_mm
+msgid "Gap Around (mm)"
+msgstr "الفجوة المحيطية (مم)"
+
+#. module: product_label_extension
+#: model:ir.model.fields,help:product_label_extension.field_product_product__gap_across_mm
+#: model:ir.model.fields,help:product_label_extension.field_product_template__gap_across_mm
+msgid "Gap across in millimeters"
+msgstr "الفجوة العرضية بالمليمترات"
+
+#. module: product_label_extension
+#: model:ir.model.fields,help:product_label_extension.field_product_product__gap_around_mm
+#: model:ir.model.fields,help:product_label_extension.field_product_template__gap_around_mm
+msgid "Gap around in millimeters"
+msgstr "الفجوة المحيطية بالمليمترات"
+
+#. module: product_label_extension
+#: model:ir.model.fields.selection,name:product_label_extension.selection__product_template__lamination__gloss
+#: model:ir.model.fields.selection,name:product_label_extension.selection__product_template__varnish__gloss
+msgid "Gloss"
+msgstr "لامع"
+
+#. module: product_label_extension
+#: model:ir.model.fields.selection,name:product_label_extension.selection__product_template__foil_type__gold
+msgid "Gold"
+msgstr "ذهبي"
+
+#. module: product_label_extension
+#: model:ir.model.fields,help:product_label_extension.field_product_product__size_height_mm
+#: model:ir.model.fields,help:product_label_extension.field_product_template__size_height_mm
+msgid "Height of the product in millimeters"
+msgstr "ارتفاع المنتج بالمليمترات"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__image_across
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__image_across
+msgid "Image Across"
+msgstr "الصور عرضياً"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__image_around
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__image_around
+msgid "Image Around"
+msgstr "الصور محيطياً"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__invisible_ink
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__invisible_ink
+msgid "Invisible Ink"
+msgstr "حبر غير مرئي"
+
+#. module: product_label_extension
+#: model_terms:ir.ui.view,arch_db:product_label_extension.product_template_form_view_label_extension
+msgid "Label Specifications"
+msgstr "مواصفات الملصق"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__lamination
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__lamination
+#: model_terms:ir.ui.view,arch_db:product_label_extension.product_template_search_view_label_extension
+msgid "Lamination"
+msgstr "التغليف"
+
+#. module: product_label_extension
+#: model:ir.model.fields,help:product_label_extension.field_product_product__lamination
+#: model:ir.model.fields,help:product_label_extension.field_product_template__lamination
+msgid "Lamination type"
+msgstr "نوع التغليف"
+
+#. module: product_label_extension
+#: model_terms:ir.ui.view,arch_db:product_label_extension.product_template_form_view_label_extension
+msgid "Layout Specifications"
+msgstr "مواصفات التخطيط"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__length_quantity_in_meter
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__length_quantity_in_meter
+msgid "Length Quantity (m)"
+msgstr "كمية الطول (م)"
+
+#. module: product_label_extension
+#: model_terms:ir.ui.view,arch_db:product_label_extension.product_template_form_view_label_extension
+msgid "Manufacturing Specs"
+msgstr "مواصفات التصنيع"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__selected_variant_id
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__selected_variant_id
+msgid "Matched Variant"
+msgstr "المتغير المطابق"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__material_id
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__material_id
+#: model_terms:ir.ui.view,arch_db:product_label_extension.product_template_search_view_label_extension
+msgid "Material"
+msgstr "الخامة"
+
+#. module: product_label_extension
+#: model_terms:ir.ui.view,arch_db:product_label_extension.product_template_form_view_label_extension
+msgid "Material & Colors"
+msgstr "الخامة والألوان"
+
+#. module: product_label_extension
+#: model:ir.model.fields.selection,name:product_label_extension.selection__product_template__lamination__matte
+#: model:ir.model.fields.selection,name:product_label_extension.selection__product_template__varnish__matte
+msgid "Matte"
+msgstr "مطفي"
+
+#. module: product_label_extension
+#: model:ir.model.fields.selection,name:product_label_extension.selection__product_template__thickness__microns_10
+msgid "Microns 10"
+msgstr "10 ميكرون"
+
+#. module: product_label_extension
+#: model:ir.model.fields.selection,name:product_label_extension.selection__product_template__thickness__microns_15
+msgid "Microns 15"
+msgstr "15 ميكرون"
+
+#. module: product_label_extension
+#: model:ir.model.fields.selection,name:product_label_extension.selection__product_template__thickness__microns_18
+msgid "Microns 18"
+msgstr "18 ميكرون"
+
+#. module: product_label_extension
+#: model:ir.model.fields.selection,name:product_label_extension.selection__product_template__thickness__microns_20
+msgid "Microns 20"
+msgstr "20 ميكرون"
+
+#. module: product_label_extension
+#: model:ir.model.fields.selection,name:product_label_extension.selection__product_template__thickness__microns_35
+msgid "Microns 35"
+msgstr "35 ميكرون"
+
+#. module: product_label_extension
+#: model:ir.model.fields.selection,name:product_label_extension.selection__product_template__foil_type__no
+#: model:ir.model.fields.selection,name:product_label_extension.selection__product_template__lamination__no
+#: model:ir.model.fields.selection,name:product_label_extension.selection__product_template__varnish__no
+msgid "No"
+msgstr "لا"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__no_of_abs
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__no_of_abs
+msgid "No Of Abs"
+msgstr "عدد الأعمدة"
+
+#. module: product_label_extension
+#: model:ir.model.fields,help:product_label_extension.field_product_product__no_of_abs
+#: model:ir.model.fields,help:product_label_extension.field_product_template__no_of_abs
+msgid "Number of absorptions"
+msgstr "عدد الامتصاصات"
+
+#. module: product_label_extension
+#: model:ir.model.fields,help:product_label_extension.field_product_product__basic_colors
+#: model:ir.model.fields,help:product_label_extension.field_product_template__basic_colors
+msgid "Number of basic colors used in the product"
+msgstr "عدد الألوان الأساسية المستخدمة في المنتج"
+
+#. module: product_label_extension
+#: model:ir.model.fields,help:product_label_extension.field_product_product__image_across
+#: model:ir.model.fields,help:product_label_extension.field_product_template__image_across
+msgid "Number of images across"
+msgstr "عدد الصور عرضياً"
+
+#. module: product_label_extension
+#: model:ir.model.fields,help:product_label_extension.field_product_product__image_around
+#: model:ir.model.fields,help:product_label_extension.field_product_template__image_around
+msgid "Number of images around"
+msgstr "عدد الصور محيطياً"
+
+#. module: product_label_extension
+#: model:ir.model.fields,help:product_label_extension.field_product_product__special_colors
+#: model:ir.model.fields,help:product_label_extension.field_product_template__special_colors
+msgid "Number of special colors used in the product"
+msgstr "عدد الألوان الخاصة المستخدمة في المنتج"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__open_microns
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__open_microns
+msgid "Open Microns"
+msgstr "ميكرون مفتوح"
+
+#. module: product_label_extension
+#: model:ir.model.fields.selection,name:product_label_extension.selection__product_template__foil_type__other
+msgid "Other (Enter the required option)"
+msgstr "أخرى (أدخل الخيار المطلوب)"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__perforation
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__perforation
+msgid "Perforation"
+msgstr "التثقيب"
+
+#. module: product_label_extension
+#: model:ir.model,name:product_label_extension.model_product_template
+msgid "Product"
+msgstr "المنتج"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__label_product_id
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__label_product_id
+msgid "Product ID"
+msgstr "معرّف المنتج"
+
+#. module: product_label_extension
+#: model_terms:ir.ui.view,arch_db:product_label_extension.product_template_form_view_label_extension
+msgid "Product Identification"
+msgstr "تعريف المنتج"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__attribute_id
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__attribute_id
+msgid "Product Rules"
+msgstr "قواعد المنتج"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__purchase_ok
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__purchase_ok
+msgid "Purchase"
+msgstr "الشراء"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__quantity_in_roll
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__quantity_in_roll
+msgid "Quantity in Roll"
+msgstr "الكمية في الرول"
+
+#. module: product_label_extension
+#: model:ir.model.fields,help:product_label_extension.field_product_product__quantity_in_roll
+#: model:ir.model.fields,help:product_label_extension.field_product_template__quantity_in_roll
+msgid "Quantity of labels in one roll"
+msgstr "كمية الملصقات في الرول الواحد"
+
+#. module: product_label_extension
+#: model:ir.model.fields.selection,name:product_label_extension.selection__product_template__varnish__raised
+msgid "Raised"
+msgstr "بارز"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__finsh_product
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__finsh_product
+#: model_terms:ir.ui.view,arch_db:product_label_extension.add_field_finsh
+msgid "Raw Material"
+msgstr "المواد الخام"
+
+#. module: product_label_extension
+#: model_terms:ir.ui.view,arch_db:product_label_extension.product_template_form_view_label_extension
+msgid "Roll Specifications"
+msgstr "مواصفات الرول"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__sale_ok
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__sale_ok
+msgid "Sales"
+msgstr "المبيعات"
+
+#. module: product_label_extension
+#: model:ir.model.fields.selection,name:product_label_extension.selection__product_template__foil_type__silver
+msgid "Silver"
+msgstr "فضي"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__size_height_mm
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__size_height_mm
+msgid "Size (Height mm)"
+msgstr "الحجم (الارتفاع مم)"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__size_width_mm
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__size_width_mm
+msgid "Size (Width mm)"
+msgstr "الحجم (العرض مم)"
+
+#. module: product_label_extension
+#: model_terms:ir.ui.view,arch_db:product_label_extension.product_template_form_view_label_extension
+msgid "Size Specifications"
+msgstr "مواصفات الحجم"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__special_colors
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__special_colors
+msgid "Special Colors"
+msgstr "الألوان الخاصة"
+
+#. module: product_label_extension
+#: model_terms:ir.ui.view,arch_db:product_label_extension.product_template_form_view_label_extension
+msgid "Special Features"
+msgstr "الميزات الخاصة"
+
+#. module: product_label_extension
+#: model:ir.model.fields,help:product_label_extension.field_product_product__foil_type_other
+#: model:ir.model.fields,help:product_label_extension.field_product_template__foil_type_other
+msgid "Specify other foil type if selected"
+msgstr "حدد نوع الفويل الآخر إذا تم اختياره"
+
+#. module: product_label_extension
+#: model:ir.model.fields.selection,name:product_label_extension.selection__product_template__varnish__sport
+msgid "Sport"
+msgstr "رياضي"
+
+#. module: product_label_extension
+#: model:ir.model.fields.selection,name:product_label_extension.selection__product_template__varnish__spot
+msgid "Spot"
+msgstr "موضعي"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__thickness
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__thickness
+msgid "Thickness"
+msgstr "السماكة"
+
+#. module: product_label_extension
+#: model:ir.model.fields,help:product_label_extension.field_product_product__thickness
+#: model:ir.model.fields,help:product_label_extension.field_product_template__thickness
+msgid "Thickness in microns"
+msgstr "السماكة بالميكرون"
+
+#. module: product_label_extension
+#: model:ir.model.fields,help:product_label_extension.field_product_product__label_product_id
+#: model:ir.model.fields,help:product_label_extension.field_product_template__label_product_id
+msgid "Unique product sequence ID"
+msgstr "معرّف تسلسل المنتج الفريد"
+
+#. module: product_label_extension
+#: model:ir.model.fields,help:product_label_extension.field_product_product__selected_variant_id
+#: model:ir.model.fields,help:product_label_extension.field_product_template__selected_variant_id
+msgid "Variant selected based on calculated width"
+msgstr "المتغير المحدد بناءً على العرض المحسوب"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__varnish
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__varnish
+msgid "Varnish"
+msgstr "الورنيش"
+
+#. module: product_label_extension
+#: model:ir.model.fields,help:product_label_extension.field_product_product__varnish
+#: model:ir.model.fields,help:product_label_extension.field_product_template__varnish
+msgid "Varnish type"
+msgstr "نوع الورنيش"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__viewable
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__viewable
+msgid "Viewable"
+msgstr "قابل للعرض"
+
+#. module: product_label_extension
+#: model:ir.model.fields,help:product_label_extension.field_product_product__back_side_print
+#: model:ir.model.fields,help:product_label_extension.field_product_template__back_side_print
+msgid "Whether back side printing is required"
+msgstr "ما إذا كانت طباعة الوجه الخلفي مطلوبة"
+
+#. module: product_label_extension
+#: model:ir.model.fields,help:product_label_extension.field_product_product__invisible_ink
+#: model:ir.model.fields,help:product_label_extension.field_product_template__invisible_ink
+msgid "Whether invisible ink is used"
+msgstr "ما إذا كان الحبر غير المرئي مستخدماً"
+
+#. module: product_label_extension
+#: model:ir.model.fields,help:product_label_extension.field_product_product__perforation
+#: model:ir.model.fields,help:product_label_extension.field_product_template__perforation
+msgid "Whether perforation is required"
+msgstr "ما إذا كان التثقيب مطلوباً"
+
+#. module: product_label_extension
+#: model:ir.model.fields,help:product_label_extension.field_product_product__size_width_mm
+#: model:ir.model.fields,help:product_label_extension.field_product_template__size_width_mm
+msgid "Width of the product in millimeters"
+msgstr "عرض المنتج بالمليمترات"
+
+#. module: product_label_extension
+#: model:ir.model.fields,field_description:product_label_extension.field_product_product__winding_direction
+#: model:ir.model.fields,field_description:product_label_extension.field_product_template__winding_direction
+msgid "Winding Direction"
+msgstr "اتجاه اللف"
+
+#. module: product_label_extension
+#: model_terms:ir.ui.view,arch_db:product_label_extension.product_template_form_view_label_extension
+msgid "colors"
+msgstr "ألوان"
