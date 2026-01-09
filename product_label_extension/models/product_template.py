@@ -136,10 +136,36 @@ class ProductTemplate(models.Model):
             material_product = record.attribute_id or record.material_id.product_variant_id
             if not material_product:
                 continue
+
+            # Calculate labels_length and colors_length
+            no_of_abs = record._safe_int(record.no_of_abs)
+            gap_around = record._safe_int(record.gap_around_mm)
+            basic_colors = record._safe_int(record.basic_colors)
+            special_colors = record._safe_int(record.special_colors)
+            size_height_mm = record._safe_int(record.size_height_mm)
+            size_width_mm = record._safe_int(record.size_width_mm)
+
+            labels_length = 0
+            colors_length = 0
+            if no_of_abs:
+                if record.winding_direction in ('0', '1', '2', '5', '6') and size_height_mm:
+                    base_length = (1000 * size_height_mm) / no_of_abs
+                elif record.winding_direction in ('3', '4', '7', '8') and size_width_mm:
+                    base_length = (1000 * size_width_mm) / no_of_abs
+                else:
+                    base_length = 0
+
+                if base_length:
+                    gaps_length = (math.ceil(1000 / no_of_abs) - 1) * gap_around
+                    labels_length = (base_length + gaps_length) / 1000
+                    colors_length = (basic_colors + special_colors) * 25
+
             self.env['mrp.bom'].sudo().create({
                 'product_tmpl_id': record.id,
                 'product_qty': 1000,
                 'product_uom_id': record.uom_id.id,
+                'labels_length': str(round(labels_length, 2)),
+                'color_length': str(colors_length),
                 'bom_line_ids': [
                     Command.create({
                         'product_id': material_product.id,
@@ -169,7 +195,7 @@ class ProductTemplate(models.Model):
 
     # Length Quantity in meter - Computed field
     length_quantity_in_meter = fields.Integer(
-        string='Length Quantity (m)',
+        string='Length For 1000 Labels',
         compute='_compute_length_quantity_in_meter',
         store=True,
         help='Calculated length quantity in meters based on winding direction'
@@ -278,7 +304,6 @@ class ProductTemplate(models.Model):
         ('matte', 'Matte'),
         ('raised', 'Raised'),
         ('spot', 'Spot'),
-        ('sport', 'Sport'),
     ], string='Varnish', default='no', help='Varnish type')
 
     # 11. Quantity in Roll - Number (mandatory)

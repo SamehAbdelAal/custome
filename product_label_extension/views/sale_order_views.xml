@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Sale Order Form View - Add domain on product_template_id based on customer -->
+    <record id="sale_order_form_view_product_domain" model="ir.ui.view">
+        <field name="name">sale.order.form.product.domain</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/list//field[@name='product_template_id']" position="attributes">
+                <attribute name="domain">[('sale_ok', '=', True), ('label_customer_id', '=', parent.partner_id)]</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
