@@ -20,6 +20,7 @@
         'security/ir.model.access.csv',
         'data/sequence_data.xml',
         'views/product_template_views.xml',
+        'views/sale_order_views.xml',
     ],
     'license': 'LGPL-3',
     'installable': True,

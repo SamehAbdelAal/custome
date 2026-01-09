@@ -197,16 +197,24 @@ class ProductTemplate(models.Model):
             size_height_mm = record._safe_int(record.size_height_mm)
             size_width_mm = record._safe_int(record.size_width_mm)
 
+            # Calculate base_length based on winding direction
             if record.winding_direction in ('0', '1', '2', '5', '6'):
+                if not size_height_mm:
+                    record.length_quantity_in_meter = 0
+                    continue
                 base_length = (1000 * size_height_mm) / no_of_abs
             elif record.winding_direction in ('3', '4', '7', '8'):
+                if not size_width_mm:
+                    record.length_quantity_in_meter = 0
+                    continue
                 base_length = (1000 * size_width_mm) / no_of_abs
             else:
                 record.length_quantity_in_meter = 0
                 continue
 
+            # Calculate gaps length between labels
             gaps_length = (math.ceil(1000 / no_of_abs) - 1) * gap_around
-            # Save Label length and Color length seperatly
+            # Save Label length and Color length separately
             labels_length = (base_length + gaps_length) / 1000
             colors_length = (basic_colors + special_colors) * 25
             # Calculate the length for 1000 labels
@@ -360,7 +368,6 @@ class ProductTemplate(models.Model):
     label_customer_id = fields.Many2one(
         'res.partner',
         string='Customer',
-        domain=[('customer_rank', '>', 0)],
         help='Customer associated with this product specification'
     )
 
@@ -403,3 +410,9 @@ class ProductTemplate(models.Model):
                     f"No variant found in material '{record.material_id.name}' with width >= '{record.calculated_width}'. "
                     "Please ensure the material has a variant with a matching or larger width attribute."
                 )
+
+
+class inheritpiiofmattrile(models.Model):
+    _inherit = 'mrp.bom'
+    color_length = fields.Char(string='color length ')
+    labels_length = fields.Char(string='label length ')

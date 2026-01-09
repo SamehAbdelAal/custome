@@ -117,4 +117,18 @@
             </xpath>
         </field>
     </record>
+
+
+    <record id="mrp_bom_inherit" model="ir.ui.view">
+        <field name="name">mrp bom inherit</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_form_view" />
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='type']" position="after">
+                <field name="labels_length" readonly="1" placeholder="labels length" />
+                <field name="color_length" readonly="1" placeholder="color length" />
+            </xpath>
+        </field>
+    </record>
 </odoo>
