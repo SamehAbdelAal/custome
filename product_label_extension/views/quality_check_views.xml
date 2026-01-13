@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Extend Quality Check Wizard Form View -->
+    <record id="view_quality_check_wizard_inherit" model="ir.ui.view">
+        <field name="name">quality.check.wizard.inherit.label.extension</field>
+        <field name="model">quality.check.wizard</field>
+        <field name="inherit_id" ref="quality_control.view_quality_check_wizard"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='additional_note']" position="before">
+                <group string="Quality Checks">
+                    <group>
+                        <field name="color_fastness" readonly="quality_state != 'none'"/>
+                        <field name="cellophane_stability" readonly="quality_state != 'none'"/>
+                        <field name="support_undamaged" readonly="quality_state != 'none'"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
