@@ -19,7 +19,7 @@
         'views/res_company_views.xml',
         'views/sale_order_views.xml',
         'report/tatpack_quotation_report.xml',
-        'report/tatpack_quotation_template.xml',
+        # 'report/tatpack_quotation_template.xml',
     ],
     'license': 'LGPL-3',
     'installable': True,
