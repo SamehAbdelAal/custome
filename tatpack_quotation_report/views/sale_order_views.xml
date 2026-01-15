@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Sale Order Form View - Add TatPack Quotation Fields -->
+    <record id="sale_order_form_tatpack_fields" model="ir.ui.view">
+        <field name="name">sale.order.form.tatpack.quotation</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <!-- Add TatPack Quotation Tab -->
+            <xpath expr="//page[@name='other_information']" position="after">
+                <page string="TatPack Quotation" name="tatpack_quotation">
+                    <group>
+                        <group string="Quotation Details">
+                            <field name="quotation_subject" placeholder="e.g., labels enquiry"/>
+                            <field name="prices_include_tax"/>
+                        </group>
+                        <group string="Terms and Conditions">
+                            <field name="delivery_terms"/>
+                            <field name="lead_time"/>
+                            <field name="validity_days"/>
+                            <field name="payment_terms_text"/>
+                            <field name="tolerance_percentage"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Closing Section">
+                            <field name="closing_text"/>
+                        </group>
+                        <group string="Signature">
+                            <field name="signatory_company" placeholder="TaTPack"/>
+                            <field name="signatory_name"/>
+                            <field name="signatory_mobile"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+
+            <!-- Add No. of Variants to Order Line -->
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_uom_qty']" position="after">
+                <field name="no_of_variants" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
