@@ -71,6 +71,12 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <div class="text-center text-white mt-2" style="color: black; font-weight: bold; font-size: 12px;">
+                            (Page
+                            <span class="page" />
+                            of
+                            <span class="topage" />)
+                        </div>
                     </div>
                 </div>
             </div>
@@ -136,7 +142,7 @@
                 <div style="margin-bottom: 15px;">
                     <span class="fw-bold fs-5" style="text-decoration: underline;">
                         Re.:
-                        <t t-esc="doc.quotation_subject or 's'" />
+                        <t t-esc="doc.quotation_subject or 'quotation subject'" />
                     </span>
                 </div>
 
