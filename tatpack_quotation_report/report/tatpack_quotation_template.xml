@@ -4,78 +4,66 @@
     <template id="tatpack_external_layout">
         <t t-if="not o" t-set="o" t-value="doc" />
         <t t-if="not company">
-            <t t-if="company_id">
-                <t t-set="company" t-value="company_id" />
-            </t>
-            <t t-elif="o and 'company_id' in o and o.company_id.sudo()">
-                <t t-set="company" t-value="o.company_id.sudo()" />
-            </t>
-            <t t-else="">
-                <t t-set="company" t-value="request.env.company" />
-            </t>
+            <t t-set="company" t-value="o.company_id.sudo() or request.env.company" />
         </t>
 
-        <div t-attf-class="header o_company_#{company.id}_layout" style="padding: 15px 0;">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                <img t-if="company.logo" class="o_company_logo_small" t-att-src="image_data_uri(company.logo)" alt="Logo" style="max-height: 120px; max-width: 350px;" />
+        <div t-attf-class="header o_company_#{company.id}_layout" style="padding: 10px 0;">
+            <div class="row">
+                <div class="col-12 text-end">
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" alt="Logo" style="max-height: 80px;" />
+                </div>
             </div>
         </div>
 
-        <div t-attf-class="article o_report_layout_standard o_company_#{company.id}_layout" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id">
+        <div t-attf-class="article o_report_layout_standard o_company_#{company.id}_layout"
+             t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id"
+             style="position: relative;">
+
+            <!--            <div class="watermark  " style="position: absolute; top: 25%; left: 10%; opacity: 0.01; z-index: -100; transform: rotate(-10deg); pointer-events: none;">-->
+            <!--                <img t-if="company.logo" class="opacity-muted opacity-25" t-att-src="image_data_uri(company.logo)" style="width: 600px;" />-->
+            <!--            </div>-->
+
             <t t-out="0" />
         </div>
 
-        <div t-attf-class="footer o_company_#{company.id}_layout" style="padding: 0; margin: 0; position: relative; min-height: 180px;">
-            <div style="position: absolute; bottom: 0; left: 0; width: 100%; z-index: -1; overflow: hidden; line-height: 0;">
-                <svg viewBox="0 0 400 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 120px;">
-                    <path d="M0,120 L0,40 Q100,10 200,50 Q300,90 400,40 L400,120 Z" fill="#3C2D68" opacity="0.4" />
-                    <path d="M0,120 L0,60 Q120,30 240,70 Q340,100 400,70 L400,120 Z" fill="#3C2D68" opacity="0.2" />
+        <div t-attf-class="footer o_company_#{company.id}_layout" style="padding: 0; margin: 0; font-family: Arial, sans-serif;">
+            <div style="position: relative; height: 160px; overflow: hidden;">
+                <svg viewBox="0 0 500 150" preserveAspectRatio="none" style="height: 100%; width: 100%; position: absolute; bottom: 0; left: 0; z-index: 1; opacity: 0.4;">
+                    <path d="M0,150 L0,40 C150,120 350,0 500,80 L500,150 Z" fill="#3C2D68" />
                 </svg>
-            </div>
 
-            <div style="padding: 0px 20px 10px 0px; font-family: Arial, sans-serif; position: relative; z-index: 1;">
-                <div class="row">
-                    <div class="col-6 offset-6">
-                        <table style="width: 100%; border: 1px solid #3C2D68; border-collapse: collapse; background-color: rgba(255, 255, 255, 0.7); font-size: 13px;">
-                            <tbody>
-                                <tr>
-                                    <td style="width: 30px; vertical-align: top; padding: 8px 0px 0px 8px; border-bottom: 1px solid #3C2D68;">
-                                        <i class="fa fa-map-marker" style="color: #e74c3c; font-size: 16px;" />
-                                    </td>
-                                    <td style="padding: 8px 8px 5px 0px; border-bottom: 1px solid #3C2D68;">
-                                        <span style="color: #e74c3c; font-weight: bold;">Headoffice:</span>
-                                        <span style="color: #3C2D68; font-weight: bold;" t-esc="company.head_office_address or '87, Pharaonic Company Blocks, Block No. 3, El Mariouteya Faisal.'" />
-                                        <br />
-                                        <span style="color: #e74c3c; font-weight: bold;">Factory :</span>
-                                        <span style="color: #3C2D68; font-weight: bold;" t-esc="company.factory_address or 'Abu Rawash - El Mansourieh Haram Road, next to Star Water.'" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="vertical-align: middle; padding: 5px 0px 5px 8px; border-bottom: 1px solid #3C2D68;">
-                                        <i class="fa fa-globe" style="color: #3C2D68; font-size: 14px;" />
-                                    </td>
-                                    <td style="color: #3C2D68; font-weight: bold; padding: 5px 8px 5px 0px; border-bottom: 1px solid #3C2D68;" t-esc="company.website or 'http://www.example.com'" />
-                                </tr>
-                                <tr>
-                                    <td style="vertical-align: top; padding: 5px 0px 8px 8px;">
-                                        <i class="fa fa-phone" style="color: #3C2D68; font-size: 14px;" />
-                                    </td>
-                                    <td style="color: #3C2D68; font-weight: bold; padding: 5px 8px 8px 0px;">
-                                        <div style="margin-bottom: 2px;">•
-                                            <t t-esc="company.footer_phone_1 or '00235951307'" />
-                                        </div>
-                                        <div>•
-                                            <t t-esc="company.footer_phone_2 or '01014077379'" />
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="text-center text-white mt-2" style="color: black; font-weight: bold; font-size: 12px;">
-                            (Page
-                            <span class="page" />
-                            of
-                            <span class="topage" />)
+                <div style="position: relative; z-index: 2; padding-top: 40px; padding-right: 30px;">
+                    <div class="row">
+                        <div class="col-7 bg-light p-2 rounded-3 offset-5 text-start" style="font-size: 11px; line-height: 1.4;">
+                            <div style="margin-bottom: 5px;">
+                                <i class="fa fa-map-marker" style="color: #e74c3c; margin-right: 5px;" />
+                                <span style="color: #e74c3c; font-weight: bold;">Headoffice:</span>
+                                <span style="color: #3C2D68; font-weight: bold;">
+                                    <t t-esc="company.head_office_address or '87, Pharaonic Company Blocks, Block No. 3, El Mariouteya - Faisal.'" />
+                                </span>
+                            </div>
+                            <div style="margin-bottom: 5px; padding-left: 15px;">
+                                <span style="color: #e74c3c; font-weight: bold;">Factory:</span>
+                                <span style="color: #3C2D68; font-weight: bold;">
+                                    <t t-esc="company.factory_address or 'Kilo 26, Cairo-Alexandria Desert Road, Abu Rawash Industrial Area.'" />
+                                </span>
+                            </div>
+                            <div style="margin-bottom: 5px;">
+                                <i class="fa fa-globe" style="color: #3C2D68; margin-right: 5px;" />
+                                <span style="color: #3C2D68; font-weight: bold;">
+                                    <t t-esc="company.website or 'http://www.tatpack.com'" />
+                                </span>
+                            </div>
+                            <div>
+                                <i class="fa fa-phone" style="color: #3C2D68; margin-right: 5px;" />
+                                <span style="color: #3C2D68; font-weight: bold;">
+                                    <t t-esc="company.footer_phone_1 or '01014077379'" />
+                                </span>
+                                <br />
+                                <span style="color: #3C2D68; font-weight: bold; padding-left: 18px;">
+                                    <t t-esc="company.footer_phone_2 or '01000575130'" />
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -85,151 +73,163 @@
 
     <template id="report_tatpack_quotation_document">
         <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)" />
-        <t t-set="company" t-value="doc.company_id" />
         <t t-call="tatpack_quotation_report.tatpack_external_layout">
+
             <style>
-                .color1 { color: #1a237e; }
-                .tatpack-page {
-                font-family: Arial, sans-serif;
-                font-size: 15px !important;
-                color: #1a237e;
-                }
-                .product-table {
-                width: 100%;
-                margin-bottom: 20px;
-                border: 1px solid #1a237e;
-                border-collapse: collapse;
-                }
-                .product-table td {
-                border: 1px solid #1a237e;
-                padding: 5px 8px;
-                vertical-align: middle;
-                }
-                .label-col {
-                width: 180px;
-                font-weight: bold;
-                }
-                .value-text {
-                font-weight: 900;
-                }
-                .red-value {
-                color: #d32f2f;
-                font-weight: 900;
-                }
+                .main-content { font-family: 'Arial', sans-serif; color: #0000FF; font-size: 14px; }
+                .label-style { width: 180px; display: inline-block; font-weight: bold; }
+                .value-style { display: inline-block; font-weight: bold; }
+                .line-container { margin-bottom: 8px; } /* المسافة بين كل سطر وتم توحيد الـ font-family في الـ main-content */
             </style>
 
-            <div class="page pt-2 tatpack-page">
-                <div style="margin-bottom: 10px;">
-                    <strong class="fw-bolder fs-5">
+            <div class="page main-content">
+                <div style="margin-bottom: 20px;">
+                    <strong style="font-size: 16px;">
                         <t t-esc="doc.partner_id.name" />
-                        <t t-if="doc.partner_id.parent_id">
-                            (<t t-esc="doc.partner_id.parent_id.name" />)
-                        </t>
                     </strong>
                 </div>
 
-                <div style="margin-bottom: 15px;">
-                    <span class="fw-bold">Date:</span>
+                <div style="margin-bottom: 10px;">
+                    <span>Date:</span>
                     <span t-field="doc.date_order" t-options='{"widget": "date", "format": "dd-MM-yyyy"}' />
                 </div>
 
-                <div style="text-align: center; margin: 15px 0;">
-                    <strong class="fw-bolder" style="font-size: 18px;">Quotation No.
+                <div class="text-center" style="margin: 25px 0;">
+                    <strong style="font-size: 18px;">Quotation No.
                         <t t-esc="doc.name" />
                     </strong>
                 </div>
 
-                <div style="margin-bottom: 15px;">
-                    <span class="fw-bold fs-5" style="text-decoration: underline;">
-                        Re.:
-                        <t t-esc="doc.quotation_subject or 'quotation subject'" />
-                    </span>
+                <div style="font-weight: bold; text-decoration: underline; margin-bottom: 15px;">
+                    Re.:
+                    <t t-esc="doc.quotation_subject or 'labels enquiry'" />
                 </div>
 
-                <div style="margin-bottom: 15px;">
-                    <p class="fw-bold" style="margin-bottom: 5px;">Dear,</p>
-                    <p>We thank you for your recent enquiry for which we have pleasure in submitting the following quotation.</p>
-                </div>
+                <p>Dear,
+                    <br />
+                    We thank you for your recent enquiry for which we have pleasure in submitting the following quotation.
+                </p>
 
                 <t t-foreach="doc.order_line" t-as="line">
                     <t t-if="not line.display_type">
-                        <t t-set="product" t-value="line.product_id.product_tmpl_id" />
-
-                        <table class="product-table">
-                            <tr>
-                                <td class="label-col">Product Description</td>
-                                <td>
-                                    <span class="value-text">:
-                                        <t t-esc="line.name" />
+                        <div style="margin-bottom: 30px;">
+                            <div class="line-container">
+                                <span class="label-style">Product Description</span>
+                                <span class="value-style">:
+                                    <t t-esc="line.name" />
+                                </span>
+                            </div>
+                            <div class="line-container">
+                                <span class="label-style">Size</span>
+                                <span class="value-style">:
+                                    <t t-esc="line.product_id.size_width_mm or 0" />
+                                    mm X
+                                    <t t-esc="line.product_id.size_height_mm or 0" />
+                                    mm
+                                </span>
+                            </div>
+                            <div class="line-container">
+                                <span class="label-style">No. of Colors</span>
+                                <span class="value-style">: [F]
+                                    <t t-esc="line.product_id.basic_colors or 0" />
+                                    + Lamination - [B]
+                                    <t t-esc="line.product_id.back_colors or 0" />
+                                    + Lamination
+                                </span>
+                            </div>
+                            <div class="line-container">
+                                <span class="label-style">Material</span>
+                                <span class="value-style">:
+                                    <t t-esc="line.product_id.material_id.name or 'PE White'" />
+                                </span>
+                            </div>
+                            <div class="line-container">
+                                <span class="label-style">No. of variants</span>
+                                <span class="value-style">:
+                                    <t t-esc="line.no_of_variants or 1" />
+                                </span>
+                            </div>
+                            <div class="line-container">
+                                <span class="label-style">Quantity / 1000 Label</span>
+                                <span class="value-style">:
+                                    <span style="color: #d32f2f;">
+                                        <t t-esc="int(line.product_uom_qty / 1000)" />
                                     </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-col">Size</td>
-                                <td>
-                                    <span class="value-text">:
-                                        <t t-esc="product.size_width_mm or '0'" />
-                                        mm X
-                                        <t t-esc="product.size_height_mm or '0'" />
-                                        mm
+                                </span>
+                            </div>
+                            <div class="line-container">
+                                <span class="label-style">Price / 1000 Label</span>
+                                <span class="value-style">:
+                                    <span style="color: #d32f2f;">EGP
+                                        <t t-esc="'{:.3f}'.format(line.price_unit)" />
                                     </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-col">No. of Colors</td>
-                                <td>
-                                    <span class="value-text">: [F]
-                                        <t t-esc="product.basic_colors or '0'" />
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-col">Material</td>
-                                <td>
-                                    <span class="value-text">:
-                                        <t t-esc="product.material_id.name if product.material_id else 'PE White'" />
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-col">No. of variants</td>
-                                <td>
-                                    <span class="value-text">:
-                                        <t t-esc="line.no_of_variants or 1" />
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-col">Quantity</td>
-                                <td>
-                                    <span class="value-text">:</span>
-                                    <span class="red-value">
-                                        <t t-esc="'{:,.0f}'.format(line.product_uom_qty)" />
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-col">Price 1000/Label</td>
-                                <td>
-                                    <span class="value-text">:</span>
-                                    <span class="red-value">
-                                        <t t-esc="doc.currency_id.symbol" />
-                                        <t t-esc="'%.3f' % line.price_unit" />
-                                    </span>
-                                </td>
-                            </tr>
-                        </table>
+                                </span>
+                            </div>
+                        </div>
                     </t>
                 </t>
 
-                <div t-if="doc.note" style="margin-top: 20px;">
-                    <p t-field="doc.note" />
+                <div style="border: 1px solid #999; padding: 10px; margin-top: 15px;">
+                    <p style="font-weight: bold; text-decoration: underline; margin-bottom: 5px;">** The Prices not Included sales tax.</p>
+                    <p style="font-weight: bold; text-decoration: underline; color: #0000FF; margin-bottom: 10px;">Terms and conditions of sale:</p>
+
+                    <div class="line-container" style="font-size: 13px;">
+                        <span style="width: 140px; display: inline-block;">Delivery Terms</span>
+                        <span>:
+                            <t t-esc="doc.delivery_terms or 'To be discussed.'" />
+                        </span>
+                    </div>
+                    <div class="line-container" style="font-size: 13px;">
+                        <span style="width: 140px; display: inline-block;">Lead Time</span>
+                        <span>:
+                            <t t-esc="doc.lead_time or 'To be discussed.'" />
+                        </span>
+                    </div>
+                    <div class="line-container" style="font-size: 13px;">
+                        <span style="width: 140px; display: inline-block;">Validity of Quotation</span>
+                        <span>:
+                            <t t-esc="doc.validity_days or '5 Days.'" />
+                        </span>
+                    </div>
+                    <div class="line-container" style="font-size: 13px;">
+                        <span style="width: 140px; display: inline-block;">Payment Terms</span>
+                        <span>:
+                            <t t-esc="doc.payment_terms_text or '45 days from the date of receipt'" />
+                        </span>
+                    </div>
                 </div>
 
+                <div style="background-color: #00000015; color: #3C2DCC; padding: 5px 10px; margin-top: 15px; display: inline-block; font-weight: bold;">
+                    Customer must accept
+                    <t t-esc="doc.tolerance_percentage or '+/- 10%'" />
+                    of the Order quantity
+                </div>
+
+                <div style="margin-top: 30px;">
+                    <p>
+                        <t t-esc="doc.closing_text or 'We hope the above offer meets with your expectations and look forward to receiving your further instructions.'" />
+                    </p>
+                    <p>Yours faithfully,
+                        <br />
+                        <br />
+                        For
+                        <strong style="text-decoration: underline;">
+                            <t t-esc="doc.signatory_company or 'TaTPack'" />
+                        </strong>
+                        <br />
+                        <br />
+                        <strong style="text-decoration: underline; color: #d32f2f;">
+                            <t t-esc="doc.signatory_name or 'Mahmoud Abdullah'" />
+                        </strong>
+                        <br />
+                        <strong>Mobil No:
+                            <t t-esc="doc.signatory_mobile or '01000575130'" />
+                        </strong>
+                    </p>
+                </div>
             </div>
         </t>
     </template>
-
     <template id="report_tatpack_quotation">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="doc">
