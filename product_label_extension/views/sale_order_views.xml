@@ -9,6 +9,35 @@
             <xpath expr="//field[@name='order_line']/list//field[@name='product_template_id']" position="attributes">
                 <attribute name="domain">[('sale_ok', '=', True), ('label_customer_id', '=', parent.partner_id)]</attribute>
             </xpath>
+
+            <!-- Add label specification fields to order line list -->
+            <xpath expr="//field[@name='order_line']/list//field[@name='product_uom_qty']" position="after">
+                <field name="label_product_id" optional="hide" />
+                <field name="label_customer_id" optional="hide" />
+                <field name="basic_colors" optional="hide" />
+                <field name="special_colors" optional="hide" />
+                <field name="size_width_mm" optional="hide" />
+                <field name="size_height_mm" optional="hide" />
+                <field name="foil_type" optional="hide" />
+                <field name="lamination" optional="hide" />
+                <field name="thickness" optional="hide" />
+                <field name="varnish" optional="hide" />
+                <field name="quantity_in_roll" optional="hide" />
+                <field name="core_size" optional="hide" />
+                <field name="winding_direction" optional="hide" />
+                <field name="gap_across_mm" optional="hide" />
+                <field name="gap_around_mm" optional="hide" />
+                <field name="image_across" optional="hide" />
+                <field name="image_around" optional="hide" />
+                <field name="no_of_abs" optional="hide" />
+                <field name="cylinder_no" optional="hide" />
+                <field name="perforation" optional="hide" />
+                <field name="invisible_ink" optional="hide" />
+                <field name="back_side_print" optional="hide" />
+                <field name="material_id" optional="hide" />
+                <field name="calculated_width" optional="hide" />
+                <field name="length_quantity_in_meter" optional="hide" />
+            </xpath>
         </field>
     </record>
 </odoo>
