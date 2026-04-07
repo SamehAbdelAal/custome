@@ -2,3 +2,4 @@
 from . import product_template
 from . import quality_check
 from . import sale_order
+from . import stock_move
