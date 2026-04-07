@@ -11,7 +11,7 @@ class StockMove(models.Model):
     product_uom_qty = fields.Float(
         compute='_compute_demand',
         store=True,
-        readonly=False,
+        readonly=True,
     )
 
     @api.depends('width_cm', 'length_m', 'number_qty')
