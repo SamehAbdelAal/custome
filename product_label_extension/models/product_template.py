@@ -159,20 +159,19 @@ class ProductTemplate(models.Model):
                     gaps_length = (math.ceil(1000 / no_of_abs) - 1) * gap_around
                     labels_length = (base_length + gaps_length) / 1000
                     colors_length = (basic_colors + special_colors) * 25
-
-            self.env['mrp.bom'].sudo().create({
-                'product_tmpl_id': record.id,
-                'product_qty': 1000,
-                'product_uom_id': record.uom_id.id,
-                'labels_length': str(round(labels_length, 2)),
-                'color_length': str(colors_length),
-                'bom_line_ids': [
-                    Command.create({
-                        'product_id': material_product.id,
-                        'product_qty': record.length_quantity_in_meter or 1.0,
-                    }),
-                ],
-            })
+            # self.env['mrp.bom'].sudo().create({
+            #     'product_tmpl_id': record.id,
+            #     'product_qty': 1000,
+            #     'product_uom_id': record.uom_id.id,
+            #     'labels_length': str(round(labels_length, 2)),
+            #     'color_length': str(colors_length),
+            #     'bom_line_ids': [
+            #         Command.create({
+            #             'product_id': material_product.id,
+            #             'product_qty': record.length_quantity_in_meter or 1.0,
+            #         }),
+            #     ],
+            # })
 
     # Calculated Width - Computed field
     calculated_width = fields.Integer(
